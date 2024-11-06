@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <style>
+        /* 이전 스타일 유지 */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .logo {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .signup-form {
+            width: 100%;
+            max-width: 600px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .form-label {
+            width: 150px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-button {
+            width: 100px;
+            padding: 8px;
+            background-color: #eee;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #999;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">LOGO</div>
+    <h1>Sign Up</h1>
+    
+    <form class="signup-form" id="signupForm" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+            <div class="form-label">닉네임</div>
+            <input type="text" name="userNickname" class="form-input" placeholder="닉네임을 작성해주세요." required>
+            <button type="button" class="form-button" onclick="checkDuplicate('nickname')">중복 확인</button>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-label">아이디</div>
+            <input type="email" name="userEmail" class="form-input" placeholder="아이디를 입력해주세요." required>
+            <button type="button" class="form-button" onclick="checkDuplicate('email')">중복 확인</button>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-label">비밀번호</div>
+            <input type="password" name="userPassword" class="form-input" placeholder="비밀번호를 입력해주세요." required>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-label">비밀번호 확인</div>
+            <input type="password" name="passwordConfirm" class="form-input" placeholder="비밀번호를 다시 입력해주세요." required>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-label">이름</div>
+            <input type="text" name="userName" class="form-input" placeholder="이름을 작성해주세요." required>
+        </div>
+
+        <button type="submit" class="submit-button">회원가입하기</button>
+    </form>
+    
+    <a href="/login" class="login-link">이미 회원이신가요? 로그인하기</a>
+
+    <script>
+        // 회원가입 처리
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('signupForm');
+            const formData = new FormData(form);
+            
+            // 비밀번호 확인
+            if (formData.get('userPassword') !== formData.get('passwordConfirm')) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            
+            // REST API로 전송할 데이터 객체 생성
+            const data = {
+                userEmail: formData.get('userEmail'),
+                userPassword: formData.get('userPassword'),
+                userName: formData.get('userName'),
+                userNickname: formData.get('userNickname')
+            };
+            
+            try {
+                const response = await fetch('/api/users/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert('회원가입이 완료되었습니다.');
+                    window.location.href = '/login';
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message || '회원가입에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('서버와의 통신 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 중복 체크
+        async function checkDuplicate(type) {
+            const value = document.querySelector(`input[name="user${type === 'email' ? 'Email' : 'Nickname'}"]`).value;
+            
+            try {
+                const response = await fetch(`/api/users/check-${type}?value=${value}`, {
+                    method: 'GET'
+                });
+                
+                const data = await response.json();
+                alert(data.message);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('중복 확인 중 오류가 발생했습니다.');
+            }
+        }
+    </script>
+</body>
+</html>
