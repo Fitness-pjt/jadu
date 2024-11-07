@@ -8,15 +8,38 @@ import com.ssafy.ssafit.model.dto.User;
 @Service
 public class UserServiceImpl implements UserService {
 
-	private UserDao userdao;
+	private UserDao userDao;
 
-	public UserServiceImpl(UserDao userdao) {
-		this.userdao = userdao;
+	public UserServiceImpl(UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 	@Override
 	public void signup(User user) {
-		userdao.insertUser(user);
+		userDao.insertUser(user);
+	}
+
+	@Override
+	public void update(User user) {
+		userDao.updateUser(user);
+	}
+
+	@Override
+	public User searchById(int id) {
+		User user = new User();
+		
+		return null;
+	}
+
+	@Override
+	public void remove(int id) {
+		
+	}
+
+	@Override
+	public User searchByEmail(String userEmail) {
+		
+		return userDao.selectUserByEmail(userEmail);
 	}
 
 }
