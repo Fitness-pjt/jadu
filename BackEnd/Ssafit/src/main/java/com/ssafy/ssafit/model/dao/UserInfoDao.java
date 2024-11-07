@@ -9,4 +9,6 @@ public interface UserInfoDao {
 		UserInfo selectUserInfo(Integer userId);
 
 		void updateUserInfo(UserInfo userInfo);
+		
+		
 }
