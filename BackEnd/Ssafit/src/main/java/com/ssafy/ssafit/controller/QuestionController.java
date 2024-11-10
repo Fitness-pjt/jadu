@@ -69,6 +69,8 @@ public class QuestionController {
 		int userId = loginUser.getUserId();
 		question.setUserId(userId);
 		question.setProgramId(programId);
+		
+		System.out.println(question);
 
 		questionService.writeQuestion(question);
 

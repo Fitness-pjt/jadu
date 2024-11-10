@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.TodoDao">
+
+	<select id="selectAllTodo" resultType="Todo">
+		SELECT *
+		FROM todo
+		WHERE
+		date = #{date} AND user_id=#{userId};
+	</select>
+
+	<insert id="insertTodo" parameterType="Todo"
+		keyProperty="todoId" useGeneratedKeys="true">
+		INSERT INTO todo (user_id, date,
+		content )
+		VALUES(#{userId}, #{date},
+		#{content});
+	</insert>
+
+	<delete id="deleteTodo" parameterType="int">
+		DELETE FROM todo
+		WHERE
+		todo_id=#{todoId} AND user_id=#{userId};
+	</delete>
+
+
+</mapper>
