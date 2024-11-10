@@ -1,7 +1,5 @@
 package com.ssafy.ssafit.service.user;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.ssafy.ssafit.model.dao.UserDao;

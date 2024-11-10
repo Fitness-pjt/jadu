@@ -1,5 +1,11 @@
 package com.ssafy.ssafit.model.dao;
 
-public interface ProgramDao {
+import com.ssafy.ssafit.model.dto.Program;
 
+public interface ProgramDao {
+	void insertProgram(Program program);
+
+	void insertVideoIfNotExists(String videoId);
+
+	void insertProgramVideo(Integer programId, String videoId);
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.ssafy.ssafit.model.dao.UserInfoDao">
+    <!-- 사용자 운동 정보 추가 -->
+    <insert id="insertUserInfo" parameterType="UserInfo">
+        INSERT INTO userInfo (
+            user_id,
+            goal,
+            gender,
+            age,
+            shape,
+            experience,
+            location,
+            frequency
+        ) VALUES (
+            #{userId},
+            #{goal},
+            #{gender},
+            #{age},
+            #{shape},
+            #{experience},
+            #{location},
+            #{frequency}
+        )
+    </insert>
+
+    <!-- 사용자 운동 정보 조회 -->
+    <select id="selectUserInfo" parameterType="Integer" resultType="UserInfo">
+        SELECT 
+            user_id as userId,
+            goal,
+            gender,
+            age,
+            shape,
+            experience,
+            location,
+            frequency
+        FROM userInfo
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 사용자 운동 정보 수정 -->
+    <update id="updateUserInfo" parameterType="UserInfo">
+        UPDATE userInfo
+        SET 
+            goal = #{goal},
+            gender = #{gender},
+            age = #{age},
+            shape = #{shape},
+            experience = #{experience},
+            location = #{location},
+            frequency = #{frequency}
+        WHERE user_id = #{userId}
+    </update>
+</mapper>
