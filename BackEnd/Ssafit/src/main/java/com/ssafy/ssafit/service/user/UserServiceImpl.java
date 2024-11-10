@@ -26,20 +26,24 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User searchById(int id) {
-		User user = new User();
-		
-		return null;
+
+		return userDao.selectUserById(id);
 	}
 
 	@Override
 	public void remove(int id) {
-		
+
 	}
 
 	@Override
 	public User searchByEmail(String userEmail) {
-		
+
 		return userDao.selectUserByEmail(userEmail);
 	}
 
+	@Override
+	public void deleteUser(int userId) {
+
+		userDao.deleteUser(userId);
+	}
 }

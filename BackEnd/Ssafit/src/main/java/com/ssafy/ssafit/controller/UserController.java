@@ -3,6 +3,8 @@ package com.ssafy.ssafit.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.model.dto.User;
+import com.ssafy.ssafit.model.dto.UserInfo;
+import com.ssafy.ssafit.service.user.UserInfoService;
 import com.ssafy.ssafit.service.user.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,10 +27,12 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
 	private UserService userService;
+	private UserInfoService userInfoService;
 	private PasswordEncoder passwordEncoder;
 
-	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+	public UserController(UserService userService, UserInfoService userInfoService, PasswordEncoder passwordEncoder) {
 		this.userService = userService;
+		this.userInfoService = userInfoService;
 		this.passwordEncoder = passwordEncoder;
 	}
 
@@ -73,6 +79,71 @@ public class UserController {
 		}
 
 		return new ResponseEntity<>("아이디 맞고, 비번 틀림", HttpStatus.UNAUTHORIZED);
+	}
+
+	@GetMapping("/{userId}")
+	@Operation(summary = "유저 정보 조회", description = "유저 정보 조회")
+	public ResponseEntity<?> selectUserById(@PathVariable("userId") int userId) {
+		User user = userService.searchById(userId);
+		if (user == null)
+			return new ResponseEntity<String>("해당 유저 없음", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+
+	}
+
+	@DeleteMapping("/{userId}")
+	@Operation(summary = "회원 탈퇴", description = "회원 정보 삭제 처리")
+	public ResponseEntity<?> deleteUser(@PathVariable("userId") int userId) {
+
+		userService.deleteUser(userId);
+		return new ResponseEntity<String>("회원 탈퇴 완료", HttpStatus.OK);
+
+	}
+
+	@PostMapping("/info")
+	@Operation(summary = "운동정보 등록", description = "운동정보 등록")
+	public ResponseEntity<?> createUserInfo(@RequestBody UserInfo userInfo, HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return new ResponseEntity<String>("로그인 먼저 하세요", HttpStatus.UNAUTHORIZED);
+		}
+
+		userInfo.setUserId(loginUser.getUserId());
+		userInfoService.insertUserInfo(userInfo);
+
+		return new ResponseEntity<UserInfo>(userInfo, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/info")
+	@Operation(summary = "운동정보 조회", description = "운동정보 조회")
+	public ResponseEntity<?> getUserInfo(HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return new ResponseEntity<>("로그인이 필요한 서비스입니다.", HttpStatus.UNAUTHORIZED);
+		}
+
+		UserInfo userInfo = userInfoService.selectUserInfo(loginUser.getUserId());
+		if (userInfo == null) {
+			return new ResponseEntity<>("등록된 운동 정보가 없습니다.", HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(userInfo, HttpStatus.OK);
+	}
+
+	@PutMapping("/info")
+	@Operation(summary = "운동정보 수정", description = "운동정보 수정")
+	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo userInfo, HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return new ResponseEntity<>("로그인이 필요한 서비스입니다.", HttpStatus.UNAUTHORIZED);
+		}
+
+		userInfo.setUserId(loginUser.getUserId());
+
+		userInfoService.updateUserInfo(userInfo);
+		return new ResponseEntity<>(userInfo, HttpStatus.OK);
+
 	}
 
 }
