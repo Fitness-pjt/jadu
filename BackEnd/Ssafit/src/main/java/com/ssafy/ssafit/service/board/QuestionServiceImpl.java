@@ -16,7 +16,6 @@ public class QuestionServiceImpl implements QuestionService {
 	
 	@Autowired
 	public QuestionServiceImpl(QuestionDao questionDao) {
-		super();
 		this.questionDao = questionDao;
 	}
 
