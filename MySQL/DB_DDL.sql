@@ -123,8 +123,8 @@ CREATE TABLE `files` (
 CREATE TABLE `todo` (
     `todo_id` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
-    `program_id` INT NOT NULL,
-    `video_id` VARCHAR(50) NOT NULL,  
+    `program_id` INT,
+    `video_id` VARCHAR(50),  
     `date` DATE NOT NULL,
     `status` BOOLEAN DEFAULT FALSE,
     `content` VARCHAR(100) NOT NULL,
