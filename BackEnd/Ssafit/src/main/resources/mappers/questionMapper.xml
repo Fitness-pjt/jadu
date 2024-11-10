@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.QuestionDao">
+
+	<select id="selectAllQuestion" parameterType="int"
+		resultType="Question">
+		SELECT q.question_id, q.title, u.user_nickname AS
+		writer,
+		q.content, q.created_at, q.user_id, q.program_id
+		FROM question
+		q,
+		users u
+		WHERE q.program_id = #{programId} AND u.user_id =
+		q.user_id;
+	</select>
+
+	<select id="selectOneQuestion" parameterType="int"
+		resultType="Question">
+		SELECT q.question_id, q.title, u.user_nickname AS writer,
+		q.content,
+		q.created_at, q.user_id, q.program_id
+		FROM question q,
+		users u
+		WHERE question_id = #{questionId} AND u.user_id =
+		q.user_id;
+	</select>
+
+	<insert id="insertQuestion" parameterType="Question"
+		keyProperty="questionId" useGeneratedKeys="true">
+		INSERT INTO question (title,
+		content, program_id, user_id)
+		VALUES(#{title}, #{content},
+		#{programId}, #{userId});
+	</insert>
+
+	<delete id="deleteQuestion" parameterType="int">
+		DELETE FROM question
+		WHERE question_id = #{questionId};
+	</delete>
+
+	<update id="updateQuestion" parameterType="Question">
+		UPDATE question
+		SET
+		title = #{title}, content = #{content},
+		created_at = now()
+		WHERE
+		question_id = #{questionId}
+	</update>
+
+</mapper>

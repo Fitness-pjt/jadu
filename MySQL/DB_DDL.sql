@@ -15,6 +15,8 @@ CREATE TABLE `users` (
     PRIMARY KEY (`user_id`)
 );
 
+SELECT * FROM users;
+
 CREATE TABLE `userInfo` (
     `user_id` INT NOT NULL,
     `goal` ENUM('DIET','MUSCLE','RECOVERY','STAMINA'),

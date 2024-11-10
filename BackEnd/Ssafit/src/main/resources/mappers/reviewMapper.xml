@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.ssafit.model.dao.ReviewDao">
+
+	<select id="selectAllReview" parameterType="int"
+		resultType="Review">
+		SELECT r.review_id, r.title, u.user_nickname AS
+		writer,
+		r.content, r.star, r.created_at, r.user_id, r.program_id
+		FROM review r,
+		users u
+		WHERE r.program_id = #{programId} AND u.user_id =
+		r.user_id;
+	</select>
+
+	<select id="selectOneReview" parameterType="int"
+		resultType="Review">
+		SELECT r.review_id, r.title, u.user_nickname AS writer,
+		r.content, r.star,
+		r.created_at, r.user_id, r.program_id
+		FROM review r,
+		users u
+		WHERE review_id = #{reviewId} AND u.user_id =
+		r.user_id;
+	</select>
+
+	<insert id="insertReview" parameterType="Review"
+		keyProperty="reviewId" useGeneratedKeys="true">
+		INSERT INTO review (title,
+		content, star, program_id, user_id)
+		VALUES(#{title}, #{content},
+		#{star}, #{programId}, #{userId});
+	</insert>
+
+	<delete id="deleteReview" parameterType="int">
+		DELETE FROM review
+		WHERE review_id = #{reviewId};
+	</delete>
+
+	<update id="updateReview" parameterType="Review">
+		UPDATE review
+		SET title = #{title}, content = #{content}, star = #{star},
+		created_at = now()
+		WHERE review_id = #{reviewId}
+	</update>
+
+</mapper>
