@@ -3,6 +3,8 @@ package com.ssafy.ssafit.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -73,6 +75,25 @@ public class UserController {
 		}
 
 		return new ResponseEntity<>("아이디 맞고, 비번 틀림", HttpStatus.UNAUTHORIZED);
+	}
+
+	@GetMapping("/{userId}")
+	@Operation(summary = "유저 정보 조회", description = "유저 정보 조회")
+	public ResponseEntity<?> selectUserById(@PathVariable("userId") int userId) {
+		User user = userService.searchById(userId);
+		if (user == null)
+			return new ResponseEntity<String>("해당 유저 없음", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+
+	}
+
+	@DeleteMapping("/{userId}")
+	@Operation(summary = "회원 탈퇴", description = "회원 정보 삭제 처리")
+	public ResponseEntity<?> deleteUser(@PathVariable("userId") int userId) {
+
+		userService.deleteUser(userId);
+		return new ResponseEntity<String>("회원 탈퇴 완료", HttpStatus.OK);
+
 	}
 
 }

@@ -12,4 +12,6 @@ public interface UserService {
 	public void remove(int id);
 
 	public User searchByEmail(String userEmail);
+	
+	public void deleteUser(int id);
 }
