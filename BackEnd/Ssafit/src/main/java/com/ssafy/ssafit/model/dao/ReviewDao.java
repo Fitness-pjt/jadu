@@ -21,8 +21,6 @@ public interface ReviewDao {
 	// 리뷰 수정
 	public void updateReview(Review review);
 
-	
-
 	// 검색 기능
 //		public List<Review> search(SearchCondition condition);
 }
