@@ -47,7 +47,7 @@ public class TodoController {
 	}
 
 	///////////////////////////////////
-	// 로그인한 유저만 가능
+	// 로그인한 유저만 가능 == 로그인 인증 필요
 	// 특정 날짜에 투두 등록하기 (content만)
 	@PostMapping("/{date}")
 	@Operation(summary = "특정 날짜 투두 등록하기", description = "특정 날짜에 투두를 추가합니다.")

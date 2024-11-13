@@ -1,5 +1,9 @@
 package com.ssafy.ssafit.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.ssafit.jwt.JwtUtil;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.model.dto.UserInfo;
 import com.ssafy.ssafit.service.user.UserInfoService;
@@ -29,11 +34,14 @@ public class UserController {
 	private UserService userService;
 	private UserInfoService userInfoService;
 	private PasswordEncoder passwordEncoder;
+	private JwtUtil jwtUtil;
 
-	public UserController(UserService userService, UserInfoService userInfoService, PasswordEncoder passwordEncoder) {
+	@Autowired
+	public UserController(UserService userService, UserInfoService userInfoService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 		this.userService = userService;
 		this.userInfoService = userInfoService;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtUtil = jwtUtil;
 	}
 
 	@PostMapping("/signup")
@@ -59,10 +67,12 @@ public class UserController {
 
 	@PostMapping("/login")
 	@Operation(summary = "사용자 로그인 ", description = "로그인을 합니다.")
-	public ResponseEntity<String> logIn(@RequestBody User user, HttpSession session) {
+	public ResponseEntity<?> logIn(@RequestBody User user) {
 		User loginUser = null;
+
 		if (user.getUserEmail() == null || user.getUserPassword() == null)
 			return new ResponseEntity<>("입력 없음", HttpStatus.NOT_FOUND);
+		
 		// 입력된 이메일 날림
 		User getUser = userService.searchByEmail(user.getUserEmail());
 		// 아이디없음
@@ -70,12 +80,16 @@ public class UserController {
 			return new ResponseEntity<>("아이디 틀림", HttpStatus.UNAUTHORIZED);
 		}
 
+		// Token 정보가 담기는 MAP
+		Map<String , Object> result = new HashMap<>();
 		String encodePw = getUser.getUserPassword();
 		if (passwordEncoder.matches(user.getUserPassword(), encodePw)) {
 
 			loginUser = getUser;
-			session.setAttribute("loginUser", loginUser);
-			return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+//			session.setAttribute("loginUser", loginUser);
+			result.put("message", "로그인 성공");
+			result.put("access-token", jwtUtil.createToken(loginUser));
+			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>("아이디 맞고, 비번 틀림", HttpStatus.UNAUTHORIZED);
