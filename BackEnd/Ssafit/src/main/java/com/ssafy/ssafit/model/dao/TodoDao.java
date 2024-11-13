@@ -18,10 +18,10 @@ public interface TodoDao {
 	public int deleteTodo(@Param("todoId") int todoId, @Param("userId") int userId);
 	
 	// 하나의 투두 내용 수정하기 
-	public void updateTodoContent(int todoId);
+	public void updateTodoContent(Todo todo);
 	
 	// 하나의 투두 상태 수정하기
-	public void updateTodoStatus(int todoId);
+	public void updateTodoStatus(@Param("todoId") int todoId, @Param("status") boolean isCompleted);
 	
 	// 하나의 투두 좋아요 수 조회하기 
 	public int countTodoLikes(int todoId);

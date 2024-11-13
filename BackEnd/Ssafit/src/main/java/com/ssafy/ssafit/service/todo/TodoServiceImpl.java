@@ -34,15 +34,13 @@ public class TodoServiceImpl implements TodoService {
 	}
 
 	@Override
-	public void modifyTodoContent(int todoId) {
-		// TODO Auto-generated method stub
-		
+	public void modifyTodoContent(Todo todo) {
+		todoDao.updateTodoContent(todo);		
 	}
 
 	@Override
-	public void modifyTodoStatus(int todoId) {
-		// TODO Auto-generated method stub
-		
+	public void modifyTodoStatus(int todoId, boolean isCompleted) {
+		todoDao.updateTodoStatus(todoId, isCompleted);
 	}
 
 }

@@ -37,8 +37,13 @@ public class QuestionController {
 	// 전체 질문 조회하기
 	@GetMapping("/question")
 	@Operation(summary = "전체 질문 조회", description = "프로그램의 질문을 모두 조회합니다.")
-	public ResponseEntity<List<Question>> getList(@PathVariable("programId") int programId) {
+	public ResponseEntity<?> getList(@PathVariable("programId") int programId) {
 		List<Question> list = questionService.getQuestionList(programId);
+		
+
+		if(list == null || list.size() ==0) {
+			return new ResponseEntity<>("답변 없음.", HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<List<Question>>(list, HttpStatus.OK);
 	}
 

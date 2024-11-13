@@ -25,5 +25,19 @@
 		todo_id=#{todoId} AND user_id=#{userId};
 	</delete>
 
+	<!-- 투두 내용 수정하기  -->
+	<update id="updateTodoContent" parameterType="Todo">
+		UPDATE todo
+		SET content=#{content}, date=#{date}
+		WHERE todo_id = #{todoId}
+	</update>
+	
+	<!-- 투두 상태 변경하기  -->
+	<update id="updateTodoStatus" >
+		UPDATE todo
+		SET status = #{status}
+		WHERE todo_id = #{todoId}
+	</update>
+
 
 </mapper>

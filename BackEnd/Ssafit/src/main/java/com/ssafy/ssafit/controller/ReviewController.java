@@ -38,8 +38,13 @@ public class ReviewController {
 	// 전체 리뷰 조회하기
 	@GetMapping("/review")
 	@Operation(summary = "전체 리뷰 조회", description = "프로그램의 리뷰를 모두 조회합니다.")
-	public ResponseEntity<List<Review>> getList(@PathVariable("programId") int programId) {
+	public ResponseEntity<?> getList(@PathVariable("programId") int programId) {
+		
 		List<Review> list = reviewService.getReviewList(programId);
+
+		if(list == null || list.size() ==0) {
+			return new ResponseEntity<>("답변 없음.", HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<List<Review>>(list, HttpStatus.OK);
 	}
 
