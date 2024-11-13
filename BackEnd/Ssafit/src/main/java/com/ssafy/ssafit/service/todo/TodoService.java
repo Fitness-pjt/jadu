@@ -15,9 +15,9 @@ public interface TodoService {
 	// 하나의 투두 삭제하기
 	public boolean deleteTodo(int todoId, int userId);
 
-	// 하나의 투두 내용 수정하기
-	public void modifyTodoContent(int todoId);
+	// 하나의 투두 내용 / 상태 수정하기
+	public void modifyTodoContent(Todo todo);
 
 	// 하나의 투두 상태 수정하기
-	public void modifyTodoStatus(int todoId);
+	public void modifyTodoStatus(int todoId, boolean isCompleted);
 }
