@@ -13,9 +13,9 @@ public class WebConfig implements WebMvcConfigurer {
 		this.jwtInterceptor = jwtInterceptor;
 	}
 	
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**/todo/") // 인증이 필요한 경로
-//		.excludePathPatterns("/user/**", "/swagger-ui/**", "/v3/api-docs/**"); // 인증이 불필요한 경로
-//	}
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**/todo/**") // 인증이 필요한 경로
+		.excludePathPatterns("/user/**", "/swagger-ui/**", "/v3/api-docs/**", "/**/todo/**/read"); // 인증이 불필요한 경로
+	}
 }

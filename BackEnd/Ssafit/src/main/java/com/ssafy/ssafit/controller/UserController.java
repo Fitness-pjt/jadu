@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.jwt.JwtUtil;
+import com.ssafy.ssafit.model.dto.TokenInfo;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.model.dto.UserInfo;
 import com.ssafy.ssafit.service.user.UserInfoService;
@@ -28,7 +29,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
-@Tag(name = "User API", description = "사용자 로그인 및 회원가입")
+@Tag(name = "User API", description = "사용자 회원가입 및 CRUD")
 public class UserController {
 
 	private UserService userService;
@@ -65,35 +66,7 @@ public class UserController {
 		return new ResponseEntity<>("Update", HttpStatus.OK);
 	}
 
-	@PostMapping("/login")
-	@Operation(summary = "사용자 로그인 ", description = "로그인을 합니다.")
-	public ResponseEntity<?> logIn(@RequestBody User user) {
-		User loginUser = null;
 
-		if (user.getUserEmail() == null || user.getUserPassword() == null)
-			return new ResponseEntity<>("입력 없음", HttpStatus.NOT_FOUND);
-		
-		// 입력된 이메일 날림
-		User getUser = userService.searchByEmail(user.getUserEmail());
-		// 아이디없음
-		if (getUser == null) {
-			return new ResponseEntity<>("아이디 틀림", HttpStatus.UNAUTHORIZED);
-		}
-
-		// Token 정보가 담기는 MAP
-		Map<String , Object> result = new HashMap<>();
-		String encodePw = getUser.getUserPassword();
-		if (passwordEncoder.matches(user.getUserPassword(), encodePw)) {
-
-			loginUser = getUser;
-//			session.setAttribute("loginUser", loginUser);
-			result.put("message", "로그인 성공");
-			result.put("access-token", jwtUtil.createToken(loginUser));
-			return new ResponseEntity<>(result, HttpStatus.OK);
-		}
-
-		return new ResponseEntity<>("아이디 맞고, 비번 틀림", HttpStatus.UNAUTHORIZED);
-	}
 
 	@GetMapping("/{userId}")
 	@Operation(summary = "유저 정보 조회", description = "유저 정보 조회")
