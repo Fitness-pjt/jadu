@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.ssafit.model.dto.Todo;
 import com.ssafy.ssafit.model.dto.User;
@@ -47,7 +48,7 @@ public class TodoController {
 	}
 
 	///////////////////////////////////
-	// 로그인한 유저만 가능
+	// 로그인한 유저만 가능 == 로그인 인증 필요
 	// 특정 날짜에 투두 등록하기 (content만)
 	@PostMapping("/{date}")
 	@Operation(summary = "특정 날짜 투두 등록하기", description = "특정 날짜에 투두를 추가합니다.")

@@ -1,5 +1,9 @@
 package com.ssafy.ssafit.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.ssafit.jwt.JwtUtil;
+import com.ssafy.ssafit.model.dto.TokenInfo;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.model.dto.UserInfo;
 import com.ssafy.ssafit.service.user.UserInfoService;
@@ -23,17 +29,20 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
-@Tag(name = "User API", description = "사용자 로그인 및 회원가입")
+@Tag(name = "User API", description = "사용자 회원가입 및 CRUD")
 public class UserController {
 
 	private UserService userService;
 	private UserInfoService userInfoService;
 	private PasswordEncoder passwordEncoder;
+	private JwtUtil jwtUtil;
 
-	public UserController(UserService userService, UserInfoService userInfoService, PasswordEncoder passwordEncoder) {
+	@Autowired
+	public UserController(UserService userService, UserInfoService userInfoService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
 		this.userService = userService;
 		this.userInfoService = userInfoService;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtUtil = jwtUtil;
 	}
 
 	@PostMapping("/signup")
@@ -57,29 +66,7 @@ public class UserController {
 		return new ResponseEntity<>("Update", HttpStatus.OK);
 	}
 
-	@PostMapping("/login")
-	@Operation(summary = "사용자 로그인 ", description = "로그인을 합니다.")
-	public ResponseEntity<String> logIn(@RequestBody User user, HttpSession session) {
-		User loginUser = null;
-		if (user.getUserEmail() == null || user.getUserPassword() == null)
-			return new ResponseEntity<>("입력 없음", HttpStatus.NOT_FOUND);
-		// 입력된 이메일 날림
-		User getUser = userService.searchByEmail(user.getUserEmail());
-		// 아이디없음
-		if (getUser == null) {
-			return new ResponseEntity<>("아이디 틀림", HttpStatus.UNAUTHORIZED);
-		}
 
-		String encodePw = getUser.getUserPassword();
-		if (passwordEncoder.matches(user.getUserPassword(), encodePw)) {
-
-			loginUser = getUser;
-			session.setAttribute("loginUser", loginUser);
-			return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
-		}
-
-		return new ResponseEntity<>("아이디 맞고, 비번 틀림", HttpStatus.UNAUTHORIZED);
-	}
 
 	@GetMapping("/{userId}")
 	@Operation(summary = "유저 정보 조회", description = "유저 정보 조회")
