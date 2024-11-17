@@ -1,6 +1,7 @@
 <template>
   <div>
-    <p>홈 화면입니다.</p>
+    <p>MyPage 입니다.</p>
+    <RouterView />
   </div>
 </template>
 
@@ -8,8 +9,8 @@
 
 <style scoped>
 p {
-  padding: 1rem;
-  font-size: large;
+  font-size: larger;
   font-weight: bold;
+  padding: 1rem;
 }
 </style>
