@@ -15,7 +15,7 @@
           <div class="input-with-button">
             <input
               type="text"
-              v-model="nickname"
+              v-model="user.userNickname"
               placeholder="닉네임을 작성해주세요."
             />
             <button class="check-button">중복 확인</button>
@@ -27,8 +27,8 @@
           <div class="input-with-button">
             <input
               type="text"
-              v-model="userId"
-              placeholder="아이디를 입력해주세요."
+              v-model="user.userEmail"
+              placeholder="아이디를 입력해주세요. ex) hong@gmail.com"
             />
             <button class="check-button">중복 확인</button>
           </div>
@@ -38,25 +38,25 @@
           <div class="input-label">비밀번호</div>
           <input
             type="password"
-            v-model="password"
+            v-model="user.userPassword"
             placeholder="비밀번호를 입력해주세요."
           />
         </div>
 
-        <div class="input-group">
+        <!-- <div class="input-group">
           <div class="input-label">비밀번호 확인</div>
           <input
             type="password"
             v-model="passwordConfirm"
             placeholder="비밀번호를 다시 입력해주세요."
           />
-        </div>
+        </div> -->
 
         <div class="input-group">
           <div class="input-label">이름</div>
           <input
             type="text"
-            v-model="name"
+            v-model="user.userName"
             placeholder="이름을 작성해주세요."
           />
         </div>
@@ -74,28 +74,27 @@
 </template>
 
 <script setup>
+import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const nickname = ref("");
-const userId = ref("");
-const password = ref("");
-const passwordConfirm = ref("");
-const name = ref("");
+const userStore = useUserStore();
+
+const user = ref({
+  userNickname: "",
+  userEmail: "",
+  userPassword: "",
+  userName: "",
+});
 
 const handleSignup = () => {
   // 회원가입 로직 구현
-  console.log("Signup attempt:", {
-    nickname: nickname.value,
-    userId: userId.value,
-    password: password.value,
-    name: name.value,
-  });
+  userStore.userSignUp(user.value);
 };
 
 const moveToLogin = () => {
-  router.push("/login");
+  router.push({ name: "login" });
 };
 </script>
 
