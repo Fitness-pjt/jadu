@@ -163,3 +163,11 @@ CREATE TABLE `userInfo_keyword` (
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
     FOREIGN KEY (`keyword_code`) REFERENCES `keyword` (`keyword_code`) ON DELETE CASCADE
 );
+
+CREATE TABLE `refresh_tokens` (
+    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `refresh_token` VARCHAR(512) NOT NULL,
+    `expires_at` DATETIME NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`));
