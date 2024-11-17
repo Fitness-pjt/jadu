@@ -44,6 +44,7 @@ public class AuthController {
 		try {
 //			System.out.println(user);
 			TokenInfo tokenInfo = authService.login(user);
+
 			// System.out.println("tokenInfo : " + tokenInfo);
 //			String refreshToken = tokenInfo.getRefreshToken();
 			
@@ -55,6 +56,7 @@ public class AuthController {
 //			refreshTokenService.addRefreshToken(refreshToken);
 			
 			
+
 			return new ResponseEntity<>(tokenInfo, HttpStatus.OK);
 
 		} catch (IllegalArgumentException e) {

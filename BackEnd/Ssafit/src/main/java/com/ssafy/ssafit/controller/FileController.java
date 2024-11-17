@@ -3,6 +3,7 @@ package com.ssafy.ssafit.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/file")
 @Tag(name = "File API", description = "파일 업로드, 조회")
+@CrossOrigin("*")
 public class FileController {
 	FileService fileService;
 

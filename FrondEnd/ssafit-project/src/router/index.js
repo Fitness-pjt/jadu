@@ -1,9 +1,10 @@
-import LoginView from "@/views/LoginView.vue";
-import MyPageView from "@/views/MyPageView.vue";
-import SignUpView from "@/views/SignUpView.vue";
 import UserProfileView from "@/views/UserProfileView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import LoginView from "@/views/LoginView.vue";
+import SignUpView from "@/views/SignUpView.vue";
+import MyPageView from "@/views/MyPageView.vue";
+import GoogleCallback from "@/components/login/googleCallback.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,11 @@ const router = createRouter({
       path: "/profile/:userId",
       name: "profile",
       component: UserProfileView,
+    },
+    {
+      path: "/login/oauth2/code/google",
+      name: "GoogleCallback",
+      component: GoogleCallback,
     },
   ],
 });

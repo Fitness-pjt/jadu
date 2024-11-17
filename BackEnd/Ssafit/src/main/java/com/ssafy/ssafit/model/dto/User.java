@@ -11,6 +11,11 @@ public class User {
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
+	public User(String userEmail,String userName, String userNickname) {
+		this.userEmail = userEmail;
+		this.userName = userName;
+		this.userNickname = userName;
+	}
 
 	public User(Integer userId, String userEmail, String userPassword, String userName, String userNickname,
 			boolean userStatus, String createdAt) {

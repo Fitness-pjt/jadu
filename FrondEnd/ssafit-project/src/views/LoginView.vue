@@ -34,7 +34,7 @@
 
       <!-- 소셜 로그인 -->
       <div class="social-login">
-        <button class="social-button google">Google</button>
+        <button class="social-button google" @click="handleGoogleLogin()">Google</button>
         <button class="social-button kakao">Kakao</button>
       </div>
     </div>
@@ -62,6 +62,21 @@ const handleLogin = () => {
 const moveToSignup = () => {
   router.push("/signup");
 };
+
+const handleGoogleLogin = () => {
+  //google auth 링크를 만드는 과정.
+  const params = {
+    client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+    redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+    response_type: "code",
+    scope: "email profile"
+  };
+
+  const queryString = new URLSearchParams(params).toString();
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?${queryString}`;
+  
+  window.location.href = googleAuthUrl;
+}
 </script>
 
 <style scoped>

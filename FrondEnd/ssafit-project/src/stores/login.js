@@ -30,6 +30,10 @@ export const useLoginStore = defineStore("login", () => {
     });
   };
 
+  const googleLogin = function(){
+    
+  };
+
   // 로그아웃
   const logout = () => {
     sessionStorage.removeItem("access-token");
