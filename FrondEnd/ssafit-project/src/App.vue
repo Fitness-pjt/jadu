@@ -8,22 +8,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { useRoute } from "vue-router";
+import { computed, onMounted } from "vue";
+import { useLoginStore } from "./stores/login";
 import Header from "@/components/common/Header.vue";
 import Footer from "@/components/common/Footer.vue";
 
-export default {
-  components: {
-    Header,
-    Footer,
-  },
-  computed: {
-    // 현재 라우트의 meta 필드를 기준으로 헤더와 푸터 표시 여부 결정
-    showLayout() {
-      return this.$route.meta.requiresLayout !== false;
-    },
-  },
-};
+// Header와 Footer 컴포넌트 가져오기
+const route = useRoute(); // 현재 라우트 정보 가져오기
+const loginStore = useLoginStore(); // Pinia store 가져오기
+
+// 레이아웃 표시 여부 (reactive)
+const showLayout = computed(() => route.meta.requiresLayout !== false);
+
+// Login store 초기화
+onMounted(() => {
+  loginStore.initialize();
+});
 </script>
 
 <style scoped>
