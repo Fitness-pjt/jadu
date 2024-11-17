@@ -107,10 +107,9 @@ CREATE TABLE `answer` (
 -- File management
 CREATE TABLE `files` (
     `file_id`  INT NOT NULL AUTO_INCREMENT,
-    `file_case` ENUM('PROFILE', 'BOARD', 'QUESTION', 'REVIEW'),
+    `file_case` ENUM('PROFILE', 'BOARD', 'QUESTION'),
     `file_name` VARCHAR(100) NOT NULL,
     `extension` VARCHAR(20) NOT NULL,
-    `file_path` VARCHAR(255) NOT NULL,
     `user_id` INT NOT NULL,
     `question_id` INT,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

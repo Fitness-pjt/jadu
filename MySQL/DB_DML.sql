@@ -56,10 +56,10 @@ VALUES
     (2, 1, 'Each session should last about 30 minutes.');
 
 -- files 테이블에 데이터 추가
-INSERT INTO files (file_case, file_name, extension, file_path, user_id)
+INSERT INTO files (file_case, file_name, extension, user_id)
 VALUES 
-    ('PROFILE', 'profile_pic_john', 'jpg', '/uploads/profile_pic_john.jpg', 1),
-    ('BOARD', 'board_post_img', 'png', '/uploads/board_post_img.png', 2);
+    ('PROFILE', 'profile_pic_john', 'jpg', 1),
+    ('BOARD', 'board_post_img', 'png',  2);
 
 -- todo 테이블에 데이터 추가
 INSERT INTO todo (user_id, program_id, video_id, date, status, content)
