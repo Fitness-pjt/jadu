@@ -1,29 +1,60 @@
 <template>
-  <div>
-    <ul class="todo-items" v-if="todoStore.todoList.length > 0">
-      <li class="todo-item" v-for="todo in todoStore.todoList">
-        <span class="todo-date">📅 {{ todo.date }}</span>
-        <span class="todo-content">📝 {{ todo.content }}</span>
-      </li>
-    </ul>
-    <p v-else>작성된 투투가 없습니다.</p>
+  <div class="todo-list">
+    <h1>✨ My Cute Todo List ✨</h1>
+    <div v-if="userId == loginUserId">
+      <TodoCreate />
+    </div>
+    <TodoList />
   </div>
 </template>
 
 <script setup>
-import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import { useLoginStore } from "@/stores/login";
+import TodoCreate from "@/components/todo/TodoCreate.vue";
+import TodoList from "@/components/todo/TodoList.vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
+const loginUserId = loginStore.loginUserId;
 
 const props = defineProps({
   userId: Number,
 });
+
+// TodoList 불러오기
+onMounted(() => {
+  todoStore.getTodoList(props.userId, "2024-11-17");
+});
 </script>
 
 <style scoped>
+/* 전체 Todo List 스타일 */
+.todo-list {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  text-align: center;
+  font-family: "Comic Sans MS", "Arial", sans-serif;
+
+  border-radius: 15px;
+
+  transition: transform 0.2s ease-in-out;
+}
+
+.todo-list:hover {
+  transform: scale(1.02);
+}
+
+/* 제목 스타일 */
+.todo-list h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #42b983;
+  text-shadow: 1px 1px 2px #fff;
+}
+
 /* Todo 리스트 스타일 */
 .todo-items {
   list-style: none;

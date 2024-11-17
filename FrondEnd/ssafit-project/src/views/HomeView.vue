@@ -1,6 +1,12 @@
 <template>
   <div>
     <p>홈 화면입니다.</p>
+    <RouterLink :to="{ name: 'profile', params: { userId: 1 } }">
+      <button>USER 1번</button></RouterLink
+    >
+    <RouterLink :to="{ name: 'profile', params: { userId: 2 } }"
+      ><button>USER 2번</button></RouterLink
+    >
   </div>
 </template>
 

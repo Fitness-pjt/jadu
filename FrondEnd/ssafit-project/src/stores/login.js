@@ -13,9 +13,10 @@ export const useLoginStore = defineStore("login", () => {
   // 로그인
   const login = (loginUser) => {
     axios.post(REST_API_URL, loginUser).then((res) => {
-      console.log("res.data :>> ", res.data);
+      // console.log("res.data :>> ", res.data);
 
       // sessionStorage에 access-token 넣기
+
       sessionStorage.setItem("access-token", res.data.accessToken);
 
       const token = res.data.accessToken.split(".");

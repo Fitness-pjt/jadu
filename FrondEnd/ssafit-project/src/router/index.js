@@ -1,9 +1,9 @@
+import UserProfileView from "@/views/UserProfileView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import MyPageView from "@/views/MyPageView.vue";
-import TodoList from "@/components/todo/TodoList.vue";
 import GoogleCallback from "@/components/login/googleCallback.vue";
 
 const router = createRouter({
@@ -31,19 +31,17 @@ const router = createRouter({
       path: "/mypage",
       name: "mypage",
       component: MyPageView,
-      children: [
-        {
-          path: "",
-          name: "todo",
-          component: TodoList,
-        },
-      ],
     },
     {
-      path: '/login/oauth2/code/google',
-      name: 'GoogleCallback',
-      component: GoogleCallback
-    }
+      path: "/profile/:userId",
+      name: "profile",
+      component: UserProfileView,
+    },
+    {
+      path: "/login/oauth2/code/google",
+      name: "GoogleCallback",
+      component: GoogleCallback,
+    },
   ],
 });
 
