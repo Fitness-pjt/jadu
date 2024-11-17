@@ -1,5 +1,0 @@
-DB_URL=jdbc:mysql://localhost:3306/ssafy_pjt?serverTimezone=UTC
-DB_USERNAME=ssafy
-DB_PASSWORD=ssafy
-
-JWT_SECRET_KEY=SSAFY_NonMajor_KIMHYUNSUNG_MIN_JIN_SecretKey

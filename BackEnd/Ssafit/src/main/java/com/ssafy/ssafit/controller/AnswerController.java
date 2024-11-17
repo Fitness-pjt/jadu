@@ -36,9 +36,13 @@ public class AnswerController {
 	// 전체 답변 조회하기
 	@GetMapping("/answer")
 	@Operation(summary = "전체 답변 조회", description = "질문의 답변을 모두 조회합니다.")
-	public ResponseEntity<List<Answer>> getList(@PathVariable("programId") int programId,
+	public ResponseEntity<?> getList(@PathVariable("programId") int programId,
 			@PathVariable("questionId") int questionId) {
 		List<Answer> list = answerService.getAnswerList(questionId);
+		
+		if(list == null || list.size() ==0) {
+			return new ResponseEntity<>("답변 없음.", HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<List<Answer>>(list, HttpStatus.OK);
 	}
 
