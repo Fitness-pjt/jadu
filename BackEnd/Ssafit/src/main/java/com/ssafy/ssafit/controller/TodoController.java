@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/{userId}/todo")
 @Tag(name = "Todo API", description = "Todo API 명세서")
+@CrossOrigin("*")
 public class TodoController {
 
 	private TodoService todoService;
@@ -53,21 +55,22 @@ public class TodoController {
 	@PostMapping("/{date}")
 	@Operation(summary = "특정 날짜 투두 등록하기", description = "특정 날짜에 투두를 추가합니다.")
 	public ResponseEntity<?> writeTodo(@PathVariable("userId") int userId, @PathVariable("date") String date,
-			@RequestBody Todo todo, HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
-
-		if (loginUser == null) {
-			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
-		}
-
-		int loginUserId = loginUser.getUserId(); // 현재 로그인한 사용자의 id
-
-		// 로그인한 유저와 현재 투두 페이지의 유저가 동일한 경우에만 글 작성 가능
-		if (loginUserId != userId) {
-			return new ResponseEntity<>("본인 페이지 아님. 등록 불가", HttpStatus.NOT_ACCEPTABLE);
-		}
-		todo.setUserId(loginUserId);
+			@RequestBody Todo todo) {
+//		User loginUser = (User) session.getAttribute("loginUser");
+//
+//		if (loginUser == null) {
+//			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
+//		}
+//
+//		int loginUserId = loginUser.getUserId(); // 현재 로그인한 사용자의 id
+//
+//		// 로그인한 유저와 현재 투두 페이지의 유저가 동일한 경우에만 글 작성 가능
+//		if (loginUserId != userId) {
+//			return new ResponseEntity<>("본인 페이지 아님. 등록 불가", HttpStatus.NOT_ACCEPTABLE);
+//		}
+		todo.setUserId(userId);
 		todo.setDate(date);
+		// System.out.println(todo);
 
 		todoService.writeTodo(todo);
 		return new ResponseEntity<Todo>(todo, HttpStatus.CREATED);
