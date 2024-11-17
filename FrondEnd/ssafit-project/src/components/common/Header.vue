@@ -9,8 +9,9 @@
     <nav class="nav">
       <RouterLink :to="{ name: 'home' }" class="nav-link">홈</RouterLink>
       <RouterLink to="/program" class="nav-link">프로그램</RouterLink>
-      <RouterLink :to="{ name: 'todo' }" class="nav-link"
-        >헬스 투두리스트</RouterLink
+
+      <RouterLink :to="{ name: 'mypage' }" class="nav-link" v-if="token"
+        >마이 투두리스트</RouterLink
       >
     </nav>
 
@@ -39,8 +40,6 @@
 import { useLoginStore } from "@/stores/login";
 
 const loginStore = useLoginStore();
-
-console.log("loginStore.loginUserNickname", loginStore.loginUserNickname);
 
 const token = sessionStorage.getItem("access-token");
 

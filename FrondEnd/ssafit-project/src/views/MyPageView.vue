@@ -1,11 +1,18 @@
 <template>
   <div>
     <p>MyPage 입니다.</p>
-    <RouterView />
+    <TodoView :userId="loginUserId" />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useLoginStore } from "@/stores/login";
+import TodoView from "./TodoView.vue";
+
+const loginStore = useLoginStore();
+let loginUserId = loginStore.loginUserId;
+// console.log("loginUserId", loginUserId);
+</script>
 
 <style scoped>
 p {
