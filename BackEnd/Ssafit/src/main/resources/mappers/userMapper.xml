@@ -35,9 +35,9 @@
     </delete>
 	
 	<select id="selectUserById" parameterType="int" resultType="User">
-		SELECT *
-		FROM users
-		WHERE user_id = #{userId}
+		SELECT * FROM users
+		WHERE user_id=#{userID}
+		 
 	</select>
 
 	<select id="selectUserByEmail" parameterType="String" resultType="User">
