@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,14 +45,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 			// 토큰 위조 검사 및 인증 완료 처리
 			if (accessToken != null) {
+//				System.out.println("Access Token: " + accessToken);
 				Jws<Claims> claims = jwtUtil.validate(accessToken);// 토큰이 현재 유효한지 아닌지 확인
-				// System.out.println("claims: " + claims);
+//				System.out.println("claims: " + claims);
 
 				User userInfo = new User();
 				String userNickname = claims.getBody().get("userNickname", String.class); // 클레임 안에 담겨 있는 userNickname 값
-																							// // // 얻어오기
+																							// 얻어오기
+
 				Integer userId = claims.getBody().get("userId", Integer.class); // 클레임 안에 담겨 있는 userId 값 얻어오기
-				// System.out.println("userNickname : " + userNickname + ", userId : " + userId);
+				// System.out.println("userNickname : " + userNickname + ", userId : " +
+				// userId);
 
 				userInfo.setUserNickname(userNickname);
 				userInfo.setUserId(userId);
@@ -66,12 +70,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			}
 
 		} catch (Exception e) {
+			// 토큰이 유효하지 않으면 401 응답
+			System.out.println("토큰이 위조 되었습니다.");
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.getWriter().write("Invalid or expired token");
+			response.setContentType("application/json");
+			response.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+			response.setHeader("Access-Control-Allow-Credentials", "true");
+			response.getWriter().write("{\"error\": \"Invalid or expired token\"}");
 			response.getWriter().flush();
-			System.out.println("토큰이 위조 되었습니다.");
-			return; // 요청 처리 중단
+			return; // 필터 체인 중단
+
 		}
 		// 필터 체인에 내가 만든 필터 실행 명령
 		filterChain.doFilter(request, response);

@@ -76,6 +76,7 @@ public class JwtUtil {
 	// 주어진 access-token이 유효한지 확인
 	// Jws<Claims> 객체 안에, 토큰에 담근 Claims 정보와 서명 검증 결과가 포함된다.
 	public Jws<Claims> validate(String accessToken) {
+
 		Jws<Claims> claimsJws = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(accessToken); // 토큰을 파싱하고
 																											// 서명 검증
 

@@ -23,7 +23,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Auth API", description = "로그인 인증/인가 ")
-@CrossOrigin("*")
 public class AuthController {
 
 	private AuthService authService;
