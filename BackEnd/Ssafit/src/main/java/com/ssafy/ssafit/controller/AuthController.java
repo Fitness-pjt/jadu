@@ -37,7 +37,7 @@ public class AuthController {
 		try {
 //			System.out.println(user);
 			TokenInfo tokenInfo = authService.login(user);
-			System.out.println(tokenInfo);
+//			System.out.println(tokenInfo);
 			return new ResponseEntity<>(tokenInfo, HttpStatus.OK);
 
 		} catch (IllegalArgumentException e) {

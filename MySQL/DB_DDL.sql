@@ -8,7 +8,7 @@ CREATE TABLE `users` (
     `user_id` INT NOT NULL AUTO_INCREMENT,
     `user_nickname` VARCHAR(20) NOT NULL,
     `user_email` VARCHAR(50) NOT NULL UNIQUE,
-    `user_password` VARCHAR(255) NOT NULL,
+    `user_password` VARCHAR(255),
     `user_name` VARCHAR(20) NOT NULL,
     `user_created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_status` BOOLEAN DEFAULT TRUE,

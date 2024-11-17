@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/program/{programId}")
 @Tag(name = "Review API", description = "리뷰 CRUD")
+@CrossOrigin("*")
 public class ReviewController {
 	private ReviewService reviewService;
 	private UserService userService;

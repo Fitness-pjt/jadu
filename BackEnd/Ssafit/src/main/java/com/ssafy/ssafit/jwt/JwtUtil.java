@@ -40,14 +40,14 @@ public class JwtUtil {
 	// 2. 토큰을 생성하는 메서드
 	// access-token 생성
 	public String createAccessToken(User user) {
-		String nickname = user.getUserNickname();
+		String userNickname = user.getUserNickname();
 		int userId = user.getUserId();
 		// 토큰 유효기간 설정
 		Date exp = new Date(System.currentTimeMillis() + 1000*60*60); // 1시간
 		
 		return  Jwts.builder()
 				.header().add("type", "JWT").and()
-				.claim("nickname", nickname).claim("userId", userId).expiration(exp)
+				.claim("userNickname", userNickname).claim("userId", userId).expiration(exp)
 				.signWith(secretKey).compact();
 	}
 	
