@@ -42,8 +42,10 @@ public class AuthService {
 		loginUser = getUser;
 		
 		// 회원가입 정보가 맞을 경우, 로그인 요청 시 => JWT 발급
-		return jwtUtil.createToken(loginUser);
+		return jwtUtil.createTokenInfo(loginUser);
 
 	}
+	
+	
 
 }
