@@ -61,7 +61,7 @@ public class AuthService {
 
 		// 4. JWT 토큰 발급
 
-		return jwtUtil.createToken(user);
+		return jwtUtil.createTokenInfo(user);
 
 	}
 
