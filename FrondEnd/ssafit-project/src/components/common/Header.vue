@@ -16,7 +16,7 @@
 
     <!-- Authentication Links -->
     <div class="auth">
-      <div v-if="!loginStore.loginUserId">
+      <div v-if="!token">
         <RouterLink :to="{ name: 'login' }" class="auth-link"
           >로그인</RouterLink
         >
@@ -26,7 +26,8 @@
       </div>
       <div v-else>
         <p class="welcome">
-          <span>{{ loginStore.loginUserNickname }}</span> 님, 반갑습니다!
+          <span class="nickname">{{ loginStore.loginUserNickname }}</span> 님,
+          반갑습니다!
         </p>
         <button @click="logout" class="logout-btn">로그아웃</button>
       </div>
@@ -38,6 +39,11 @@
 import { useLoginStore } from "@/stores/login";
 
 const loginStore = useLoginStore();
+
+console.log("loginStore.loginUserNickname", loginStore.loginUserNickname);
+
+const token = sessionStorage.getItem("access-token");
+
 const logout = () => {
   loginStore.logout();
 };
@@ -122,5 +128,9 @@ nav a.router-link-exact-active {
 
 .logout-btn:hover {
   font-weight: bold;
+}
+
+.nickname {
+  color: white;
 }
 </style>

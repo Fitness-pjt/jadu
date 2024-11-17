@@ -22,6 +22,7 @@ export const useLoginStore = defineStore("login", () => {
 
       const payload = JSON.parse(Base64.decode(token[1]));
       loginUserNickname.value = payload["userNickname"];
+      // console.log("loginUserNickname.value", loginUserNickname.value);
       loginUserId.value = payload["userId"];
 
       router.replace({ name: "home" });
@@ -34,6 +35,7 @@ export const useLoginStore = defineStore("login", () => {
     loginUserNickname.value = null;
     loginUserId.value = null;
     router.replace({ name: "home" });
+    window.location.reload();
   };
 
   // 초기화: sessionStorage에 토큰이 있다면 상태 복구
