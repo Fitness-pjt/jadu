@@ -3,7 +3,8 @@
     <h1 class="todo-title">✨ My Todo List ✨</h1>
     <div class="todo-container">
       <div class="calendar-section">
-        <TodoCalendar @dateSelect="handleDateSelect" :userId="userId" />
+        <!-- <TodoCalendar @dateSelect="handleDateSelect" :userId="userId" /> -->
+        <TodoVCalendar />
       </div>
       <div class="content-section">
         <div v-if="userId == loginUserId" class="todo-create">
@@ -22,6 +23,7 @@ import { useLoginStore } from "@/stores/login";
 import TodoCreate from "@/components/todo/TodoCreate.vue";
 import TodoList from "@/components/todo/TodoList.vue";
 import TodoCalendar from "@/components/todo/TodoCalendar.vue";
+import TodoVCalendar from "@/components/todo/TodoVCalendar.vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
