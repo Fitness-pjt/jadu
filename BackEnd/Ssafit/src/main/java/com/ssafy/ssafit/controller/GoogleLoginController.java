@@ -14,7 +14,6 @@ import com.ssafy.ssafit.service.auth.AuthService;
 
 @RestController
 @RequestMapping(value = "/login/oauth2", produces = "application/json")
-@CrossOrigin("*")
 public class GoogleLoginController {
 
 	AuthService authService;
