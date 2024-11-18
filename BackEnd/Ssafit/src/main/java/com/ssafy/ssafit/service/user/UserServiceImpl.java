@@ -46,4 +46,26 @@ public class UserServiceImpl implements UserService {
 
 		userDao.deleteUser(userId);
 	}
+
+	@Override
+	public boolean isEmailAvailable(String email) {
+		try {
+			User user = userDao.findByEmail(email);
+			return user == null; // 사용자가 없으면 true (사용 가능)
+		} catch (Exception e) {
+			// 데이터베이스 오류 등이 발생하면 false 반환
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isNicknameAvailable(String nickname) {
+		try {
+			User user = userDao.findByNickname(nickname);
+			return user == null; // 사용자가 없으면 true (사용 가능)
+		} catch (Exception e) {
+			// 데이터베이스 오류 등이 발생하면 false 반환
+			return false;
+		}
+	}
 }
