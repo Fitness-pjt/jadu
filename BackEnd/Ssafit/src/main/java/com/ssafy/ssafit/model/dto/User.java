@@ -7,18 +7,29 @@ public class User {
 	private String userName;
 	private String userNickname;
 	private boolean userStatus;
+	private String createdAt;
+	private String profileImgPath;
 
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
-	public User(String userEmail,String userName, String userNickname) {
+
+	public User(String userEmail, String userName, String userNickname) {
 		this.userEmail = userEmail;
 		this.userName = userName;
-		this.userNickname = userName;
+		this.userNickname = userNickname;
+		
+	}
+	
+	public User(String userEmail, String userName, String userNickname, String profileImgPath) {
+		this.userEmail = userEmail;
+		this.userName = userName;
+		this.userNickname = userNickname;
+		this.profileImgPath = profileImgPath;
 	}
 
 	public User(Integer userId, String userEmail, String userPassword, String userName, String userNickname,
-			boolean userStatus, String createdAt) {
+			boolean userStatus, String createdAt, String profileImgPath) {
 		super();
 		this.userId = userId;
 		this.userEmail = userEmail;
@@ -27,6 +38,7 @@ public class User {
 		this.userNickname = userNickname;
 		this.userStatus = userStatus;
 		this.createdAt = createdAt;
+		this.profileImgPath = profileImgPath;
 	}
 
 	public Integer getUserId() {
@@ -85,12 +97,19 @@ public class User {
 		this.createdAt = createdAt;
 	}
 
-	private String createdAt;
+	public String getProfileImgPath() {
+		return profileImgPath;
+	}
+
+	public void setProfileImgPath(String profileImgPath) {
+		this.profileImgPath = profileImgPath;
+	}
 
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", userName="
 				+ userName + ", userNickname=" + userNickname + ", userStatus=" + userStatus + ", createdAt="
-				+ createdAt + "]";
+				+ createdAt + ", profileImgPath=" + profileImgPath + "]";
 	}
+
 }
