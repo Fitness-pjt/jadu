@@ -21,13 +21,35 @@ export const useUserStore = defineStore("user", () => {
   };
 
   // 사용자 정보 불러오기
+  const userMap = ref(new Map());
+
+  const userProfileImg = ref(null);
   const userNickname = ref(null);
-  const getUserProfileInfo = (userId) => {
-    axios.get(`${REST_API_URL}/${userId}`).then((res) => {
-      console.log("사용자 정보", res.data);
-      userNickname.value = res.data.userNickname;
-    });
+
+  const getUserProfileInfo = async (userId) => {
+    try {
+      const res = await axios.get(`${REST_API_URL}/${userId}`);
+      // userMap에 유저 정보 저장
+      userMap.value.set(userId, {
+        userNickname: res.data.userNickname,
+        profileImgPath: res.data.profileImgPath
+      });
+    } catch (error) {
+      console.error(`Error fetching user ${userId}:`, error);
+    }
   };
+  const getUserById = (userId) => {
+    return userMap.value.get(userId);
+  };
+
+
+  // const getUserProfileInfo = (userId) => {
+  //   axios.get(`${REST_API_URL}/${userId}`).then((res) => {
+  //     console.log("사용자 정보", res.data);
+  //     userNickname.value = res.data.userNickname;
+  //     userProfileImg.value=res.data.profileImgPath;
+  //   });
+  // };
 
   // 이메일 중복 체크
   const checkEmailDuplicate = async (email) => {
@@ -54,11 +76,14 @@ export const useUserStore = defineStore("user", () => {
   };
 
 
+
   return {
     userSignUp,
     getUserProfileInfo,
     userNickname,
     checkEmailDuplicate,
-    checkNicknameDuplicate
+    checkNicknameDuplicate,
+    userProfileImg,
+    getUserById
   };
 });

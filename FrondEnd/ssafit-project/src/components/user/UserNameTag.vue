@@ -1,140 +1,125 @@
 <template>
-    <div class="user-profile-container" :class="size">
-      <!-- 프로필 이미지 -->
-      <div class="profile-image-wrapper">
-        <img 
-          v-if="profileImage"
-          :src="profileImage"
-          :alt="userName"
-          class="profile-image"
-          @error="handleImageError"
-        />
-        <div v-else class="profile-fallback">
-          {{ userInitial }}
-        </div>
+ <div class="profile-container">
+    <div class="image-wrapper">
+      <img 
+        v-if="userData?.profileImgPath"
+        :src="userData.profileImgPath"
+        :alt="userData?.userNickname"
+        class="profile-image"
+      />
+      <div v-else class="profile-placeholder">
+        {{ userData?.userNickname?.[0] }}
       </div>
-      
-      <!-- 유저 이름 -->
-      <span class="user-name" v-if="showName">
-        {{ userName }}
-      </span>
     </div>
-  </template>
-  
-  <script setup>
-  import { computed } from 'vue'
-  import { useUserStore } from '@/stores/user'
-  
-  const props = defineProps({
-    // 유저 정보를 props로 받거나, store에서 가져오는 두 가지 방식 지원
-    userId: {
-      type: Number,
-      default: null
-    },
-    // 크기 설정 (sm, md, lg)
-    size: {
-      type: String,
-      default: 'md'
-    },
-    // 이름 표시 여부
-    showName: {
-      type: Boolean,
-      default: true
-    }
-  })
-  
-  const userStore = useUserStore()
-  
-  // 프로필 이미지 에러 처리
-  const handleImageError = (e) => {
-    e.target.src = '/default-profile.png'  // 기본 이미지로 대체
+    
+    <span class="nickname">
+      {{ userData?.userNickname }}
+    </span>
+  </div>
+ </template>
+   
+   <script setup>
+   import { watch, onMounted, computed } from 'vue';
+   import { useUserStore } from '@/stores/user';
+   
+   const props = defineProps({
+     userId: Number
+   });
+   
+   const userStore = useUserStore();
+   
+   // 사용자 데이터를 가져오는 함수
+   const fetchUserProfile = (userId) => {
+     if (userId) {
+       userStore.getUserProfileInfo(userId);
+     }
+   };
+   
+   // 초기 데이터 로드
+   onMounted(() => {
+     fetchUserProfile(props.userId);
+   });
+   
+   // props.userId 변경 감지
+   watch(
+     () => props.userId,
+     (newUserId) => {
+       fetchUserProfile(newUserId);
+     }
+   );
+   
+   const userData = computed(() => userStore.getUserById(props.userId));
+
+   const userNickName = computed(() => userStore.userNickname);
+   const userProfileImg = computed(() => userStore.userProfileImg);
+   </script>
+   
+ 
+ <style scoped>
+ .profile-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+ }
+ 
+ .image-wrapper {
+  flex-shrink: 0; /* 이미지 크기 고정 */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #f0f2f5; /* Facebook 스타일 배경색 */
+  border: 1px solid #e4e6eb; /* 미세한 테두리 */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* 약간의 그림자 */
+ }
+ 
+ .profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s; /* 호버 효과를 위한 트랜지션 */
+ }
+ 
+ .image-wrapper:hover .profile-image {
+  transform: scale(1.05); /* 호버시 살짝 확대 */
+ }
+ 
+ /* 이미지가 없을 때의 플레이스홀더 */
+ .profile-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e4e6eb;
+  color: #65676b;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+ }
+ 
+ .nickname {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1877f2; /* Facebook 스타일 텍스트 컬러 */
+  transition: color 0.2s;
+ }
+ 
+ .nickname:hover {
+  color: #1877f2; /* Facebook 브랜드 컬러 */
+  cursor: pointer;
+ }
+ 
+ /* 반응형 크기 조정 */
+ @media (min-width: 768px) {
+  .image-wrapper {
+    width: 44px;
+    height: 44px;
   }
   
-  // 이미지가 없을 때 표시할 이니셜
-  const userInitial = computed(() => {
-    return userName.value?.charAt(0) || '?'
-  })
-  
-  // 프로필 이미지 URL
-  const profileImage = computed(() => {
-    if (props.userId) {
-      // props로 받은 userId의 이미지
-      const userInfo = userStore.getUserInfo(props.userId)
-      return userInfo?.profileImage
-    }
-    // 현재 로그인한 유저의 이미지
-    return userStore.profileImage
-  })
-  
-  // 유저 이름
-  const userName = computed(() => {
-    if (props.userId) {
-      const userInfo = userStore.getUserInfo(props.userId)
-      return userInfo?.nickname
-    }
-    return userStore.nickname
-  })
-  </script>
-  
-  <style scoped>
-  .user-profile-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .profile-image-wrapper {
-    border-radius: 50%;
-    overflow: hidden;
-  }
-  
-  .profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .profile-fallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #e5e7eb;
-    color: #6b7280;
-    font-weight: 600;
-  }
-  
-  /* 크기 변형 */
-  .sm .profile-image-wrapper,
-  .sm .profile-fallback {
-    width: 32px;
-    height: 32px;
-  }
-  
-  .md .profile-image-wrapper,
-  .md .profile-fallback {
-    width: 48px;
-    height: 48px;
-  }
-  
-  .lg .profile-image-wrapper,
-  .lg .profile-fallback {
-    width: 64px;
-    height: 64px;
-  }
-  
-  .user-name {
-    font-weight: 500;
-  }
-  
-  .sm .user-name {
-    font-size: 0.875rem;
-  }
-  
-  .md .user-name {
+  .nickname {
     font-size: 1rem;
   }
-  
-  .lg .user-name {
-    font-size: 1.125rem;
-  }
-  </style>
+ }
+ </style>
