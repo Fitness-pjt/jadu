@@ -1,35 +1,33 @@
 <template>
   <div>
-    <div v-if="groupedTodos && Object.keys(groupedTodos).length > 0">
-      <div v-for="(todos, date) in groupedTodos" :key="date" class="date-group">
-        <h3 class="date-header">📅 {{ date }}</h3>
-        <ul class="todo-items">
-          <li v-for="todo in todos" :key="todo.id" class="todo-item">
-            <div class="todo-main">
-              <label class="todo-label">
-                <input
-                  type="checkbox"
-                  :checked="todo.completed"
-                  @change="toggleTodo(todo)"
-                  class="todo-checkbox"
-                />
-                <span
-                  class="todo-content"
-                  :class="{ completed: todo.completed }"
-                >
-                  {{ todo.content }}
-                </span>
-              </label>
-            </div>
-            <div class="todo-actions">
-              <button class="action-btn edit-btn">수정</button>
-              <button class="action-btn delete-btn" @click="deleteTodo">
-                삭제
-              </button>
-            </div>
-          </li>
-        </ul>
-      </div>
+    <div v-if="todoStore.todoList.length > 0">
+      <h3 class="date-header">📅 {{ selectedDate }}</h3>
+      <ul class="todo-items">
+        <li v-for="todo in todoList" :key="todo.todoId" class="todo-item">
+          <div class="todo-main">
+            <label class="todo-label">
+              <input
+                type="checkbox"
+                :checked="todo.status"
+                @change="toggleTodo(todo)"
+                class="todo-checkbox"
+              />
+              <span class="todo-content" :class="{ completed: todo.status }">
+                {{ todo.content }}
+              </span>
+            </label>
+          </div>
+          <div class="todo-actions" v-if="userId === loginUserId">
+            <button class="action-btn edit-btn">수정</button>
+            <button
+              class="action-btn delete-btn"
+              @click="onClickDeleteTodo(todo)"
+            >
+              삭제
+            </button>
+          </div>
+        </li>
+      </ul>
     </div>
     <p v-else>작성된 투두가 없습니다.</p>
   </div>
@@ -38,32 +36,43 @@
 <script setup>
 import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
-import { computed } from "vue";
+import { computed, watch } from "vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
+const loginUserId = loginStore.loginUserId; // 로그인한 유저 아이디
 
 const props = defineProps({
   userId: Number,
 });
 
-const groupedTodos = computed(() => {
-  const groups = {};
-  todoStore.todoList.forEach((todo) => {
-    if (!groups[todo.date]) {
-      groups[todo.date] = [];
-    }
-    groups[todo.date].push(todo);
-  });
-  return groups;
+const selectedDate = computed(() => todoStore.selectedDate);
+const todoList = computed(() => todoStore.todoList);
+
+// 날짜 변화 감지
+watch(selectedDate, (newDate) => {
+  todoStore.getTodoList(props.userId, newDate);
 });
 
+// todoList 변화 감지
+watch(
+  () => todoList.value,
+  (newList, oldList) => {
+    console.log("TodoList 변경됨 :>> ", { newList, oldList });
+  },
+  { deep: true }
+);
+
+// 투두 상태 변경 시, toggle
 const toggleTodo = (todo) => {
-  todo.completed = !todo.completed;
+  todo.status = !todo.status;
 };
 
-const deleteTodo = () => {
-  todoStore.deleteTodo(props.userId.value, date);
+// 투두 수정하기
+
+// 투두 삭제하기
+const onClickDeleteTodo = (todo) => {
+  todoStore.deleteTodo(props.userId, todo.todoId);
 };
 </script>
 

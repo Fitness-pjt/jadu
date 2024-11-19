@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="todo-form">
+    <form class="todo-form" @submit.prevent="addTodo">
       <!-- 내용 입력 -->
       <input
         type="text"
@@ -9,9 +9,11 @@
         v-model="todo.content"
       />
       <!-- 추가 버튼 -->
-      <button type="button" class="add-button" @click="addTodo">
-        추가하기
-      </button>
+      <div @keyup.enter="addTodo">
+        <button type="button" class="add-button" @click="addTodo">
+          추가하기
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -19,23 +21,29 @@
 <script setup>
 import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
-
 const loginUserId = loginStore.loginUserId;
 
-// console.log("loginUserId", loginUserId);
+const selectedDate = computed(() => todoStore.selectedDate);
 
 const todo = ref({
-  date: "",
+  date: selectedDate,
   content: "",
 });
 
 // Todo 추가하기
-const addTodo = () => {
-  todoStore.addTodo(todo.value, loginUserId);
+const addTodo = async () => {
+  if (!todo.value.content.trim()) {
+    alert("todo를 작성해주세요!");
+    return;
+  }
+
+  await todoStore.addTodo(todo.value, loginUserId); // Todo 추가
+  todo.value.content = ""; // 빈값으로 v-model 초기화
+  todoStore.getTodoList(loginUserId, selectedDate.value);
 };
 </script>
 

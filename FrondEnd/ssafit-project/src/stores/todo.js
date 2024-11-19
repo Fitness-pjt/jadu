@@ -1,10 +1,16 @@
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
-import axios from "axios";
 import router from "@/router";
-import { Base64 } from "js-base64";
+import axios from "axios";
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
 export const useTodoStore = defineStore("todo", () => {
+  // Todo 날짜 전역으로 관리
+  const selectedDate = ref(new Date().toISOString().slice(0, 10)); //선택된 날짜를 저장
+
+  const setSelectedDate = (date) => {
+    selectedDate.value = date;
+  };
+
   const getRestApiUrl = (userId) => {
     return `http://localhost:8080/${userId}/todo`;
   };
@@ -16,7 +22,6 @@ export const useTodoStore = defineStore("todo", () => {
     todoList.value = [];
     const REST_API_URL = getRestApiUrl(userId) + `/${date}`;
     axios.get(REST_API_URL).then((res) => {
-      // console.log("res.data", res.data);
       // 요청 후 userId에 해당하는 todo만 todoList에 담기
       todoList.value = res.data;
     });
@@ -24,6 +29,8 @@ export const useTodoStore = defineStore("todo", () => {
 
   // 투두 추가하기
   const addTodo = (todo, userId) => {
+    // console.log("todo.date :>> ", todo.date);
+    // console.log("userId :>> ", userId);
     const REST_API_URL = getRestApiUrl(userId) + `/${todo.date}`;
     axios
       .post(REST_API_URL, todo, {
@@ -32,10 +39,13 @@ export const useTodoStore = defineStore("todo", () => {
           "Content-Type": "application/json",
         },
         withCredentials: true,
+        목,
       })
       .then((res) => {
-        console.log("투두 추가하기", res.data);
-        window.location.reload();
+        // console.log("투두 추가하기", res.data);
+
+        // 새로운 투두 항목을 todoList에 추가
+        todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {
         // console.log("error.request", error.request);
@@ -59,5 +69,36 @@ export const useTodoStore = defineStore("todo", () => {
       });
   };
 
-  return { getTodoList, todoList, addTodo };
+  // 투두 삭제하기
+  const deleteTodo = (userId, todoId) => {
+    const REST_API_URL = getRestApiUrl(userId) + `/${todoId}`;
+    axios
+      .delete(REST_API_URL, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log("deleteTodo res.data :>> ", res.data);
+
+        // 성공적으로 삭제되었으면, todoList에서 해당 todoId를 가진 항목을 제거
+        todoList.value = todoList.value.filter(
+          (todo) => todo.todoId !== todoId
+        );
+      })
+      .catch((err) => {
+        console.log("err :>> ", err.response);
+      });
+  };
+
+  return {
+    selectedDate,
+    setSelectedDate,
+    getTodoList,
+    todoList,
+    addTodo,
+    deleteTodo,
+  };
 });
