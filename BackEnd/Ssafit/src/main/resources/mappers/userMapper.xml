@@ -11,12 +11,14 @@
 		user_email,
 		user_password,
 		user_name,
-		user_nickname
+		user_nickname,
+		profile_img_path
 		) VALUES (
 		#{userEmail},
 		#{userPassword},
 		#{userName},
-		#{userNickname}
+		#{userNickname},
+		#{profileImgPath}
 		);
 	</insert>
 

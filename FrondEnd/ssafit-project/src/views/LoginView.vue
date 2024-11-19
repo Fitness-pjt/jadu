@@ -34,8 +34,12 @@
 
       <!-- 소셜 로그인 -->
       <div class="social-login">
-        <button class="social-button google" @click="handleGoogleLogin()">Google</button>
-        <button class="social-button kakao">Kakao</button>
+        <button class="social-button google" @click="handleGoogleLogin()">
+          Google
+        </button>
+        <button class="social-button kakao" @click="handleKakaoLogin()">
+          Kakao
+        </button>
       </div>
     </div>
   </div>
@@ -43,6 +47,7 @@
 
 <script setup>
 import { useLoginStore } from "@/stores/login";
+import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -69,14 +74,25 @@ const handleGoogleLogin = () => {
     client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
     redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
     response_type: "code",
-    scope: "email profile"
+    scope: "email profile",
   };
 
   const queryString = new URLSearchParams(params).toString();
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?${queryString}`;
-  
+
   window.location.href = googleAuthUrl;
-}
+};
+
+const handleKakaoLogin = async () => {
+  // Kakao oauth 링크 만들기
+
+  const REST_API_KEY = import.meta.env.VITE_KAKAO_CLIENT_ID;
+  const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&scope=profile_image profile_nickname account_email`;
+
+  window.location.href = kakaoAuthUrl;
+};
 </script>
 
 <style scoped>

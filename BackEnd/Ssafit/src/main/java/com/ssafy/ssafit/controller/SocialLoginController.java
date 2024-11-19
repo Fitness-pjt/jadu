@@ -14,19 +14,22 @@ import com.ssafy.ssafit.service.auth.AuthService;
 
 @RestController
 @RequestMapping(value = "/login/oauth2", produces = "application/json")
-@CrossOrigin("*")
-public class GoogleLoginController {
+public class SocialLoginController {
 
 	AuthService authService;
 
-	public GoogleLoginController(AuthService authService) {
+	public SocialLoginController(AuthService authService) {
 		this.authService = authService;
 	}
 
 	@GetMapping("/code/{registrationId}")
-	public ResponseEntity<?> googleLogin(@RequestParam String code, @PathVariable String registrationId) {
+	public ResponseEntity<?> socialLogin(@RequestParam String code, @PathVariable String registrationId) {
 		try {
+//			System.out.println("SocialController Code : "+ code);
+//			System.out.println( "SocialController registrationId : " + registrationId);
+			
 			TokenInfo tokenInfo = authService.socialLogin(code, registrationId);
+//			System.out.println("SocialController tokenInfo : " + tokenInfo);
 			return new ResponseEntity<>(tokenInfo, HttpStatus.OK);
 
 		} catch (IllegalArgumentException e) {
