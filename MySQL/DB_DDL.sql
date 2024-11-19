@@ -12,6 +12,7 @@ CREATE TABLE `users` (
     `user_name` VARCHAR(20) NOT NULL,
     `user_created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_status` BOOLEAN DEFAULT TRUE,
+    `profile_img_path` VARCHAR(512),
     PRIMARY KEY (`user_id`)
 );
 
@@ -26,6 +27,7 @@ CREATE TABLE `userInfo` (
     `experience` ENUM('1', '2', '3','4','5'),
     `location` ENUM('HOME','FITNESS','OUTSIDE','ETC'),
     `frequency` INT ,
+    
     PRIMARY KEY (`user_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 );
