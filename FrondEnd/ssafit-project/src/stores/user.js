@@ -24,7 +24,7 @@ export const useUserStore = defineStore("user", () => {
   const userNickname = ref(null);
   const getUserProfileInfo = (userId) => {
     axios.get(`${REST_API_URL}/${userId}`).then((res) => {
-      // console.log("사용자 정보", res.data);
+      console.log("사용자 정보", res.data);
       userNickname.value = res.data.userNickname;
     });
   };

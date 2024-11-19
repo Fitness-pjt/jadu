@@ -83,17 +83,15 @@ const handleGoogleLogin = () => {
   window.location.href = googleAuthUrl;
 };
 
-const handleKakaoLogin = async() => {
+const handleKakaoLogin = async () => {
   // Kakao oauth 링크 만들기
 
   const REST_API_KEY = import.meta.env.VITE_KAKAO_CLIENT_ID;
   const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 
-  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&scope=profile_image profile_nickname`;
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&scope=profile_image profile_nickname account_email`;
 
   window.location.href = kakaoAuthUrl;
-
-  axios.get('http://localhost:8080/auth/kakaoLogin')
 };
 </script>
 
