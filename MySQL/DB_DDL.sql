@@ -12,6 +12,7 @@ CREATE TABLE `users` (
     `user_name` VARCHAR(20) NOT NULL,
     `user_created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_status` BOOLEAN DEFAULT TRUE,
+    `profile_img_path` VARCHAR(512),
     PRIMARY KEY (`user_id`)
 );
 
