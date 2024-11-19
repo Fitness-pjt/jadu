@@ -133,5 +133,26 @@ public class UserController {
 		return new ResponseEntity<>(userInfo, HttpStatus.OK);
 
 	}
+	
+
+    @GetMapping("/check-email/{email}")
+    @Operation(summary = "이메일 중복 확인", description = "회원가입 시 이메일 중복을 확인합니다.")
+    public ResponseEntity<Map<String, Boolean>> checkEmailDuplicate(@PathVariable String email) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isAvailable = userService.isEmailAvailable(email);
+        response.put("available", isAvailable);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @GetMapping("/check-nickname/{nickname}")
+    @Operation(summary = "닉네임 중복 확인", description = "회원가입 시 닉네임 중복을 확인합니다.")
+    public ResponseEntity<Map<String, Boolean>> checkNicknameDuplicate(@PathVariable String nickname) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isAvailable = userService.isNicknameAvailable(nickname);
+        response.put("available", isAvailable);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	
 
 }

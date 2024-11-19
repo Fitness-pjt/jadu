@@ -220,7 +220,6 @@ public class AuthService {
 
 	// 기본 이메일 로그인
 	public TokenInfo login(User user) {
-		System.out.println(user);
 		User loginUser = null;
 
 		if (user.getUserEmail() == null || user.getUserPassword() == null)
@@ -228,7 +227,6 @@ public class AuthService {
 
 		// 입력된 이메일 날림 => user 정보 받아오기
 		User getUser = userService.searchByEmail(user.getUserEmail());
-		System.out.println(getUser);
 
 		// 아이디 또는 비밀번호 없음
 		String encodePw = getUser.getUserPassword();
