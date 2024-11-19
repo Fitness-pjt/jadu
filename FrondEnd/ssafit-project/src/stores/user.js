@@ -29,5 +29,36 @@ export const useUserStore = defineStore("user", () => {
     });
   };
 
-  return { userSignUp, getUserProfileInfo, userNickname };
+  // 이메일 중복 체크
+  const checkEmailDuplicate = async (email) => {
+    try {
+      const response = await axios.get(`${REST_API_URL}/check-email/${email}`);
+      return response.data.available;
+    } catch (error) {
+      console.error("이메일 중복 체크 실패:", error);
+      return false;
+    }
+  };
+
+  // 닉네임 중복 체크
+  const checkNicknameDuplicate = async (nickname) => {
+    try {
+      console.log(nickname)
+      const response = await axios.get(`${REST_API_URL}/check-nickname/${nickname}`)
+      console.log('response :>> ', response);
+      return response.data.available;
+    } catch (error) {
+      console.error("닉네임 중복 체크 실패:", error);
+      return false;
+    }
+  };
+
+
+  return {
+    userSignUp,
+    getUserProfileInfo,
+    userNickname,
+    checkEmailDuplicate,
+    checkNicknameDuplicate
+  };
 });

@@ -45,5 +45,18 @@
 		FROM users
 		WHERE user_email = #{userEmail}
 	</select>
+	
+	
+    <select id="findByEmail" parameterType="String" resultType="User">
+        SELECT *
+        FROM users
+        WHERE user_email = #{email}
+    </select>
+
+    <select id="findByNickname" parameterType="String" resultType="User">
+        SELECT *
+        FROM users
+        WHERE user_nickname = #{nickname}
+    </select>
 
 </mapper>
