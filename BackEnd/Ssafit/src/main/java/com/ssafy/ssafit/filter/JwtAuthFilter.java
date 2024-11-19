@@ -63,7 +63,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				// 권한 정보(인가 정보) 리스트
 				List<GrantedAuthority> authorityList = new ArrayList<>();
 
-				// principla : 사용자 이름 또는 사용자 객체 , credential : 비밀번호, 주로 null
+				// principal : 사용자 이름 또는 사용자 객체 , credential : 비밀번호, 주로 null
 				SecurityContextHolder.getContext()
 						.setAuthentication(new UsernamePasswordAuthenticationToken(userInfo, null, authorityList));
 

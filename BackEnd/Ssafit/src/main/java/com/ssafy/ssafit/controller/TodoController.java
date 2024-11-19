@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -78,17 +79,21 @@ public class TodoController {
 	// 하나의 투두 삭제하기
 	@DeleteMapping("/{todoId}")
 	@Operation(summary = "투두 하나 삭제하기", description = "투두 하나의 항목을 삭제합니다.")
-	public ResponseEntity<String> delete(@PathVariable("userId") int userId, @PathVariable("todoId") int todoId,
-			HttpSession session) {
+	public ResponseEntity<String> delete(@PathVariable("userId") int userId, @PathVariable("todoId") int todoId) {
 
-		User loginUser = (User) session.getAttribute("loginUser");
+		// SecurityContext에서 인증된 사용자 정보 가져오기
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		if (loginUser == null) {
-			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
-		}
+//		System.out.println(loginUser);
+		
+		// 얘는 이제 filter에서 확인해줌
+//		if (loginUser == null) {
+//			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
+//		}
 
+		// 이건 인터셉터가 확인해줌?
 		int loginUserId = loginUser.getUserId(); // 로그인한 유저 id
-		if (loginUserId != userId) {
+		if (loginUserId != userId ) {
 			return new ResponseEntity<>("본인 페이지 아님. 삭제 불가", HttpStatus.NOT_ACCEPTABLE);
 		}
 
