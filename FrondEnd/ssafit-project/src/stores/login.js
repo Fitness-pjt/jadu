@@ -16,7 +16,6 @@ export const useLoginStore = defineStore("login", () => {
       // console.log("res.data :>> ", res.data);
 
       // sessionStorage에 access-token 넣기
-
       sessionStorage.setItem("access-token", res.data.accessToken);
 
       const token = res.data.accessToken.split(".");
@@ -30,13 +29,10 @@ export const useLoginStore = defineStore("login", () => {
     });
   };
 
-  const googleLogin = function(){
-    
-  };
-
   // 로그아웃
   const logout = () => {
     sessionStorage.removeItem("access-token");
+    sessionStorage.removeItem("refresh-token");
     loginUserNickname.value = null;
     loginUserId.value = null;
     router.replace({ name: "home" });

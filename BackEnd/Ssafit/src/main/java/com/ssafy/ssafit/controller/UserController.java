@@ -31,7 +31,6 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/user")
 @Tag(name = "User API", description = "사용자 회원가입 및 CRUD")
-@CrossOrigin("*")
 public class UserController {
 
 	private UserService userService;
@@ -62,7 +61,7 @@ public class UserController {
 	public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable(name = "userId") int userId) {
 
 		user.setUserId(userId);
-		System.out.println(user.toString());
+//		System.out.println(user.toString());
 		userService.update(user);
 
 		return new ResponseEntity<>("Update", HttpStatus.OK);

@@ -1,13 +1,6 @@
 <template>
   <div>
     <form class="todo-form">
-      <!-- 날짜 입력 -->
-      <input
-        type="date"
-        placeholder="📅 날짜 입력 (e.g., YYYY-MM-DD)"
-        class="todo-date-input"
-        v-model="todo.date"
-      />
       <!-- 내용 입력 -->
       <input
         type="text"
@@ -89,10 +82,5 @@ const addTodo = () => {
 
 .add-button:hover {
   background-color: #2a9d71;
-  transform: translateY(-3px);
-}
-
-.add-button:active {
-  transform: translateY(1px);
 }
 </style>

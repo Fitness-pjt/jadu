@@ -27,7 +27,6 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/{userId}/todo")
 @Tag(name = "Todo API", description = "Todo API 명세서")
-@CrossOrigin("*")
 public class TodoController {
 
 	private TodoService todoService;
@@ -54,7 +53,7 @@ public class TodoController {
 	// 특정 날짜에 투두 등록하기 (content만)
 	@PostMapping("/{date}")
 	@Operation(summary = "특정 날짜 투두 등록하기", description = "특정 날짜에 투두를 추가합니다.")
-	public ResponseEntity<?> writeTodo(@PathVariable("userId") int userId, @PathVariable("date") String date,
+	public ResponseEntity<Todo> writeTodo(@PathVariable("userId") int userId, @PathVariable("date") String date,
 			@RequestBody Todo todo) {
 //		User loginUser = (User) session.getAttribute("loginUser");
 //

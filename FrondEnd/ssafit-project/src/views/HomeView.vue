@@ -7,10 +7,13 @@
     <RouterLink :to="{ name: 'profile', params: { userId: 2 } }"
       ><button>USER 2번</button></RouterLink
     >
+    <TodoVCalendar />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import TodoVCalendar from "@/components/todo/TodoVCalendar.vue";
+</script>
 
 <style scoped>
 p {

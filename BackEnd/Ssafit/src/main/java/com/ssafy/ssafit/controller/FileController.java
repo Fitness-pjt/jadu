@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/file")
 @Tag(name = "File API", description = "파일 업로드, 조회")
-@CrossOrigin("*")
 public class FileController {
 	FileService fileService;
 

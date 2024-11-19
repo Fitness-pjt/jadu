@@ -29,12 +29,26 @@ export const useTodoStore = defineStore("todo", () => {
       .post(REST_API_URL, todo, {
         headers: {
           "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
         },
+        withCredentials: true,
       })
       .then((res) => {
-        // console.log("투두 추가하기", res.data);
+        console.log("투두 추가하기", res.data);
+        window.location.reload();
       })
       .catch((error) => {
+        // console.log("error.request", error.request);
+        // if (error.response) {
+        //   console.log("Error response data:", error.response.data); // 응답 본문
+        //   console.log("Error response status:", error.response.status); // 상태 코드
+        //   console.log("Error response headers:", error.response.headers); // 헤더
+        // } else if (error.request) {
+        //   console.log("No response received:", error.request); // 요청은 성공적으로 보내졌지만 응답을 받지 못함
+        // } else {
+        //   console.log("Other error:", error.message); // 요청이 보내지지 못한 경우
+        // }
+
         if (error.response && error.response.status === 401) {
           // 토큰이 만료되었으므로 access-token을 삭제
           sessionStorage.removeItem("access-token");

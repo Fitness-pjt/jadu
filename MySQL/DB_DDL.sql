@@ -27,6 +27,7 @@ CREATE TABLE `userInfo` (
     `experience` ENUM('1', '2', '3','4','5'),
     `location` ENUM('HOME','FITNESS','OUTSIDE','ETC'),
     `frequency` INT ,
+    
     PRIMARY KEY (`user_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 );
