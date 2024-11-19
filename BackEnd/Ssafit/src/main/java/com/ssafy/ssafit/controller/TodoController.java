@@ -85,7 +85,7 @@ public class TodoController {
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 //		System.out.println(loginUser);
-		
+
 		// 얘는 이제 filter에서 확인해줌
 //		if (loginUser == null) {
 //			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
@@ -93,7 +93,7 @@ public class TodoController {
 
 		// 이건 인터셉터가 확인해줌?
 		int loginUserId = loginUser.getUserId(); // 로그인한 유저 id
-		if (loginUserId != userId ) {
+		if (loginUserId != userId) {
 			return new ResponseEntity<>("본인 페이지 아님. 삭제 불가", HttpStatus.NOT_ACCEPTABLE);
 		}
 
@@ -105,18 +105,13 @@ public class TodoController {
 
 	}
 
-	// 하나의 PUT 요청으로 기능을 세분화하기 => URL을 세분화하여 사용하기 
+	// 하나의 PUT 요청으로 기능을 세분화하기 => URL을 세분화하여 사용하기
 	// 하나의 투두 내용 수정하기
 	@PutMapping("/{todoId}/content")
 	@Operation(summary = "투두 내용 수정하기", description = "투두 항목의 내용을 수정합니다.")
 	public ResponseEntity<?> updateTodoContent(@PathVariable("userId") int userId, @PathVariable("todoId") int todoId,
-			 @RequestBody Todo todo, HttpSession session) {
-
-		User loginUser = (User) session.getAttribute("loginUser");
-
-		if (loginUser == null) {
-			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
-		}
+			@RequestBody Todo todo) {
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		int loginUserId = loginUser.getUserId(); // 로그인한 유저 id
 		if (loginUserId != userId) {
@@ -134,20 +129,15 @@ public class TodoController {
 	@PutMapping("/{todoId}/status")
 	@Operation(summary = "투두 상태 변경하기", description = "투두 항목의 완료 여부를 수정합니다.")
 	public ResponseEntity<?> updateTodoContent(@PathVariable("userId") int userId, @PathVariable("todoId") int todoId,
-			 @RequestBody boolean isCompleted, HttpSession session) {
+			@RequestBody boolean isCompleted) {
 
-		User loginUser = (User) session.getAttribute("loginUser");
-
-		if (loginUser == null) {
-			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
-		}
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		int loginUserId = loginUser.getUserId(); // 로그인한 유저 id
 		if (loginUserId != userId) {
 			return new ResponseEntity<>("본인 페이지 아님. 수정 불가", HttpStatus.NOT_ACCEPTABLE);
 		}
 
-		
 		todoService.modifyTodoStatus(todoId, isCompleted);
 		return new ResponseEntity<>(isCompleted, HttpStatus.OK);
 
