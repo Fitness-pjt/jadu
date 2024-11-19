@@ -35,6 +35,15 @@ const props = defineProps({
 const selectedDate = computed(() => todoStore.selectedDate);
 
 onMounted(() => {
+  const today = new Date().toLocaleDateString(); // 한국 날짜 기준으로 날짜 불러오기 => 2024.11.20 형식으로 날짜 들어옴
+  // 2024-11-20 형식으로 날짜 바꿔주기 : DB와 통신하기 위함
+  const formattedDate = today
+    .split(".")
+    .map((item) => item.trim())
+    .join("-")
+    .slice(0, 10);
+  todoStore.setSelectedDate(formattedDate); // 기본 날짜 설정
+
   todoStore.getTodoList(props.userId, selectedDate.value);
 });
 </script>

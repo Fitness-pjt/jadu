@@ -9,7 +9,7 @@
 
 <script setup>
 import { useTodoStore } from "@/stores/todo";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const todoStore = useTodoStore();
 

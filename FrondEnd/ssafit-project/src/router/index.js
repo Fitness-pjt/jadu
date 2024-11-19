@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !token) {
     // 인증 필요하고 토큰이 없으면
     alert("로그인이 필요합니다.");
-    next("/home"); // 로그인 페이지나 홈으로 리다이렉트
+    next("/login"); // 로그인 페이지로 리다이렉트
   } else {
     next(); // 페이지 이동 허용
   }

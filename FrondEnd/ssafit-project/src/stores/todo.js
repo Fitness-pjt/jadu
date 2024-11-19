@@ -5,7 +5,12 @@ import { ref } from "vue";
 
 export const useTodoStore = defineStore("todo", () => {
   // Todo 날짜 전역으로 관리
-  const selectedDate = ref(new Date().toISOString().slice(0, 10)); //선택된 날짜를 저장
+  const selectedDate = ref(null); //선택된 날짜를 저장
+
+  // const selectedDate = computed(() => {
+  //   const today = new Date();
+  //   return today.toISOString().slice(0, 10);
+  // });
 
   const setSelectedDate = (date) => {
     selectedDate.value = date;
@@ -21,10 +26,15 @@ export const useTodoStore = defineStore("todo", () => {
     // TodoList 초기화하기
     todoList.value = [];
     const REST_API_URL = getRestApiUrl(userId) + `/${date}`;
-    axios.get(REST_API_URL).then((res) => {
-      // 요청 후 userId에 해당하는 todo만 todoList에 담기
-      todoList.value = res.data;
-    });
+    axios
+      .get(REST_API_URL)
+      .then((res) => {
+        // 요청 후 userId에 해당하는 todo만 todoList에 담기
+        todoList.value = res.data;
+      })
+      .catch((err) => {
+        // console.log("getTodoList err.message", err.response);
+      });
   };
 
   // 투두 추가하기
@@ -39,7 +49,6 @@ export const useTodoStore = defineStore("todo", () => {
           "Content-Type": "application/json",
         },
         withCredentials: true,
-        목,
       })
       .then((res) => {
         // console.log("투두 추가하기", res.data);
@@ -48,23 +57,13 @@ export const useTodoStore = defineStore("todo", () => {
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {
-        // console.log("error.request", error.request);
-        // if (error.response) {
-        //   console.log("Error response data:", error.response.data); // 응답 본문
-        //   console.log("Error response status:", error.response.status); // 상태 코드
-        //   console.log("Error response headers:", error.response.headers); // 헤더
-        // } else if (error.request) {
-        //   console.log("No response received:", error.request); // 요청은 성공적으로 보내졌지만 응답을 받지 못함
-        // } else {
-        //   console.log("Other error:", error.message); // 요청이 보내지지 못한 경우
-        // }
-
         if (error.response && error.response.status === 401) {
           // 토큰이 만료되었으므로 access-token을 삭제
           sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
 
           // 로그인 페이지로 리다이렉트
-          router.push("/login");
+          router.replace("/login");
         }
       });
   };
@@ -88,8 +87,71 @@ export const useTodoStore = defineStore("todo", () => {
           (todo) => todo.todoId !== todoId
         );
       })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          // 토큰이 만료되었으므로 access-token을 삭제
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+
+          // 로그인 페이지로 리다이렉트
+          router.replace("/login");
+        }
+      });
+  };
+
+  // 투두 내용 수정하기
+  const updateTodoContent = (userId, todoId, content) => {
+    const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/content`;
+    axios
+      .put(REST_API_URL, content, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log("updateTodoContent res.data", res.data);
+      })
       .catch((err) => {
-        console.log("err :>> ", err.response);
+        if (err.response && err.response.status === 401) {
+          // 토큰이 만료되었으므로 access-token을 삭제
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+
+          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+
+          // 로그인 페이지로 리다이렉트
+          router.replace("/login");
+        }
+      });
+  };
+
+  // 투두 상태 수정하기
+  const updateTodoStatus = (userId, todoId, status) => {
+    const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/status`;
+    axios
+      .put(REST_API_URL, status, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log("updateTodoStatus res.data", res.data);
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          // 토큰이 만료되었으므로 access-token을 삭제
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+
+          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+
+          // 로그인 페이지로 리다이렉트
+          router.replace("/login");
+        }
       });
   };
 
@@ -100,5 +162,7 @@ export const useTodoStore = defineStore("todo", () => {
     todoList,
     addTodo,
     deleteTodo,
+    updateTodoContent,
+    updateTodoStatus,
   };
 });
