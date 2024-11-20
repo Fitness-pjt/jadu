@@ -18,4 +18,6 @@ public interface UserService {
 	boolean isEmailAvailable(String email);
 
 	boolean isNicknameAvailable(String nickname);
+	
+	public void updateProfilePath(User user);
 }
