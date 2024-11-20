@@ -25,19 +25,44 @@
 		todo_id=#{todoId} AND user_id=#{userId};
 	</delete>
 
-	<!-- 투두 내용 수정하기  -->
+	<!-- 투두 내용 수정하기 -->
 	<update id="updateTodoContent" parameterType="Todo">
 		UPDATE todo
-		SET content=#{content}, date=#{date}
-		WHERE todo_id = #{todoId}
-	</update>
-	
-	<!-- 투두 상태 변경하기  -->
-	<update id="updateTodoStatus" >
-		UPDATE todo
-		SET status = #{status}
+		SET
+		content=#{content}, date=#{date}
 		WHERE todo_id = #{todoId}
 	</update>
 
+	<!-- 투두 상태 변경하기 -->
+	<update id="updateTodoStatus">
+		UPDATE todo
+		SET status = #{status}
+		WHERE todo_id =
+		#{todoId}
+	</update>
+
+	<!-- 투두 좋아요 초기 상태 불러오기 -->
+	<select id="checkTodoLikeExists" resultType="int"
+		parameterType="int">
+		SELECT COUNT(*)
+		FROM todo_likes
+		WHERE todo_id = #{todoId}
+		AND user_id = #{userId}
+	</select>
+
+	<!-- 투두 좋아요 누르기 -->
+	<insert id="insertTodoLikes" parameterType="int">
+		INSERT INTO
+		todo_likes (todo_id,
+		user_id)
+		VALUES (#{todoId}, #{userId})
+	</insert>
+
+	<!-- 투두 좋아요 취소하기 -->
+	<delete id="deleteTodoLikes" parameterType="int">
+		DELETE FROM
+		todo_likes
+		WHERE todo_id=#{todoId} AND user_id=#{userId};
+	</delete>
 
 </mapper>

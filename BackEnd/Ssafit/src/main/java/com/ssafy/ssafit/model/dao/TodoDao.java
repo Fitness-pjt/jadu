@@ -25,4 +25,13 @@ public interface TodoDao {
 	
 	// 하나의 투두 좋아요 수 조회하기 
 	public int countTodoLikes(int todoId);
+	
+	// 투두 좋아요 상태 불러오기
+	public int checkTodoLikeExists(@Param("todoId")int todoId, @Param("userId") int userId);
+
+	// 투두 좋아요 누르기
+	public void insertTodoLikes(@Param("todoId")int todoId, @Param("userId") int userId);
+	
+	// 투두 좋아요 취소하기
+	public void deleteTodoLikes(@Param("todoId")int todoId, @Param("userId") int userId);
 }
