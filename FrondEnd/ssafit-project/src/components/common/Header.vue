@@ -1,31 +1,51 @@
 <template>
-  <header class="header">
+  <header
+    class="header d-flex justify-content-between align-items-center p-3 bg-dark text-white"
+  >
     <!-- Logo Section -->
-    <h1 class="logo">
-      <RouterLink :to="{ name: 'home' }">SSAFIT</RouterLink>
+    <h1 class="logo fs-2 fw-bold">
+      <RouterLink :to="{ name: 'home' }" class="text-white text-decoration-none"
+        >SSAFIT</RouterLink
+      >
     </h1>
 
     <!-- Navigation Links -->
     <nav class="nav">
-      <RouterLink :to="{ name: 'home' }" class="nav-link">홈</RouterLink>
-      <RouterLink to="/program" class="nav-link">프로그램</RouterLink>
-
-      <RouterLink :to="{ name: 'mypage' }" class="nav-link" v-if="token">마이 투두리스트</RouterLink>
+      <RouterLink :to="{ name: 'home' }" class="nav-link text-white"
+        >홈</RouterLink
+      >
+      <RouterLink :to="{ name: 'program' }" class="nav-link text-white"
+        >프로그램</RouterLink
+      >
+      <RouterLink
+        :to="{ name: 'mypage' }"
+        class="nav-link text-white"
+        v-if="token"
+        >마이 투두리스트</RouterLink
+      >
     </nav>
 
     <!-- Authentication Links -->
-    <div class="auth">
-      <div v-if="!token">
-        <RouterLink :to="{ name: 'login' }" class="auth-link">로그인</RouterLink>
-        <RouterLink :to="{ name: 'signup' }" class="auth-link">회원가입</RouterLink>
+    <div class="auth d-flex align-items-center gap-3">
+      <div v-if="!token" class="d-flex gap-3">
+        <RouterLink :to="{ name: 'login' }" class="auth-link text-white"
+          >로그인</RouterLink
+        >
+        <RouterLink :to="{ name: 'signup' }" class="auth-link text-white"
+          >회원가입</RouterLink
+        >
       </div>
-      <div v-else>
+      <div v-else class="d-flex">
         <div class="welcome">
-          <UserNameTag :userId="loginStore.loginUserId" />
-
-
+          <RouterLink :to="getRoute(loginStore.loginUserId)">
+            <button class="btn btn-link text-white">
+              <UserNameTag :user-id="loginStore.loginUserId" />
+            </button>
+          </RouterLink>
         </div>
-        <button @click="logout" class="logout-btn">로그아웃</button>
+        <button @click="logout" class="btn btn-link text-white">
+          로그아웃
+        </button>
       </div>
     </div>
   </header>
@@ -38,80 +58,37 @@ import UserNameTag from "../user/UserNameTag.vue";
 const loginStore = useLoginStore();
 const token = sessionStorage.getItem("access-token");
 
-
 const logout = () => {
   loginStore.logout();
+};
+
+const getRoute = (userId) => {
+  return loginStore.loginUserId === userId
+    ? { name: "mypage", params: { userId } }
+    : { name: "profile", params: { userId } };
 };
 </script>
 
 <style scoped>
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  background-color: #1b1b1b;
-  /* Matches the black background */
-  color: white;
-  font-size: 1rem;
-
   height: 4rem;
 }
 
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.logo a {
-  text-decoration: none;
-  color: white;
-}
-
-.nav {
-  display: flex;
-  gap: 1rem;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-  font-weight: bold;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
+.nav .nav-link {
   font-weight: normal;
 }
 
-.nav-link:hover {
+.nav .nav-link:hover {
   font-weight: bold;
-  /* text-decoration: underline; */
-}
-
-.auth {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.auth>div {
-  display: flex;
-  gap: 0.5rem;
 }
 
 .auth-link {
-  color: white;
-  text-decoration: none;
+  font-weight: normal;
 }
 
 .auth-link:hover {
   font-weight: bold;
   color: #42b983;
-}
-
-.welcome {
-  margin: 0;
 }
 
 .logout-btn {
@@ -124,9 +101,5 @@ nav a.router-link-exact-active {
 
 .logout-btn:hover {
   font-weight: bold;
-}
-
-.nickname {
-  color: white;
 }
 </style>
