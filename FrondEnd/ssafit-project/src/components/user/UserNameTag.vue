@@ -31,7 +31,7 @@
    // 사용자 데이터를 가져오는 함수
    const fetchUserProfile = (userId) => {
      if (userId) {
-       userStore.getUserProfileInfo(userId);
+       userStore.getUserListProfileInfo(userId);
      }
    };
    
