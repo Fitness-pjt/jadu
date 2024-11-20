@@ -26,7 +26,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public boolean upload(MultipartFile file, User user, FileDto fileDto) {
+	public String upload(MultipartFile file, User user, FileDto fileDto) {
 
 		String fileName = file.getOriginalFilename();
 		String nameWithoutExtension = fileName.substring(0, fileName.lastIndexOf("."));
@@ -47,12 +47,16 @@ public class FileServiceImpl implements FileService {
 
 			s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
-			fileDao.addFile(fileDto);
-			return true;
-		} catch (IOException e) {
-			return false;
-		}
+			String fileUrl = getFileUrl(fileName);
 
+			fileDao.addFile(fileDto);
+//			System.out.println(fileUrl);
+			return fileUrl; // URL 반환
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -61,6 +65,10 @@ public class FileServiceImpl implements FileService {
 //		fileDao.getFile(user.getUserId(), fileCase);
 
 		return null;
+	}
+
+	public String getFileUrl(String fileName) {
+		return String.format("https://%s.s3.%s.amazonaws.com/%s", BUCKET_NAME, "ap-northeast-2", fileName);
 	}
 
 }

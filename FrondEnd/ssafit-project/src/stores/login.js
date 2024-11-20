@@ -106,5 +106,9 @@ export const useLoginStore = defineStore("login", () => {
     }
   };
 
+
+
+
+
   return { login, loginUserId, loginUserNickname, logout, initialize, kakaoLogin };
 });

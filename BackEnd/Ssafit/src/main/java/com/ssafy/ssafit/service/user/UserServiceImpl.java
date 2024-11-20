@@ -68,4 +68,15 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 	}
+
+	@Override
+	public void updateProfilePath(User user) {
+		try {
+			userDao.updateFilePath(user);
+
+		} catch (Exception e) {
+
+		}
+
+	}
 }
