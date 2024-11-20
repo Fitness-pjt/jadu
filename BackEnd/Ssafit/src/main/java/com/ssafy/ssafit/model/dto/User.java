@@ -41,75 +41,77 @@ public class User {
 		this.profileImgPath = profileImgPath;
 	}
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+    public String getUserEmail() {
+        return userEmail;
+    }
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
-	public String getUserPassword() {
-		return userPassword;
-	}
+    public String getUserPassword() {
+        return userPassword;
+    }
 
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
 
-	public String getUserName() {
-		return userName;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public String getUserNickname() {
-		return userNickname;
-	}
+    public String getUserNickname() {
+        return userNickname;
+    }
 
-	public void setUserNickname(String userNickname) {
-		this.userNickname = userNickname;
-	}
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
 
-	public boolean isUserStatus() {
-		return userStatus;
-	}
+    public boolean isUserStatus() {
+        return userStatus;
+    }
 
-	public void setUserStatus(boolean userStatus) {
-		this.userStatus = userStatus;
-	}
+    public void setUserStatus(boolean userStatus) {
+        this.userStatus = userStatus;
+    }
 
-	public String getCreatedAt() {
-		return createdAt;
-	}
+    public String getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(String createdAt) {
-		this.createdAt = createdAt;
-	}
 
-	public String getProfileImgPath() {
-		return profileImgPath;
-	}
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public void setProfileImgPath(String profileImgPath) {
-		this.profileImgPath = profileImgPath;
-	}
+    public String getProfileImgPath() {
+        return profileImgPath;
+    }
 
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", userName="
-				+ userName + ", userNickname=" + userNickname + ", userStatus=" + userStatus + ", createdAt="
-				+ createdAt + ", profileImgPath=" + profileImgPath + "]";
-	}
+    public void setProfileImgPath(String profileImgPath) {
+        this.profileImgPath = profileImgPath;
+    }
+
+    @Override
+    public String toString() {
+        return "User [userId=" + userId + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", userName="
+                + userName + ", userNickname=" + userNickname + ", userStatus=" + userStatus + ", createdAt="
+                + createdAt + ", profileImgPath=" + profileImgPath + "]";
+    }
+
 
 }

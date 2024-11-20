@@ -2,15 +2,19 @@
   <div>
     <p>홈 화면입니다.</p>
     <RouterLink :to="{ name: 'profile', params: { userId: 1 } }">
-      <button>USER 1번</button></RouterLink
+      <button><UserNameTag :user-id="1"/></button></RouterLink
     >
-    <RouterLink :to="{ name: 'profile', params: { userId: 2 } }"
-      ><button>USER 2번</button></RouterLink
+
+    <RouterLink :to="{ name: 'profile', params: { userId: 2 } }">
+      <button><UserNameTag :user-id="2"/></button></RouterLink
     >
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import UserNameTag from "@/components/user/UserNameTag.vue";
+</script>
+
 
 <style scoped>
 p {
