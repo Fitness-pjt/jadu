@@ -72,12 +72,31 @@ INSERT INTO todo_likes (todo_id, user_id)
 VALUES 
     (1, 2),
     (2, 1);
-
+    
 -- keyword 테이블에 데이터 추가
 INSERT INTO keyword (keyword)
 VALUES 
-    ('Strength Training'),
-    ('Endurance');
+    ('상체'),
+    ('하체'),
+    ('가슴'),
+    ('등'),
+    ('어깨'),
+    ('복부'),
+    ('다이어트'),
+    ('체력 증진'),
+    ('근력 강화'),
+    ('근육량 증가'),
+    ('심폐지구력 향상'),
+    ('자세 교정'),
+    ('스트레스 해소'),
+    ('체형 개선'),
+    ('초급'),
+    ('중급'),
+    ('고급'),
+    ('유산소 운동'),
+    ('근력 훈련'),
+    ('고강도 인터벌 트레이닝');
+
 
 -- program_keyword 테이블에 데이터 추가
 INSERT INTO program_keyword (program_id, keyword_code)
