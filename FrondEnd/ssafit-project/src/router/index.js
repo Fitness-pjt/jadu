@@ -15,6 +15,7 @@ const router = createRouter({
       name: "home",
       component: HomeView,
       meta: { requiresLayout: true }, // 헤더와 푸터를 포함
+      meta: { requiresAuth: false }, // 인증 필요
     },
     {
       path: "/login",
@@ -32,6 +33,7 @@ const router = createRouter({
       path: "/mypage",
       name: "mypage",
       component: MyPageView,
+      meta: { requiresAuth: true }, // 인증 필요
     },
     {
       path: "/profile/:userId",
@@ -49,6 +51,19 @@ const router = createRouter({
       component: KakaoCallback,
     },
   ],
+});
+
+// 네비게이션 가드 추가
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem("access-token");
+
+  if (to.meta.requiresAuth && !token) {
+    // 인증 필요하고 토큰이 없으면
+    alert("로그인이 필요합니다.");
+    next("/login"); // 로그인 페이지로 리다이렉트
+  } else {
+    next(); // 페이지 이동 허용
+  }
 });
 
 export default router;

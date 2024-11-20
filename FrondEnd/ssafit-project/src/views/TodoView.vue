@@ -3,7 +3,6 @@
     <h1 class="todo-title">✨ My Todo List ✨</h1>
     <div class="todo-container">
       <div class="calendar-section">
-        <!-- <TodoCalendar @dateSelect="handleDateSelect" :userId="userId" /> -->
         <TodoVCalendar />
       </div>
       <div class="content-section">
@@ -17,13 +16,12 @@
 </template>
 
 <script setup>
-import { useTodoStore } from "@/stores/todo";
-import { onMounted } from "vue";
-import { useLoginStore } from "@/stores/login";
 import TodoCreate from "@/components/todo/TodoCreate.vue";
 import TodoList from "@/components/todo/TodoList.vue";
-import TodoCalendar from "@/components/todo/TodoCalendar.vue";
 import TodoVCalendar from "@/components/todo/TodoVCalendar.vue";
+import { useLoginStore } from "@/stores/login";
+import { useTodoStore } from "@/stores/todo";
+import { computed, onMounted, ref } from "vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
@@ -33,14 +31,21 @@ const props = defineProps({
   userId: Number,
 });
 
-onMounted(() => {
-  todoStore.getTodoList(props.userId, "2024-11-18");
-});
+// 컴포넌트 마운트 시 초기 투두 목록을 불러옴
+const selectedDate = computed(() => todoStore.selectedDate);
 
-const handleDateSelect = (date) => {
-  // 선택된 날짜의 Todo 리스트를 가져옵니다
-  todoStore.getTodoList(props.userId, date);
-};
+onMounted(() => {
+  const today = new Date().toLocaleDateString(); // 한국 날짜 기준으로 날짜 불러오기 => 2024.11.20 형식으로 날짜 들어옴
+  // 2024-11-20 형식으로 날짜 바꿔주기 : DB와 통신하기 위함
+  const formattedDate = today
+    .split(".")
+    .map((item) => item.trim())
+    .join("-")
+    .slice(0, 10);
+  todoStore.setSelectedDate(formattedDate); // 기본 날짜 설정
+
+  todoStore.getTodoList(props.userId, selectedDate.value);
+});
 </script>
 
 <style scoped>

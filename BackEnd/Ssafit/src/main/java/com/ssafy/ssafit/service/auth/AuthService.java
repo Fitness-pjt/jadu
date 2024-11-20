@@ -71,7 +71,7 @@ public class AuthService {
 		} else {
 			KakaoUser kakaoUser = getKakaoUserInfo(accessToken);
 
-			System.out.println("AuthService kakaoUser : " + kakaoUser);
+//			System.out.println("AuthService kakaoUser : " + kakaoUser);
 			
 			// 회원가입
 			User user = userService.searchByEmail(kakaoUser.getEmail());
