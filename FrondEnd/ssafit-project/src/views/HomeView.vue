@@ -15,11 +15,13 @@
     <RouterLink :to="getRoute(3)">
       <button><UserNameTag :user-id="3" /></button
     ></RouterLink>
+    <ProgramBanner />
   </div>
 </template>
 
 <script setup>
 import UserNameTag from "@/components/user/UserNameTag.vue";
+import ProgramBanner from "@/components/program/ProgramBanner.vue";
 import { useLoginStore } from "@/stores/login";
 const loginStore = useLoginStore();
 

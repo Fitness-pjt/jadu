@@ -7,7 +7,7 @@
       </p>
       <RouterLink :to="{ name: 'userInfo' }">
         <button class="btn btn-primary btn-lg banner-btn">
-          프로그램 추천 받기
+          나만의 프로그램 추천 받기
         </button>
       </RouterLink>
     </div>

@@ -1,13 +1,11 @@
 <template>
   <div>
-    프로그램 페이지
-    <ProgramBanner />
-    <!-- <ProgramBanner /> -->
+    <ProgramCreate />
   </div>
 </template>
 
 <script setup>
-import ProgramBanner from "@/components/program/ProgramBanner.vue";
+import ProgramCreate from "@/components/program/ProgramCreate.vue";
 </script>
 
 <style scoped></style>
