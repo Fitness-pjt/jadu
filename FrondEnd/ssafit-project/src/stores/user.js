@@ -45,7 +45,7 @@ export const useUserStore = defineStore("user", () => {
 
   const getUserProfileInfo = (userId) => {
     axios.get(`${REST_API_URL}/${userId}`).then((res) => {
-      console.log("사용자 정보", res.data);
+      // console.log("사용자 정보", res.data);
       userNickname.value = res.data.userNickname;
       userProfileImg.value=res.data.profileImgPath;
     });
@@ -65,16 +65,17 @@ export const useUserStore = defineStore("user", () => {
   // 닉네임 중복 체크
   const checkNicknameDuplicate = async (nickname) => {
     try {
-      console.log(nickname)
-      const response = await axios.get(`${REST_API_URL}/check-nickname/${nickname}`)
-      console.log('response :>> ', response);
+      console.log(nickname);
+      const response = await axios.get(
+        `${REST_API_URL}/check-nickname/${nickname}`
+      );
+      console.log("response :>> ", response);
       return response.data.available;
     } catch (error) {
       console.error("닉네임 중복 체크 실패:", error);
       return false;
     }
   };
-
 
 
   return {
@@ -86,5 +87,6 @@ export const useUserStore = defineStore("user", () => {
     checkNicknameDuplicate,
     userProfileImg,
     getUserById
+
   };
 });
