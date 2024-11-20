@@ -10,26 +10,21 @@
       <RouterLink :to="{ name: 'home' }" class="nav-link">홈</RouterLink>
       <RouterLink to="/program" class="nav-link">프로그램</RouterLink>
 
-      <RouterLink :to="{ name: 'mypage' }" class="nav-link" v-if="token"
-        >마이 투두리스트</RouterLink
-      >
+      <RouterLink :to="{ name: 'mypage' }" class="nav-link" v-if="token">마이 투두리스트</RouterLink>
     </nav>
 
     <!-- Authentication Links -->
     <div class="auth">
       <div v-if="!token">
-        <RouterLink :to="{ name: 'login' }" class="auth-link"
-          >로그인</RouterLink
-        >
-        <RouterLink :to="{ name: 'signup' }" class="auth-link"
-          >회원가입</RouterLink
-        >
+        <RouterLink :to="{ name: 'login' }" class="auth-link">로그인</RouterLink>
+        <RouterLink :to="{ name: 'signup' }" class="auth-link">회원가입</RouterLink>
       </div>
       <div v-else>
-        <p class="welcome">
-          <span class="nickname">{{ loginStore.loginUserNickname }}</span> 님,
-          반갑습니다!
-        </p>
+        <div class="welcome">
+          <UserNameTag :userId="loginStore.loginUserId" />
+
+
+        </div>
         <button @click="logout" class="logout-btn">로그아웃</button>
       </div>
     </div>
@@ -38,10 +33,11 @@
 
 <script setup>
 import { useLoginStore } from "@/stores/login";
+import UserNameTag from "../user/UserNameTag.vue";
 
 const loginStore = useLoginStore();
-
 const token = sessionStorage.getItem("access-token");
+
 
 const logout = () => {
   loginStore.logout();
@@ -54,7 +50,8 @@ const logout = () => {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
-  background-color: #1b1b1b; /* Matches the black background */
+  background-color: #1b1b1b;
+  /* Matches the black background */
   color: white;
   font-size: 1rem;
 
@@ -98,7 +95,7 @@ nav a.router-link-exact-active {
   gap: 1rem;
 }
 
-.auth > div {
+.auth>div {
   display: flex;
   gap: 0.5rem;
 }
