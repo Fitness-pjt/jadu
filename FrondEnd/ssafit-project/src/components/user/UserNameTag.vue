@@ -3,7 +3,7 @@
     <div class="image-wrapper">
       <img
         v-if="userData?.profileImgPath"
-        :src="userData.profileImgPath"
+        :src="userData?.profileImgPath"
         :alt="userData?.userNickname"
         class="profile-image"
       />
@@ -28,6 +28,12 @@ const props = defineProps({
 
 const userStore = useUserStore();
 
+const userData = computed(() => userStore.getUserById(props.userId));
+const userNickName = computed(() => userStore.userNickname);
+let userProfileImg = computed(() => userStore.userProfileImg);
+
+// console.log("userProfileImg :>> ", userProfileImg.value);
+
 // 사용자 데이터를 가져오는 함수
 const fetchUserProfile = (userId) => {
   if (userId) {
@@ -35,23 +41,19 @@ const fetchUserProfile = (userId) => {
   }
 };
 
-// 초기 데이터 로드
-onMounted(() => {
-  fetchUserProfile(props.userId);
-});
-
 // props.userId 변경 감지
 watch(
-  () => props.userId,
-  (newUserId) => {
+  [() => props.userId], // 배열로 감시할 값들을 지정
+  ([newUserId]) => {
+    // 새로운 값들도 배열로 받음
     fetchUserProfile(newUserId);
   }
 );
 
-const userData = computed(() => userStore.getUserById(props.userId));
-
-const userNickName = computed(() => userStore.userNickname);
-const userProfileImg = computed(() => userStore.userProfileImg);
+// 초기 데이터 로드
+onMounted(() => {
+  fetchUserProfile(props.userId);
+});
 </script>
 
 <style scoped>

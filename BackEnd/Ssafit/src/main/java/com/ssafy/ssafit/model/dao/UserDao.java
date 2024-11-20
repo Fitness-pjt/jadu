@@ -22,5 +22,7 @@ public interface UserDao {
 	User findByEmail(String email);
 
 	User findByNickname(String nickname);
+	
+	void updateFilePath(User user);
 
 }

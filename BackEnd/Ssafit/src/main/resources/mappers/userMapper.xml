@@ -13,7 +13,8 @@
 		user_name,
 		user_nickname,
 		profile_img_path
-		) VALUES (
+		)
+		VALUES (
 		#{userEmail},
 		#{userPassword},
 		#{userName},
@@ -27,38 +28,53 @@
 		SET
 		user_nickname = #{userNickname}, user_name = #{userName},
 		user_status =
-		#{userStatus}
+		#{userStatus},
+		user_password = #{userPassword}
 		WHERE user_id = #{userId}
 	</update>
 
 
-	  <delete id="deleteUser" parameterType="int">
-        DELETE FROM users WHERE user_id = #{userId}
-    </delete>
-	
-	<select id="selectUserById" parameterType="int" resultType="User">
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM users WHERE user_id = #{userId}
+	</delete>
+
+	<select id="selectUserById" parameterType="int"
+		resultType="User">
 		SELECT * FROM users
 		WHERE user_id=#{userID}
-		 
+
 	</select>
 
-	<select id="selectUserByEmail" parameterType="String" resultType="User">
+	<select id="selectUserByEmail" parameterType="String"
+		resultType="User">
 		SELECT *
 		FROM users
 		WHERE user_email = #{userEmail}
 	</select>
-	
-	
-    <select id="findByEmail" parameterType="String" resultType="User">
-        SELECT *
-        FROM users
-        WHERE user_email = #{email}
-    </select>
 
-    <select id="findByNickname" parameterType="String" resultType="User">
-        SELECT *
-        FROM users
-        WHERE user_nickname = #{nickname}
-    </select>
+
+	<select id="findByEmail" parameterType="String"
+		resultType="User">
+		SELECT *
+		FROM users
+		WHERE user_email = #{email}
+	</select>
+
+	<select id="findByNickname" parameterType="String"
+		resultType="User">
+		SELECT *
+		FROM users
+		WHERE user_nickname = #{nickname}
+	</select>
+
+
+	<update id="updateFilePath" parameterType="User">
+		UPDATE users
+		SET
+		profile_img_path =#{profileImgPath}
+		WHERE
+		user_id = #{userId}
+
+	</update>
 
 </mapper>
