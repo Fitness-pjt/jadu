@@ -1,7 +1,11 @@
 <template>
   <div>
     <p>MyPage 입니다.</p>
-    <TodoView :userId="loginUserId" />
+    <!-- <TodoView :userId="loginUserId" /> -->
+    <RouterLink :to="{ name: 'updateProfile' }">
+      <button>프로필 수정하기</button></RouterLink
+    >
+    <RouterView />
   </div>
 </template>
 
