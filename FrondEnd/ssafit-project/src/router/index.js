@@ -6,6 +6,10 @@ import SignUpView from "@/views/SignUpView.vue";
 import MyPageView from "@/views/MyPageView.vue";
 import GoogleCallback from "@/components/login/googleCallback.vue";
 import KakaoCallback from "@/components/login/KakaoCallback.vue";
+import TodoView from "@/views/TodoView.vue";
+import { useUserStore } from "@/stores/user";
+import { useLoginStore } from "@/stores/login";
+import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,8 +35,20 @@ const router = createRouter({
     },
     {
       path: "/mypage",
-      name: "mypage",
       component: MyPageView,
+      children: [
+        {
+          path: "",
+          name: "mypage",
+          component: TodoView,
+          props: () => ({ userId: getLoginIdFromStore() }), // userId를 전달
+        },
+        {
+          path: "updateProfile",
+          name: "updateProfile",
+          component: UpdateProfile,
+        },
+      ],
       meta: { requiresAuth: true }, // 인증 필요
     },
     {
@@ -67,3 +83,8 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
+
+function getLoginIdFromStore() {
+  const loginStore = useLoginStore();
+  return loginStore.loginUserId; // 또는 적절한 ID 필드
+}
