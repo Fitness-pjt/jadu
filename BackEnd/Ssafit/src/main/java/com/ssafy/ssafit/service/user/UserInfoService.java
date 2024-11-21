@@ -8,4 +8,5 @@ public interface UserInfoService {
 	UserInfo selectUserInfo(Integer userId);
 
 	void updateUserInfo(UserInfo userInfo);
+
 }

@@ -13,6 +13,7 @@ import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
 import ProgramView from "@/views/ProgramView.vue";
 import UserInfoCreate from "@/components/program/UserInfoCreate.vue";
 import ProgramDetail from "@/components/program/ProgramDetail.vue";
+import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
           name: "updateProfile",
           component: UpdateProfile,
         },
+        {
+          path: "updateUserInfo",
+          name: "updateUserInfo",
+          component: UserInfoUpdate,
+        },
       ],
       meta: { requiresAuth: true }, // 인증 필요
     },
@@ -68,6 +74,7 @@ const router = createRouter({
       path: "/program/userInfo",
       name: "userInfo",
       component: UserInfoCreate,
+      meta: { requiresAuth: true }, // 인증 필요
     },
     {
       path: "/login/oauth2/code/google",

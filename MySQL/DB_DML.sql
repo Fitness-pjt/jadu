@@ -4,13 +4,15 @@ USE `ssafy_pjt`;
 INSERT INTO users (user_nickname, user_email, user_password, user_name, user_status)
 VALUES 
     ('johndoe', 'john@example.com', 'password123', 'John Doe', TRUE),
-    ('janedoe', 'jane@example.com', 'password456', 'Jane Doe', FALSE);
+    ('janedoe', 'jane@example.com', 'password456', 'Jane Doe', FALSE),
+	('홍홍홍', 'hong@gmail.com', '1234', '홍길동', TRUE);
 
 -- userInfo 테이블에 데이터 추가
-INSERT INTO userInfo (user_id, goal, gender, age, shape, experience, location, frequency)
+INSERT INTO userInfo (user_id, gender, age, shape, goal, experience, location, frequency, duration)
 VALUES 
-    (1, 'DIET', 'MALE', '2030', 'SLIM', '2', 'FITNESS', 3),
-    (2, 'MUSCLE', 'FEMALE', '4050', 'NORMAL', '4', 'HOME', 4);
+    (1, 'MALE', '2030', 'SLIM', 'DIET', 2, 'FITNESS', 3, 3),
+    (2, 'FEMALE', '4050', 'NORMAL', 'MUSCLE', 4, 'HOME', 4, 2);
+
 
 -- program 테이블에 데이터 추가
 INSERT INTO program (user_id, title, description, duration_weeks, level)
