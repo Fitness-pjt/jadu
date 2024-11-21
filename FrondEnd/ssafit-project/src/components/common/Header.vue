@@ -21,7 +21,7 @@
         :to="{ name: 'mypage' }"
         class="nav-link text-white"
         v-if="token"
-        >마이 투두리스트</RouterLink
+        >마이페이지</RouterLink
       >
     </nav>
 
@@ -53,7 +53,7 @@
 
 <script setup>
 import { useLoginStore } from "@/stores/login";
-import UserNameTag from "../user/UserNameTag.vue";
+import UserNameTag from "./UserNameTag.vue";
 
 const loginStore = useLoginStore();
 const token = sessionStorage.getItem("access-token");
