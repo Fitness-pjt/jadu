@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>홈 화면입니다.</p>
+    <!-- <p>홈 화면입니다.</p>
     <RouterLink :to="getRoute(1)">
       <button>
         <UserNameTag :user-id="1" />
@@ -22,7 +22,7 @@
       <button>
         <UserNameTag :user-id="2" />
       </button>
-    </RouterLink>
+    </RouterLink> -->
     <ProgramBanner />
 
     <ProgramList :programs="programStore.programs" />
