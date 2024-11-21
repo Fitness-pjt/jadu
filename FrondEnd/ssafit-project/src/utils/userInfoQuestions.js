@@ -1,19 +1,4 @@
-<template>
-  <div>
-    <UserInfoItem
-      :question="questions[currentQuestionIndex]"
-      :on-submit="handleNextQuestion"
-      :on-back="handlePreviousQuestion"
-      :can-go-back="currentQuestionIndex > 0"
-    />
-  </div>
-</template>
-
-<script setup>
-import { ref } from "vue";
-import UserInfoItem from "./UserInfoItem.vue";
-
-const questions = [
+export const questions = [
   {
     index: 1,
     question: "성별을 선택하세요.",
@@ -59,26 +44,30 @@ const questions = [
   },
   {
     index: 7,
-    question: "운동을 주로 어디서 하나요?",
+    question: "운동하고 싶은 부위를 선택해주세요.",
     type: "checkbox",
-    options: ["헬스장", "집", "야외", "기타"],
-    id: "location",
+    options: ["상체", "하체", "가슴", "등", "어깨", "복부"],
+    id: "keyword",
+  },
+  {
+    index: 8,
+    question: "주 몇 회 운동하실 예정이신가요?",
+    type: "radio",
+    options: ["주 1회", "주 2회", "주 3회", "주 4회", "주 5회"],
+    id: "frequency",
+  },
+  {
+    index: 9,
+    question: "몇 주짜리 프로그램을 원하시나요?",
+    type: "radio",
+    options: ["1주", "2주", "3주", "4주"],
+    id: "duration",
+  },
+  {
+    index: 10,
+    question: "운동을 열심히 하실 준비가 되셨나요?",
+    type: "radio",
+    options: ["네", "아직이요"],
+    id: "fighting",
   },
 ];
-
-const currentQuestionIndex = ref(0);
-const answers = ref([]);
-
-const handleNextQuestion = (answer) => {
-  answers.value.push(answer);
-  if (currentQuestionIndex.value < questions.length - 1) {
-    currentQuestionIndex.value++;
-  }
-};
-
-const handlePreviousQuestion = () => {
-  if (currentQuestionIndex.value > 0) {
-    currentQuestionIndex.value--;
-  }
-};
-</script>

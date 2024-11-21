@@ -20,13 +20,15 @@ SELECT * FROM users;
 
 CREATE TABLE `userInfo` (
     `user_id` INT NOT NULL,
-    `goal` ENUM('DIET','MUSCLE','RECOVERY','STAMINA'),
-    `gender` ENUM('MALE', 'FEMALE') NOT NULL,
+	`gender` ENUM('MALE', 'FEMALE') NOT NULL,
     `age` ENUM('10','2030','4050','60'),
     `shape` ENUM('SLIM' , 'NORMAL', 'FAT'),
-    `experience` ENUM('1', '2', '3','4','5'),
+    `goal` ENUM('DIET','MUSCLE','RECOVERY','STAMINA'),
+    `experience` INT,
     `location` ENUM('HOME','FITNESS','OUTSIDE','ETC'),
     `frequency` INT ,
+    `duration` INT,
+    
     
     PRIMARY KEY (`user_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
