@@ -1,6 +1,21 @@
 <template>
   <div class="container">
-    <div class="form-container">
+    <!-- 등록된 운동 정보가 없을 때 -->
+    <div v-if="exerciseInfo.age == ''" class="empty-state text-center mt-5">
+      <h2 class="text-muted mb-4">운동 정보가 없습니다.</h2>
+      <p class="text-muted mb-4">
+        현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤
+        프로그램을 추천받아 보세요.
+      </p>
+      <RouterLink :to="{ name: 'userInfo' }"
+        ><button @click="navigateToForm" class="btn btn-primary btn-lg">
+          운동 정보 등록하기
+        </button></RouterLink
+      >
+    </div>
+
+    <!-- 등록된 운동 정보 수정 -->
+    <div v-else class="form-container">
       <h2 class="text-center mb-4">운동 정보 수정</h2>
       <form @submit.prevent="submitForm">
         <BaseRadioGroup
@@ -78,7 +93,7 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import BaseCheckboxGroup from "./BaseCheckboxGroup.vue";
 import BaseRadioGroup from "./BaseRadioGroup.vue";
 import BaseRangeGroup from "./BaseRangeGroup.vue";
@@ -86,8 +101,14 @@ import { useUserInfoStore } from "@/stores/userInfo";
 
 const userInfoStore = useUserInfoStore();
 const exerciseInfo = userInfoStore.exerciseInfo;
-// const userInfoList = userInfoStore.userInfoList;
-// console.log("userInfoList :>> ", userInfoList);
+const userInfoList = userInfoStore.userInfoList;
+console.log("userInfoList", userInfoList.value);
+
+// const userInfoExists = computed(
+//   () => Object.keys(exerciseInfo.value).length > 0
+// );
+console.log("exerciseInfo :>> ", exerciseInfo);
+// console.log("exerciseInfo :>> ", exerciseInfo.gender == "");
 
 const submitForm = () => {
   // 폼 제출 로직 (예: API 호출, 유효성 검사 등)

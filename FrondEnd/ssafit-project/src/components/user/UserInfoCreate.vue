@@ -16,7 +16,7 @@
       class="d-flex flex-column justify-content-center align-items-center mt-5"
     >
       <h2 class="text-center mb-4">본인 맞춤형 프로그램을 생성하시겠습니까?</h2>
-      <button @click="createProgram" class="btn btn-primary btn-lg">
+      <button @click="createAIProgram" class="btn btn-primary btn-lg">
         생성하기
       </button>
     </div>
@@ -41,16 +41,18 @@ const isQuestionPage = ref(true); // 질문 화면 페이지
 // 다음 질문으로 넘어갈 때, answer로 선택한 답변 answers 객체에 담기
 const handleNextQuestion = (answer) => {
   const question = questions[currentQuestionIndex.value];
+
   // 선택된 데이터를 DB에 넣을 수 있는 형태로 데이터 가공하기
   const formattedAnswer = formatAnswer(question.id, answer);
 
   // 현재 질문의 ID와 값을 저장
   answers.value[question.id] = formattedAnswer;
 
-  if (currentQuestionIndex.value < questions.length - 1) {
-    currentQuestionIndex.value++;
+  if (currentQuestionIndex.value === questions.length - 1) {
+    createProgram(); // 서버로 답변 전송 메서드 호출
+    isQuestionPage.value = false; // 질문 화면 이제 끝
   } else {
-    isQuestionPage.value = false;
+    currentQuestionIndex.value++;
   }
 };
 
@@ -75,7 +77,7 @@ const createProgram = () => {
 
   userInfoList.keyword = formattedKeywordList;
 
-  console.log("userInfoList :>> ", userInfoList);
+  // console.log("userInfoList :>> ", userInfoList);
 
   // REST API 호출
   userInfoStore.sendAnswerToServer(userInfoList);
@@ -87,6 +89,12 @@ const createProgram = () => {
 //     currentQuestionIndex.value--;
 //   }
 // };
+
+// AI program 추천 중
+const createAIProgram = () => {
+  alert("프로그램 생성 중입니다.");
+  userInfoStore.createAIProgram();
+};
 
 onMounted(() => {
   userInfoStore.getUserInfo();
