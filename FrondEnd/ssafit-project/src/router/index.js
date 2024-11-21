@@ -10,6 +10,8 @@ import TodoView from "@/views/TodoView.vue";
 import { useUserStore } from "@/stores/user";
 import { useLoginStore } from "@/stores/login";
 import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
+import ProgramView from "@/views/ProgramView.vue";
+import UserInfoCreate from "@/components/program/UserInfoCreate.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,6 +57,16 @@ const router = createRouter({
       path: "/profile/:userId",
       name: "profile",
       component: UserProfileView,
+    },
+    {
+      path: "/program",
+      name: "program",
+      component: ProgramView,
+    },
+    {
+      path: "/program/userInfo",
+      name: "userInfo",
+      component: UserInfoCreate,
     },
     {
       path: "/login/oauth2/code/google",

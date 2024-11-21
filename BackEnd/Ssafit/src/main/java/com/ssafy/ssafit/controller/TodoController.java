@@ -1,12 +1,12 @@
 package com.ssafy.ssafit.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.ssafit.model.dto.Todo;
 import com.ssafy.ssafit.model.dto.User;
@@ -23,7 +22,6 @@ import com.ssafy.ssafit.service.todo.TodoService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/{userId}/todo")
@@ -54,20 +52,18 @@ public class TodoController {
 	// 특정 날짜에 투두 등록하기 (content만)
 	@PostMapping("/{date}")
 	@Operation(summary = "특정 날짜 투두 등록하기", description = "특정 날짜에 투두를 추가합니다.")
-	public ResponseEntity<Todo> writeTodo(@PathVariable("userId") int userId, @PathVariable("date") String date,
+	public ResponseEntity<?> writeTodo(@PathVariable("userId") int userId, @PathVariable("date") String date,
 			@RequestBody Todo todo) {
-//		User loginUser = (User) session.getAttribute("loginUser");
-//
-//		if (loginUser == null) {
-//			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
-//		}
-//
-//		int loginUserId = loginUser.getUserId(); // 현재 로그인한 사용자의 id
-//
-//		// 로그인한 유저와 현재 투두 페이지의 유저가 동일한 경우에만 글 작성 가능
-//		if (loginUserId != userId) {
-//			return new ResponseEntity<>("본인 페이지 아님. 등록 불가", HttpStatus.NOT_ACCEPTABLE);
-//		}
+
+		// SecurityContext에서 인증된 사용자 정보 가져오기
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		int loginUserId = loginUser.getUserId(); // 현재 로그인한 사용자의 id
+
+		// 로그인한 유저와 현재 투두 페이지의 유저가 동일한 경우에만 글 작성 가능
+		if (loginUserId != userId) {
+			return new ResponseEntity<>("본인 페이지 아님. 등록 불가", HttpStatus.NOT_ACCEPTABLE);
+		}
 		todo.setUserId(userId);
 		todo.setDate(date);
 		// System.out.println(todo);
@@ -140,6 +136,79 @@ public class TodoController {
 
 		todoService.modifyTodoStatus(todoId, isCompleted);
 		return new ResponseEntity<>(isCompleted, HttpStatus.OK);
+
+	}
+
+	// 투두 좋아요 초기 상태 불러오기
+	@GetMapping("/{todoId}/likeTodo")
+	@Operation(summary = "투두 좋아요 초기 상태 불러오기", description = "투두가 좋아요가 눌린 상태인지 아닌지 확인합니다.")
+	public ResponseEntity<Map<String, Object>> getLikeTodoStatue(@PathVariable("userId") int userId,
+			@PathVariable("todoId") int todoId) {
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		int loginUserId = loginUser.getUserId();
+
+		boolean result = todoService.getTodoLikesStatus(todoId, loginUserId);
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("isFavorite", result);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	// 투두 좋아요 누르기
+	@PostMapping("/{todoId}/likeTodo")
+	@Operation(summary = "투두 좋아요 누르기", description = "완료된 투두의 좋아요를 누릅니다.")
+	public ResponseEntity<Map<String, Object>> putLikeTodo(@PathVariable("userId") int userId, @PathVariable("todoId") int todoId) {
+
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		System.out.println(loginUser);
+
+		int loginUserId = loginUser.getUserId();
+
+		boolean alreadyLiked = todoService.getTodoLikesStatus(todoId, loginUserId);
+		
+		Map<String, Object> response = new HashMap<>();
+
+		if (!alreadyLiked) {
+			// 좋아요가 눌리지 않았다면, 좋아요를 눌러서 저장함
+			todoService.putTodoLikes(todoId, loginUserId);
+			response.put("isFavorite", true);
+			response.put("message", "좋아요 누름");
+		} else {
+			// 이미 좋아요가 눌려 있으면 아무것도 하지 않음
+			response.put("isFavorite", false);
+			response.put("message", "좋아요 이미 눌려있음");
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK); // 이미 좋아요 눌려 있음 : false 반환
+
+	}
+
+	// 투두 좋아요 취소하기
+	@DeleteMapping("/{todoId}/likeTodo")
+	@Operation(summary = "투두 좋아요 취소하기", description = "완료된 투두의 좋아요를 취소합니다.")
+	public ResponseEntity<Map<String, Object>> cancelLikeTodo(@PathVariable("userId") int userId,
+			@PathVariable("todoId") int todoId) {
+
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//			System.out.println(loginUser);
+
+		int loginUserId = loginUser.getUserId();
+
+		boolean alreadyLiked = todoService.getTodoLikesStatus(todoId, loginUserId);
+		
+		Map<String, Object> response = new HashMap<>();
+
+		if (!alreadyLiked) {
+			// 좋아요가 눌리지 않았다면, 아무것도 하지 않음
+			response.put("isFavorite", true);
+			response.put("message", "좋아요 이미 취소되어 있음");
+		} else {
+			// 이미 좋아요가 눌려 있으면 DB에서 삭제하기
+			todoService.deleteTodoLikes(todoId, loginUserId);
+			response.put("isFavorite", false);
+			response.put("message", "좋아요 취소됨");
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK); // 좋아요 취소하기 : false 반환
 
 	}
 

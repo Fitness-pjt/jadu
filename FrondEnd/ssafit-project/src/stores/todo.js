@@ -7,11 +7,6 @@ export const useTodoStore = defineStore("todo", () => {
   // Todo 날짜 전역으로 관리
   const selectedDate = ref(null); //선택된 날짜를 저장
 
-  // const selectedDate = computed(() => {
-  //   const today = new Date();
-  //   return today.toISOString().slice(0, 10);
-  // });
-
   const setSelectedDate = (date) => {
     selectedDate.value = date;
   };
@@ -155,6 +150,95 @@ export const useTodoStore = defineStore("todo", () => {
       });
   };
 
+  // 투두 초기 상태 불러오기
+  const isFavorite = ref(null);
+  // todo_likes DB에 todoId, userId가 일치하는 열이 있으면... 이미 좋아요가 눌러져 있다는 의미
+  const getTodoLikesStatus = (todoId, userId) => {
+    const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/likeTodo`;
+    axios
+      .get(REST_API_URL, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log("todo 초기 상태 :>> ", res.data.isFavorite);
+        return res.data.isFavorite;
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          // 토큰이 만료되었으므로 access-token을 삭제
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+
+          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+
+          // 로그인 페이지로 리다이렉트
+          router.replace("/login");
+        }
+      });
+  };
+
+  // 투두 좋아요 누르기
+  const pushTodoLikes = (todoId, userId) => {
+    const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/likeTodo`;
+    axios
+      .post(REST_API_URL, null, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log("res.data :>> ", res.data);
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          // 토큰이 만료되었으므로 access-token을 삭제
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+
+          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+
+          // 로그인 페이지로 리다이렉트
+          router.replace("/login");
+        }
+      });
+  };
+  // 투두 좋아요 취소하기
+  const cancelTodoLikes = (todoId, userId) => {
+    const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/likeTodo`;
+    axios
+      .delete(REST_API_URL, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log("res.data :>> ", res.data);
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          // 토큰이 만료되었으므로 access-token을 삭제
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+
+          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+
+          // 로그인 페이지로 리다이렉트
+          router.replace("/login");
+        }
+      });
+  };
+
+  // 투두 몇 개 있는지 조회하기
+  const getTodoCount = () => {};
+
   return {
     selectedDate,
     setSelectedDate,
@@ -164,5 +248,9 @@ export const useTodoStore = defineStore("todo", () => {
     deleteTodo,
     updateTodoContent,
     updateTodoStatus,
+    getTodoLikesStatus,
+    pushTodoLikes,
+    cancelTodoLikes,
+    isFavorite,
   };
 });

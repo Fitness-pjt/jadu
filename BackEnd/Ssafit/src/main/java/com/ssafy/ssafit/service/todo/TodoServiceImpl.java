@@ -9,9 +9,9 @@ import com.ssafy.ssafit.model.dto.Todo;
 
 @Service
 public class TodoServiceImpl implements TodoService {
-	
+
 	private TodoDao todoDao;
-	
+
 	public TodoServiceImpl(TodoDao todoDao) {
 		super();
 		this.todoDao = todoDao;
@@ -24,7 +24,7 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public void writeTodo(Todo todo) {
-		todoDao.insertTodo(todo);		
+		todoDao.insertTodo(todo);
 	}
 
 	@Override
@@ -35,12 +35,28 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public void modifyTodoContent(Todo todo) {
-		todoDao.updateTodoContent(todo);		
+		todoDao.updateTodoContent(todo);
 	}
 
 	@Override
 	public void modifyTodoStatus(int todoId, boolean isCompleted) {
 		todoDao.updateTodoStatus(todoId, isCompleted);
+	}
+
+	@Override
+	public boolean getTodoLikesStatus(int todoId, int userId) {
+		int result = todoDao.checkTodoLikeExists(todoId, userId);
+		return result == 1;
+	}
+
+	@Override
+	public void putTodoLikes(int todoId, int userId) {
+		todoDao.insertTodoLikes(todoId, userId);
+	}
+
+	@Override
+	public void deleteTodoLikes(int todoId, int userId) {
+		todoDao.deleteTodoLikes(todoId, userId);
 	}
 
 }
