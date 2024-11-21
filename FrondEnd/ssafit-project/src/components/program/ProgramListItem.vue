@@ -52,7 +52,8 @@
   </template>
   
   <script setup>
-import UserNameTag from '../user/UserNameTag.vue';
+import UserNameTag from '../common/UserNameTag.vue';
+
 
   const props = defineProps({
     program: {
