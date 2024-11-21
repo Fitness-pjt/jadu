@@ -11,9 +11,9 @@ import { useUserStore } from "@/stores/user";
 import { useLoginStore } from "@/stores/login";
 import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
 import ProgramView from "@/views/ProgramView.vue";
-import UserInfoCreate from "@/components/program/UserInfoCreate.vue";
 import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
+import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -89,8 +89,8 @@ const router = createRouter({
     {
       path: "/program/:programId",
       name: "programDetail",
-      component: ProgramDetail 
-    }
+      component: ProgramDetail,
+    },
   ],
 });
 
