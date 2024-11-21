@@ -1,99 +1,124 @@
 package com.ssafy.ssafit.model.dto;
 
+import java.util.List;
+
 public class UserInfo {
-	private Integer userId;
-	private String goal;
+	private int userId;
 	private String gender;
 	private String age;
 	private String shape;
-	private String experience;
+	private String goal;
+	private int experience;
 	private String location;
-	private Integer frequency;
+	private int frequency;
+	private int duration;
+	private List<Integer> keyword;
 
-	public Integer getUserId() {
+	public UserInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public UserInfo(int userId, String gender, String age, String shape, String goal, int experience, String location,
+			int frequency, int duration, List<Integer> keyword) {
+		super();
+		this.userId = userId;
+		this.gender = gender;
+		this.age = age;
+		this.shape = shape;
+		this.goal = goal;
+		this.experience = experience;
+		this.location = location;
+		this.frequency = frequency;
+		this.duration = duration;
+		this.keyword = keyword;
+	}
+
+	public int getUserId() {
 		return userId;
 	}
 
-	public String getGoal() {
-		return goal;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getGender() {
 		return gender;
 	}
 
-	public String getAge() {
-		return age;
-	}
-
-	public String getShape() {
-		return shape;
-	}
-
-	public String getExperience() {
-		return experience;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public void setGoal(String goal) {
-		this.goal = goal;
-	}
-
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public String getAge() {
+		return age;
 	}
 
 	public void setAge(String age) {
 		this.age = age;
 	}
 
+	public String getShape() {
+		return shape;
+	}
+
 	public void setShape(String shape) {
 		this.shape = shape;
 	}
 
-	public void setExperience(String experience) {
+	public String getGoal() {
+		return goal;
+	}
+
+	public void setGoal(String goal) {
+		this.goal = goal;
+	}
+
+	public int getExperience() {
+		return experience;
+	}
+
+	public void setExperience(int experience) {
 		this.experience = experience;
+	}
+
+	public String getLocation() {
+		return location;
 	}
 
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
-	public void setFrequency(Integer frequency) {
-		this.frequency = frequency;
-	}
-
-	public Integer getFrequency() {
+	public int getFrequency() {
 		return frequency;
 	}
 
-	public UserInfo(Integer userId, String goal, String gender, String age, String shape, String experience,
-			String location, Integer frequency) {
-		this.userId = userId;
-		this.goal = goal;
-		this.gender = gender;
-		this.age = age;
-		this.shape = shape;
-		this.experience = experience;
-		this.location = location;
+	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
 
-	public UserInfo() {
-		// TODO Auto-generated constructor stub
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public List<Integer> getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(List<Integer> keyword) {
+		this.keyword = keyword;
 	}
 
 	@Override
 	public String toString() {
-		return "UserInfo [userId=" + userId + ", goal=" + goal + ", gender=" + gender + ", age=" + age + ", shape="
-				+ shape + ", experience=" + experience + ", location=" + location + ", frequency=" + frequency + "]";
+		return "UserInfo [userId=" + userId + ", gender=" + gender + ", age=" + age + ", shape=" + shape + ", goal="
+				+ goal + ", experience=" + experience + ", location=" + location + ", frequency=" + frequency
+				+ ", duration=" + duration + ", keyword=" + keyword + "]";
 	}
 
 }
