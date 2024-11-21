@@ -21,4 +21,26 @@
 		INSERT INTO program_video (program_id, video_id)
 		VALUES (#{programId}, #{videoId})
 	</insert>
+	
+	<!-- 단일 프로그램 조회 -->
+<select id="selectByProgramId" parameterType="int" resultType="com.ssafy.ssafit.model.dto.Program">
+    SELECT *
+    FROM program
+    WHERE program_id = #{programId}
+</select>
+
+<!-- 전체 프로그램 조회 -->
+<select id="selectAllPrograms" resultType="com.ssafy.ssafit.model.dto.Program">
+    SELECT *
+    FROM program
+    ORDER BY created_at DESC
+</select>
+
+<!-- 사용자별 프로그램 조회 -->
+<select id="selectByUserId" parameterType="int" resultType="com.ssafy.ssafit.model.dto.Program">
+    SELECT *
+    FROM program
+    WHERE user_id = #{userId}
+    ORDER BY created_at DESC
+</select>
 </mapper>
