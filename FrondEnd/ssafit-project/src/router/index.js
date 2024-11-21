@@ -12,6 +12,7 @@ import { useLoginStore } from "@/stores/login";
 import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
 import ProgramView from "@/views/ProgramView.vue";
 import UserInfoCreate from "@/components/program/UserInfoCreate.vue";
+import ProgramDetail from "@/components/program/ProgramDetail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -78,6 +79,11 @@ const router = createRouter({
       name: "KakaoCallback",
       component: KakaoCallback,
     },
+    {
+      path: "/program/:programId",
+      name: "programDetail",
+      component: ProgramDetail 
+    }
   ],
 });
 
