@@ -11,7 +11,8 @@ import { useUserStore } from "@/stores/user";
 import { useLoginStore } from "@/stores/login";
 import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
 import ProgramView from "@/views/ProgramView.vue";
-import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
+import UserInfoCreate from "@/components/program/UserInfoCreate.vue";
+import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
 
 const router = createRouter({
@@ -85,6 +86,11 @@ const router = createRouter({
       name: "KakaoCallback",
       component: KakaoCallback,
     },
+    {
+      path: "/program/:programId",
+      name: "programDetail",
+      component: ProgramDetail 
+    }
   ],
 });
 

@@ -5,7 +5,6 @@ INSERT INTO users (user_nickname, user_email, user_password, user_name, user_sta
 VALUES 
     ('johndoe', 'john@example.com', 'password123', 'John Doe', TRUE),
     ('janedoe', 'jane@example.com', 'password456', 'Jane Doe', FALSE),
-	('홍홍홍', 'hong@gmail.com', '1234', '홍길동', TRUE);
 
 -- userInfo 테이블에 데이터 추가
 INSERT INTO userInfo (user_id, gender, age, shape, goal, experience, location, frequency, duration)

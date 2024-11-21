@@ -4,11 +4,11 @@ import java.util.List;
 
 public class Program {
 
-	private Integer programId;
-	private Integer userId;
+	private int programId;
+	private int userId;
 	private String title;
 	private String description;
-	private Integer durationWeeks;
+	private int durationWeeks;
 	private String createdAt;
 	private String level;
 	private List<String> videoIds; // video_id 리스트 추가
@@ -23,7 +23,7 @@ public class Program {
 		this.videoIds = videoIds;
 	}
 
-	public Program(Integer programId, Integer userId, String title, String description, Integer durationWeeks,
+	public Program(int programId, int userId, String title, String description, int durationWeeks,
 			String createdAt, String level) {
 		super();
 		this.programId = programId;
@@ -39,19 +39,19 @@ public class Program {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Integer getProgramId() {
+	public int getProgramId() {
 		return programId;
 	}
 
-	public void setProgramId(Integer programId) {
+	public void setProgramId(int programId) {
 		this.programId = programId;
 	}
 
-	public Integer getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
@@ -71,11 +71,11 @@ public class Program {
 		this.description = description;
 	}
 
-	public Integer getDurationWeeks() {
+	public int getDurationWeeks() {
 		return durationWeeks;
 	}
 
-	public void setDurationWeeks(Integer durationWeeks) {
+	public void setDurationWeeks(int durationWeeks) {
 		this.durationWeeks = durationWeeks;
 	}
 
@@ -99,7 +99,9 @@ public class Program {
 	public String toString() {
 		return "Program [programId=" + programId + ", userId=" + userId + ", title=" + title + ", description="
 				+ description + ", durationWeeks=" + durationWeeks + ", createdAt=" + createdAt + ", level=" + level
-				+ "]";
+				+ ", videoIds=" + videoIds + "]";
 	}
+
+
 
 }
