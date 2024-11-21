@@ -39,6 +39,6 @@ onMounted(() => {
 /* 메인 콘텐츠 영역 */
 .content {
   flex: 1; /* 공간을 차지하면서 Footer를 아래로 밀어냄 */
-  padding: 1rem; /* 기본적인 여백 */
+  /* padding: 1rem; 기본적인 여백 */
 }
 </style>
