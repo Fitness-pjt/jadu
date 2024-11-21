@@ -101,21 +101,6 @@ public class UserController {
 
 	}
 
-//	@PostMapping("/info/keyword")
-//	@Operation(summary = "운동정보 키워드 등록", description = "운동정보 키워드 등록하기")
-//	public ResponseEntity<?> createUserInfoKeyword(@RequestBody List<Integer> keywordList) {
-//		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		int loginUserId = loginUser.getUserId();
-//
-////		System.out.println(keywordList);
-//
-//		for (int i = 0; i < keywordList.size(); i++) {
-//			userInfoService.insertUserInfoKeyword(loginUserId, keywordList.get(i));
-//			return new ResponseEntity<>("키워드 등록 완료", HttpStatus.OK);
-//		}
-//		return new ResponseEntity<>("키워드 등록 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-//	}
-
 	@GetMapping("/info")
 	@Operation(summary = "운동정보 조회", description = "운동정보 조회")
 	public ResponseEntity<?> getUserInfo() {

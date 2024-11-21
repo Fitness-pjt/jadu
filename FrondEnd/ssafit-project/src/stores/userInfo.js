@@ -6,7 +6,7 @@ import router from "@/router";
 const REST_API_URL = "http://localhost:8080/user/info";
 export const useUserInfoStore = defineStore("userInfo", () => {
   // userInfoList 초기화
-  const userInfoList = ref({});
+  const userInfoList = ref(null);
 
   const getUserInfo = () => {
     axios
@@ -18,16 +18,14 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         withCredentials: true,
       })
       .then((res) => {
-        // console.log("getUserInfo res.data", res.data);
-        userInfoList.value = res.data;
-        exerciseInfo.value = res.data;
-        console.log(" exerciseInfo.value :>> ", exerciseInfo.value);
-        // Object.assign(userInfoList, res.data); // reactive 객체에 데이터 삽입
-
-        // console.log("userInfoList.value :>> ", userInfoList.value);
+        console.log("API 응답 데이터: ", res.data); // 응답 데이터 구조 확인
+        userInfoList.value = res.data || {}; // 응답 데이터를 userInfoList에 할당
+        if (Object.keys(userInfoList.value).length > 0) {
+          exerciseInfo.value = userInfoList.value; // 데이터가 있을 경우만 업데이트
+        }
       })
       .catch((err) => {
-        // console.log("err.response :>> ", err.response);
+        console.error("API 요청 오류: ", err);
         if (err.response && err.response.status === 401) {
           // 토큰이 만료되었으므로 access-token을 삭제
           sessionStorage.removeItem("access-token");
@@ -87,31 +85,31 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     fighting: "",
   });
 
-  const updateExerciseInfo = (newInfo) => {
-    exerciseInfo.value = { ...exerciseInfo.value, ...newInfo };
-  };
+  // const updateExerciseInfo = (newInfo) => {
+  //   exerciseInfo.value = { ...exerciseInfo.value, ...newInfo };
+  // };
 
-  const resetExerciseInfo = () => {
-    exerciseInfo.value = {
-      gender: "",
-      age: "",
-      shape: "",
-      goal: "",
-      experience: 1,
-      location: "",
-      keyword: [],
-      frequency: "",
-      duration: "",
-      fighting: "",
-    };
-  };
+  // const resetExerciseInfo = () => {
+  //   exerciseInfo.value = {
+  //     gender: "",
+  //     age: "",
+  //     shape: "",
+  //     goal: "",
+  //     experience: 1,
+  //     location: "",
+  //     keyword: [],
+  //     frequency: "",
+  //     duration: "",
+  //     fighting: "",
+  //   };
+  // };
 
   return {
     sendAnswerToServer,
     getUserInfo,
     userInfoList,
     exerciseInfo,
-    updateExerciseInfo,
-    resetExerciseInfo,
+    // updateExerciseInfo,
+    // resetExerciseInfo,
   };
 });
