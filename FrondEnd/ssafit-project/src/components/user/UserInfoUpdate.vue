@@ -7,35 +7,35 @@
           label="1. 성별을 선택하세요."
           name="gender"
           :options="['남', '여']"
-          v-model="userInfoList.gender"
+          v-model="exerciseInfo.gender"
         />
 
         <BaseRadioGroup
           label="2. 나이를 선택해주세요."
           name="age"
           :options="['10대', '20~30대', '40~50대', '60대 이상']"
-          v-model="userInfoList.age"
+          v-model="exerciseInfo.age"
         />
 
         <BaseRadioGroup
           label="3. 체형을 선택해주세요."
           name="shape"
           :options="['마름', '보통', '살집 있음']"
-          v-model="userInfoList.shape"
+          v-model="exerciseInfo.shape"
         />
 
         <BaseRadioGroup
           label="4. 운동 목표를 선택해주세요."
           name="goal"
           :options="['다이어트', '근육 증진', '재활', '체력 향상']"
-          v-model="userInfoList.goal"
+          v-model="exerciseInfo.goal"
         />
 
         <BaseRangeGroup
           label="5. 본인의 체력 수준을 선택해주세요."
           :min="1"
           :max="5"
-          v-model="userInfoList.experience"
+          v-model="exerciseInfo.experience"
           leftLabel="초보"
           rightLabel="전문"
         />
@@ -44,27 +44,27 @@
           label="6. 운동을 주로 어디서 하나요?"
           name="location"
           :options="['헬스장', '집', '야외', '기타']"
-          v-model="userInfoList.location"
+          v-model="exerciseInfo.location"
         />
 
         <BaseCheckboxGroup
           label="7. 운동하고 싶은 부위를 선택해주세요."
           :options="['상체', '하체', '가슴', '등', '어깨', '복부']"
-          v-model="userInfoList.keyword"
+          v-model="exerciseInfo.keyword"
         />
 
         <BaseRadioGroup
           label="8. 주 몇 회 운동하실 예정이신가요?"
           name="frequency"
           :options="['주 1회', '주 2회', '주 3회', '주 4회', '주 5회']"
-          v-model="userInfoList.frequency"
+          v-model="exerciseInfo.frequency"
         />
 
         <BaseRadioGroup
           label="9. 몇 주짜리 프로그램을 원하시나요?"
           name="duration"
           :options="['1주', '2주', '3주', '4주']"
-          v-model="userInfoList.duration"
+          v-model="exerciseInfo.duration"
         />
 
         <div class="text-center mt-4">
@@ -86,8 +86,8 @@ import { useUserInfoStore } from "@/stores/userInfo";
 
 const userInfoStore = useUserInfoStore();
 const exerciseInfo = userInfoStore.exerciseInfo;
-const userInfoList = userInfoStore.userInfoList;
-console.log("userInfoList :>> ", userInfoList);
+// const userInfoList = userInfoStore.userInfoList;
+// console.log("userInfoList :>> ", userInfoList);
 
 const submitForm = () => {
   // 폼 제출 로직 (예: API 호출, 유효성 검사 등)

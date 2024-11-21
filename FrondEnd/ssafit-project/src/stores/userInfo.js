@@ -20,9 +20,11 @@ export const useUserInfoStore = defineStore("userInfo", () => {
       .then((res) => {
         // console.log("getUserInfo res.data", res.data);
         userInfoList.value = res.data;
+        exerciseInfo.value = res.data;
+        console.log(" exerciseInfo.value :>> ", exerciseInfo.value);
         // Object.assign(userInfoList, res.data); // reactive 객체에 데이터 삽입
 
-        console.log("userInfoList.value :>> ", userInfoList.value);
+        // console.log("userInfoList.value :>> ", userInfoList.value);
       })
       .catch((err) => {
         // console.log("err.response :>> ", err.response);
@@ -77,7 +79,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     age: "",
     shape: "",
     goal: "",
-    experience: 1,
+    experience: 3,
     location: "",
     keyword: [],
     frequency: "",

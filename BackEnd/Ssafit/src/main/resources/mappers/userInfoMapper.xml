@@ -42,7 +42,7 @@
 		location,
 		frequency
 		FROM userInfo
-		WHERE user_id = #{userId}
+		WHERE user_id = #{userId} 
 	</select>
 
 	<!-- 사용자 운동 정보 수정 -->
