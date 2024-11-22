@@ -2,9 +2,11 @@
 <template>
   <div class="card h-100">
     <!-- 썸네일 공간 -->
-    <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
-      <img v-if="program?.programImgPath" :src="program?.programImgPath" :alt="program?.title"
-        class="profile-image" />
+    <div class="thumbnail-container">
+      <img v-if="program?.programImgPath" 
+           :src="program?.programImgPath" 
+           :alt="program?.title"
+           class="thumbnail-image" />
       <div v-else class="profile-placeholder">
         {{ userData?.userNickname?.[0] }}
       </div>
@@ -83,7 +85,6 @@ const formatDate = (dateString) => {
   }).format(date)
 }
 </script>
-
 <style scoped>
 .card {
   transition: transform 0.2s ease-in-out;
@@ -92,6 +93,33 @@ const formatDate = (dateString) => {
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 썸네일 관련 스타일 수정 */
+.thumbnail-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지 비율 유지하면서 컨테이너 채우기 */
+  object-position: center; /* 이미지 중앙 정렬 */
+}
+
+.profile-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #6c757d;
+  background-color: #e9ecef;
 }
 
 .card-text {

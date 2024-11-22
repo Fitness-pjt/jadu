@@ -124,6 +124,74 @@ export const useProgramStore = defineStore('program', () => {
       isLoading.value = false
     }
   }
+  async function updateProgram(programId, programData) {
+    try {
+      isLoading.value = true;
+      error.value = null;
+
+      console.log('Updating program data:', programData);  // 요청 데이터 로깅
+
+      const response = await axios.put(`${BASE_URL}/${programId}`, programData, {
+        headers: {
+          'Content-Type': 'application/json',
+          "access-token": sessionStorage.getItem("access-token"),
+          "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true,
+      });
+
+      console.log('Update Response:', response.data);  // 응답 데이터 로깅
+
+      // 현재 프로그램 데이터 업데이트
+      currentProgram.value = response.data;
+
+      // programs 배열에서도 해당 프로그램 업데이트
+      const index = programs.value.findIndex(p => p.programId === programId);
+      if (index !== -1) {
+        programs.value[index] = response.data;
+      }
+
+      return response.data;
+
+    } catch (err) {
+      console.error('Error updating program:', err);
+      error.value = err.response?.data?.message || '프로그램 수정 중 오류가 발생했습니다.';
+      throw error.value;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function deleteProgram(programId) {
+    try {
+      isLoading.value = true;
+      error.value = null;
+
+      await axios.delete(`${BASE_URL}/${programId}`, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Access-Control-Allow-Origin": "*",
+        },
+        withCredentials: true,
+      });
+
+      // 프로그램 목록에서 삭제된 프로그램 제거
+      programs.value = programs.value.filter(p => p.programId !== programId);
+
+      // 현재 프로그램이 삭제된 프로그램이면 null로 설정
+      if (currentProgram.value?.programId === programId) {
+        currentProgram.value = null;
+      }
+
+    } catch (err) {
+      console.error('Error deleting program:', err);
+      error.value = err.response?.data?.message || '프로그램 삭제 중 오류가 발생했습니다.';
+      throw error.value;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
 
   return {
     isLoading,
@@ -133,6 +201,8 @@ export const useProgramStore = defineStore('program', () => {
     createProgram,
     getAllPrograms,
     getProgramById,
-    getProgramsByUserId
+    getProgramsByUserId,
+    updateProgram, 
+    deleteProgram  
   }
 })

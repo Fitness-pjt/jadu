@@ -14,6 +14,7 @@ import ProgramView from "@/views/ProgramView.vue";
 import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
 import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
+import ProgramEdit from "@/components/program/ProgramEdit.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -90,6 +91,11 @@ const router = createRouter({
       path: "/program/:programId",
       name: "programDetail",
       component: ProgramDetail 
+    },
+    {
+      path: "/program/edit/:programId",
+      name: "programEdit",
+      component: ProgramEdit
     }
   ],
 });

@@ -17,4 +17,12 @@ public interface ProgramService {
     
     // 사용자별 프로그램 조회
     List<Program> selectByUserId(int userId) throws Exception;
+    
+    //프로그램 수정
+    public Program updateProgram(Program program);
+    
+    //프로그램 삭제
+    public boolean deleteProgram(int programId);
+    
+    
 }

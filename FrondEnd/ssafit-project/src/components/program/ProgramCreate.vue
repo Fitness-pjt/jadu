@@ -57,8 +57,9 @@
   </div>
 </template>
 
+
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';  // onMounted 추가
 import { useVideoStore } from '@/stores/video';
 import { useProgramStore } from '@/stores/program';
 import VideoList from '../video/VideoList.vue';
@@ -69,6 +70,25 @@ const router = useRouter();
 const videoStore = useVideoStore();
 const programStore = useProgramStore();
 
+// 컴포넌트 마운트 시 초기화
+onMounted(() => {
+  initializeForm();
+});
+
+// 초기화 함수
+const initializeForm = () => {
+  programData.value = {
+    title: '',
+    description: '',
+    level: '',
+    durationWeeks: null,
+    programImgPath: '',
+    videoCnt: null
+  };
+  videoStore.clearSelectedVideos();
+  videoStore.videoList.value = [];  // videoList도 초기화
+};
+
 const programData = ref({
   title: '',
   description: '',
@@ -78,7 +98,7 @@ const programData = ref({
   videoCnt: null
 });
 
-// 폼 유효성 검사
+// 폼 유효성 검사 (동일)
 const isFormValid = computed(() => {
   return programData.value.title &&
     programData.value.description &&
@@ -91,51 +111,36 @@ const isFormValid = computed(() => {
 const submitProgram = async () => {
   if (!isFormValid.value) return;
 
-  // try {
-    // 선택된 비디오 ID 배열 생성
+  try {
     const videoIds = videoStore.selectedVideos.map(video => video.id.videoId);
-    const thumbnailUrl = videoStore.selectedVideos[0].snippet.thumbnails.default.url;
+    const thumbnailUrl = videoStore.selectedVideos[0].snippet.thumbnails.medium.url;
     const selectedVideoCount = videoIds.length;
 
     console.log('thumbnailUrl :>> ', thumbnailUrl);
     console.log('selectedVideoCount :>> ', selectedVideoCount);
     programData.value.programImgPath = thumbnailUrl;
-    programData.value.videoCnt=selectedVideoCount;
-    // 프로그램 데이터 구성
+    programData.value.videoCnt = selectedVideoCount;
+
     const submitData = {
       ...programData.value,
       videoIds: videoIds
     };
 
     console.log('submitData :>> ', submitData);
-    // store의 createProgram 액션 호출
     await programStore.createProgram(submitData);
 
-    // 성공 처리
     alert('프로그램이 성공적으로 생성되었습니다!');
+    
+    // 초기화 함수 호출
+    initializeForm();
 
-    // 상태 초기화
-    programData.value = {
-      title: '',
-      description: '',
-      level: '',
-      durationWeeks: null,
-      programImgPath: '',
-      videoCnt: null
-    };
-
-    // 비디오 선택 초기화
-    videoStore.clearSelectedVideos();
-
-    // 프로그램 목록 페이지로 이동
     router.push('/programs');
 
-  // } catch (error) {
-  //   // 에러는 store에서 처리됨
-  //   console.error('프로그램 생성 실패');
-  // }
+  } catch (error) {
+    console.error('프로그램 생성 실패:', error);
+  }
 
-  // window.location.href = "/mypage";
+  window.location.href = "/";
 
 };
 </script>
