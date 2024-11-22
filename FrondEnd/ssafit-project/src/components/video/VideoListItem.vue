@@ -1,28 +1,26 @@
 <template>
   <div>
-    <!-- <img
+    <iframe
+      v-if="!displayOnly"
+      width="320"
+      height="180"
+      :src="videoURL"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+    ></iframe>
+    <!-- 썸네일 이미지 (displayOnly 모드) -->
+    <img
+      v-else
       :src="video.snippet.thumbnails.medium.url"
       alt="썸네일"
       class="card-thumbnail"
-    /> --><iframe
-        width="320"
-        height="180"
-        :src="videoURL"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
-      ></iframe>
+    />
     <div class="card-content">
       <h3 class="video-title">{{ videoTitle }}</h3>
       <p class="channel-name">채널명: {{ video.snippet.channelTitle }}</p>
-      <!-- <RouterLink
-        :to="{ name: 'review', params: { videoId: video.id.videoId } }"
-        ><button class="review-button" @click="clickVideo">
-          리뷰 보러가기
-        </button></RouterLink -->
-      
     </div>
   </div>
 </template>
@@ -32,9 +30,12 @@ import { computed } from "vue";
 import _ from "lodash";
 import { storeToRefs } from "pinia";
 import { useVideoStore } from "@/stores/video";
-
 const props = defineProps({
   video: Object,
+  displayOnly: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const videoTitle = computed(() => {

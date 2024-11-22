@@ -11,6 +11,9 @@ public class Program {
 	private int durationWeeks;
 	private String createdAt;
 	private String level;
+	private String programImgPath;
+	private int videoCnt;
+
 	private List<String> videoIds; // video_id 리스트 추가
 
 	// 기존 getter/setter들...
@@ -23,8 +26,8 @@ public class Program {
 		this.videoIds = videoIds;
 	}
 
-	public Program(int programId, int userId, String title, String description, int durationWeeks,
-			String createdAt, String level) {
+	public Program(int programId, int userId, String title, String description, int durationWeeks, String createdAt,
+			String level) {
 		super();
 		this.programId = programId;
 		this.userId = userId;
@@ -33,6 +36,20 @@ public class Program {
 		this.durationWeeks = durationWeeks;
 		this.createdAt = createdAt;
 		this.level = level;
+	}
+
+	public Program(int programId, int userId, String title, String description, int durationWeeks, String createdAt,
+			String level, String programImgPath, int videoCnt) {
+		this.programId = programId;
+		this.userId = userId;
+		this.title = title;
+		this.description = description;
+		this.durationWeeks = durationWeeks;
+		this.createdAt = createdAt;
+		this.level = level;
+		this.programImgPath = programImgPath;
+		this.videoCnt = videoCnt;
+
 	}
 
 	public Program() {
@@ -95,13 +112,27 @@ public class Program {
 		this.level = level;
 	}
 
+	public String getProgramImgPath() {
+		return programImgPath;
+	}
+
+	public void setProgramImgPath(String programImgPath) {
+		this.programImgPath = programImgPath;
+	}
+
+	public int getVideoCnt() {
+		return videoCnt;
+	}
+
+	public void setVideoCnt(int videoCnt) {
+		this.videoCnt = videoCnt;
+	}
+
 	@Override
 	public String toString() {
 		return "Program [programId=" + programId + ", userId=" + userId + ", title=" + title + ", description="
 				+ description + ", durationWeeks=" + durationWeeks + ", createdAt=" + createdAt + ", level=" + level
 				+ ", videoIds=" + videoIds + "]";
 	}
-
-
 
 }
