@@ -86,29 +86,31 @@ export const useUserInfoStore = defineStore("userInfo", () => {
   });
 
   // AI Program REST 호출
-  const createAIProgram = (userInfo) => {
-    axios
-      .post("http://localhost:8080/chatGPT", userInfo, {
-        headers: {
-          "access-token": sessionStorage.getItem("access-token"),
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log("API 응답 데이터: ", res.data); // 응답 데이터 구조 확인
-      })
-      .catch((err) => {
-        console.error("API 요청 오류: ", err);
-        if (err.response && err.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
+  // userInfoStore에서 API 호출을 처리하는 메서드 수정
+  const createAIProgram = async (userInfo) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/chatGPT",
+        userInfo,
+        {
+          headers: {
+            "access-token": sessionStorage.getItem("access-token"),
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
         }
-      });
+      );
+      console.log("API 응답 데이터 프로그램 ID: ", response.data); // 응답 데이터 구조 확인
+      return response.data; // programId를 반환
+    } catch (err) {
+      console.error("API 요청 오류: ", err);
+      if (err.response && err.response.status === 401) {
+        sessionStorage.removeItem("access-token");
+        sessionStorage.removeItem("refresh-token");
+        alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+        router.replace("/login");
+      }
+    }
   };
 
   return {

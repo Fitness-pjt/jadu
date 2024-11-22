@@ -102,7 +102,7 @@ public class AIController {
 		// 결과 출력
 //		System.out.println("키워드 리스트: " + keywordsList);
 
-		return new ResponseEntity<>(program, HttpStatus.OK);
+		return new ResponseEntity<>(program.getProgramId(), HttpStatus.OK);
 //		return null;
 	}
 

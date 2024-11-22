@@ -31,6 +31,7 @@ import { useLoginStore } from "@/stores/login";
 import { questions } from "@/utils/userInfoQuestions";
 import { formatAnswer } from "@/utils/formattedAnswer";
 import { computeStyles } from "@popperjs/core";
+import { useRouter } from "vue-router";
 
 const userInfoStore = useUserInfoStore();
 const loginStore = useLoginStore();
@@ -42,6 +43,7 @@ const isValidInput = ref(true);
 
 // 전역 변수 관리
 const userInfoList = computed(() => userInfoStore.userInfoList);
+const programId = computed(() => userInfoStore.programId);
 
 watch(
   () => userInfoList.value,
@@ -129,11 +131,23 @@ const createProgram = () => {
 //   }
 // };
 
+const router = useRouter();
+
 // AI program 추천 중
-const createAIProgram = () => {
+const createAIProgram = async () => {
   alert("프로그램 생성 중입니다.");
   console.log("userInfoList AI임? :>> ", userInfoList.value);
-  userInfoStore.createAIProgram(userInfoList.value);
+
+  // userInfoStore.createAIProgram 호출 후 프로그램 ID를 받음
+  const programIdResponse = await userInfoStore.createAIProgram(
+    userInfoList.value
+  );
+
+  if (programIdResponse) {
+    console.log("useUserInfoStore.programId", programIdResponse);
+    // programId가 존재하면 라우터 처리
+    router.push(`/program/${programIdResponse}`);
+  }
 };
 
 onMounted(() => {

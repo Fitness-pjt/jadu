@@ -43,6 +43,8 @@ CREATE TABLE `program` (
     `duration_weeks` INT NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `level` ENUM('BEGINNER', 'INTERMEDIATE', 'ADVANCED'),
+    `video_cnt` INT,
+    `program_img_path` VARCHAR(512),
     PRIMARY KEY (`program_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 );
@@ -111,7 +113,7 @@ CREATE TABLE `answer` (
 -- File management
 CREATE TABLE `files` (
     `file_id`  INT NOT NULL AUTO_INCREMENT,
-    `file_case` ENUM('PROFILE', 'BOARD', 'QUESTION'),
+    `file_case` ENUM('PROFILE', 'BOARD', 'QUESTION', 'PROGRAM'),
     `file_name` VARCHAR(100) NOT NULL,
     `extension` VARCHAR(20) NOT NULL,
     `user_id` INT NOT NULL,
