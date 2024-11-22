@@ -114,14 +114,10 @@ watch(
   () => userInfoList.value,
   (newList, oldList) => {
     exerciseInfo.value = newList;
-    // console.log("displayData :>> ", displayData);
-    // console.log("exerciseInfo :>> ", exerciseInfo.value);
   },
 
   { deep: true }
 );
-
-// console.log("exerciseInfo :>> ", exerciseInfo.gender == "");
 
 const submitForm = () => {
   userInfoStore.sendAnswerToServer(

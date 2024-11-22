@@ -42,10 +42,8 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     // console.log("userInfo :>> ", userInfo);
     const isUpdate =
       userInfoList.value && Object.keys(userInfoList.value).length > 0;
-    console.log("isUpdate :>> ", isUpdate);
     // 데이터가 있으면 put 요청, 없으면 post 요청 날리기
     const method = isUpdate ? "put" : "post";
-    console.log("sendAnswerToServer userInfo :>> ", userInfo);
     axios({
       method,
       url: REST_API_URL,
@@ -58,7 +56,6 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     })
       .then((res) => {
         userInfoList.value = res.data;
-        console.log("updateTodoContent res.data", res.data);
       })
       .catch((err) => {
         // console.log("err.response :>> ", err.response);
@@ -73,6 +70,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
       });
   };
 
+  // 업데이트를 하기 위한 기본 객체 생성
   const exerciseInfo = ref({
     gender: "",
     age: "",
@@ -86,12 +84,37 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     fighting: "",
   });
 
+  // AI Program REST 호출
+  const createAIProgram = (userInfo) => {
+    axios
+      .post("http://localhost:8080/chatGPT", userInfo, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log("API 응답 데이터: ", res.data); // 응답 데이터 구조 확인
+      })
+      .catch((err) => {
+        console.error("API 요청 오류: ", err);
+        if (err.response && err.response.status === 401) {
+          // 토큰이 만료되었으므로 access-token을 삭제
+          sessionStorage.removeItem("access-token");
+          sessionStorage.removeItem("refresh-token");
+          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+          // 로그인 페이지로 리다이렉트
+          router.replace("/login");
+        }
+      });
+  };
+
   return {
     sendAnswerToServer,
     getUserInfo,
     userInfoList,
     exerciseInfo,
-    // updateExerciseInfo,
-    // resetExerciseInfo,
+    createAIProgram,
   };
 });

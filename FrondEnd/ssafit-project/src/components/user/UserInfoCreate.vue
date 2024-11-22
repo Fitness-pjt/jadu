@@ -24,12 +24,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import UserInfoItem from "../user/UserInfoItem.vue";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { useLoginStore } from "@/stores/login";
 import { questions } from "@/utils/userInfoQuestions";
 import { formatAnswer } from "@/utils/formattedAnswer";
+import { computeStyles } from "@popperjs/core";
 
 const userInfoStore = useUserInfoStore();
 const loginStore = useLoginStore();
@@ -39,11 +40,22 @@ const answers = ref({}); // 답변을 담는 객체
 const isQuestionPage = ref(true); // 질문 화면 페이지
 const isValidInput = ref(true);
 
+// 전역 변수 관리
+const userInfoList = computed(() => userInfoStore.userInfoList);
+
+watch(
+  () => userInfoList.value,
+  (newList, oldList) => {
+    console.log("newList ,>> ", newList);
+  },
+  { deep: true }
+);
+
 // 답변 유효성 검사
 const validateAnswer = (answer) => {
   // 중간 checkbox 데이터 선택 안 하면 안 넘어가게 하기
   if (answer.length <= 0) {
-    console.log("answer.length :>> ", answer.length);
+    // console.log("answer.length :>> ", answer.length);
     return false;
   }
 
@@ -67,8 +79,6 @@ const handleNextQuestion = (answer) => {
   const formattedAnswer = formatAnswer(question.id, answer);
 
   // 현재 질문의 ID와 값을 저장
-  console.log("answer :>> ", answer);
-
   answers.value[question.id] = formattedAnswer;
 
   if (currentQuestionIndex.value === questions.length - 1) {
@@ -82,7 +92,7 @@ const handleNextQuestion = (answer) => {
 //  "생성하기" 버튼 클릭 시, 답변을 서버로 전송
 const createProgram = () => {
   // keyword를 제외한 나머지 데이터를 userInfoList로 필터링
-  const userInfoList = Object.entries(answers.value)
+  const userList = Object.entries(answers.value)
     .filter(([key, value]) => key !== "keyword" && key !== "fighting")
     .reduce((acc, [key, value]) => {
       acc[key] = value;
@@ -90,7 +100,7 @@ const createProgram = () => {
     }, {});
 
   // userId key에 loginUserId 추가
-  userInfoList.userId = loginStore.loginUserId;
+  userList.userId = loginStore.loginUserId;
 
   // keyword만 포함된 데이터를 keywordList로 필터링
   const userInfoKeywordList = answers.value.keyword || [];
@@ -98,12 +108,14 @@ const createProgram = () => {
   // userInfoKeywordList를 index + 1 형태로 가공
   const formattedKeywordList = userInfoKeywordList.map((_, index) => index + 1);
 
-  userInfoList.keyword = formattedKeywordList;
+  userList.keyword = formattedKeywordList;
 
-  // console.log("userInfoList :>> ", userInfoList);
+  console.log("userList :>> ", userList);
+  userInfoStore.userInfoList.value = userList;
+  console.log("userInfoList :>> ", userInfoStore.userInfoList.value);
 
   // REST API 호출
-  userInfoStore.sendAnswerToServer(userInfoList);
+  userInfoStore.sendAnswerToServer(userInfoStore.userInfoList.value);
 };
 
 // 이전으로 돌아가는 버튼
@@ -116,12 +128,13 @@ const createProgram = () => {
 // AI program 추천 중
 const createAIProgram = () => {
   alert("프로그램 생성 중입니다.");
-  userInfoStore.createAIProgram();
+  console.log("userInfoList :>> ", userInfoList.value);
+  userInfoStore.createAIProgram(userInfoStore.userInfoList.value);
 };
 
-onMounted(() => {
-  userInfoStore.getUserInfo();
-});
+// onMounted(() => {
+//   userInfoStore.getUserInfo();
+// });
 </script>
 
 <style scoped>
