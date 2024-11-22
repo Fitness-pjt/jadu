@@ -11,6 +11,8 @@ export const useProgramStore = defineStore("program", () => {
   const error = ref(null);
   const programs = ref([]); // 프로그램 목록 저장
   const currentProgram = ref(null); // 현재 선택된 프로그램
+  const likeCount = ref(0);
+  const isLiked = ref(false);
 
   async function createProgram(programData) {
     // console.log('programData :>> ', programData);
@@ -190,9 +192,9 @@ export const useProgramStore = defineStore("program", () => {
     }
   }
 
-  const updateProgramThumbnail = async (formData) => {
+  const updateProgramThumbnail = async (formData, programId) => {
     try {
-      // Authorization 헤더 추가
+      // 파일 업로드 API 호출
       const response = await axios.post(
         "http://localhost:8080/file/upload",
         formData,
@@ -201,37 +203,117 @@ export const useProgramStore = defineStore("program", () => {
             "Content-Type": "multipart/form-data",
             "access-token": sessionStorage.getItem("access-token"),
             "file-case": "PROGRAM",
+            "program-id": programId
           },
         }
       );
+
       if (response.data) {
-        userProfileImg.value = response.data;
+        // currentProgram 상태 업데이트
+        currentProgram.value = {
+          ...currentProgram.value,
+          programImgPath: response.data.filePath
+        };
+
+        // programs 배열에서도 해당 프로그램 업데이트
+        const index = programs.value.findIndex(p => p.programId === programId);
+        if (index !== -1) {
+          programs.value[index] = {
+            ...programs.value[index],
+            programImgPath: response.data.filePath
+          };
+        }
+
         return response.data;
       }
     } catch (error) {
-      // 토큰 관련 에러 처리 추가
+      // 토큰 관련 에러 처리
       if (error.response?.status === 401) {
         console.error("인증 토큰이 유효하지 않습니다.");
-        // 필요한 경우 로그인 페이지로 리다이렉트 추가
-        // router.push('/login');
       }
       console.error("이미지 업로드 실패:", error);
       throw error;
     }
   };
 
+  async function checkLikeStatus(programId) {
+    // 로그인 상태가 아니면 false 반환
+    if (!sessionStorage.getItem("access-token")) {
+        isLiked.value = false;
+        return false;
+    }
+
+    try {
+        const response = await axios.get(`${BASE_URL}/${programId}/like/check`, {
+            headers: {
+                "access-token": sessionStorage.getItem("access-token"),
+            },
+        });
+        isLiked.value = response.data;
+        return response.data;
+    } catch (err) {
+        console.error('좋아요 상태 확인 실패:', err);
+        isLiked.value = false;
+        return false;
+    }
+}
+
+  // 좋아요 수 가져오기
+  async function getLikeCount(programId) {
+    try {
+        const response = await axios.get(`${BASE_URL}/${programId}/like/count`, {
+            headers: {
+                "access-token": sessionStorage.getItem("access-token"),
+            },
+        });
+        likeCount.value = response.data;
+        return response.data;
+    } catch (err) {
+        console.error('좋아요 수 가져오기 실패:', err);
+        likeCount.value = 0;
+        return 0;
+    }
+}
+
+  // 좋아요 토글
+  async function toggleProgramLike(programId) {
+    if (!sessionStorage.getItem("access-token")) {
+        throw new Error("로그인이 필요한 기능입니다.");
+    }
+
+    try {
+        const response = await axios.post(`${BASE_URL}/${programId}/like/toggle`, null, {
+            headers: {
+                "access-token": sessionStorage.getItem("access-token"),
+            },
+        });
+        
+        isLiked.value = response.data.liked;
+        likeCount.value = response.data.likeCount;
+        
+        return response.data;
+    } catch (err) {
+        console.error('좋아요 토글 실패:', err);
+        throw err;
+    }
+}
 
   return {
     isLoading,
     error,
     programs,
     currentProgram,
+    likeCount,
+    isLiked,
     createProgram,
     getAllPrograms,
     getProgramById,
     getProgramsByUserId,
-    updateProgram, 
+    updateProgram,
     deleteProgram,
-    updateProgramThumbnail
+    updateProgramThumbnail,     
+    checkLikeStatus,
+    getLikeCount,
+    toggleProgramLike,
   }
 })

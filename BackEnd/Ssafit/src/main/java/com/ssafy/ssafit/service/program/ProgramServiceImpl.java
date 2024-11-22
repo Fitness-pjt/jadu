@@ -76,11 +76,11 @@ public class ProgramServiceImpl implements ProgramService {
 				for (String videoId : program.getVideoIds()) {
 					programDao.insertVideoIfNotExists(videoId);
 				}
-				   
-                for (String videoId : program.getVideoIds()) {
-                    programDao.insertProgramVideo(program.getProgramId(), videoId);
-                }
-				
+
+				for (String videoId : program.getVideoIds()) {
+					programDao.insertProgramVideo(program.getProgramId(), videoId);
+				}
+
 			}
 
 			return programDao.selectByProgramId(program.getProgramId());
@@ -101,6 +101,38 @@ public class ProgramServiceImpl implements ProgramService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+
+	@Override
+	public void updateProgramImgPath(int programId, String filePath) {
+		// TODO Auto-generated method stub
+		try {
+			programDao.updateProgramImgPath(programId, filePath);
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Override
+	public boolean checkProgramLike(int programId, int userId) {
+		return programDao.checkProgramLike(programId, userId);
+	}
+
+	@Override
+	public int getProgramLikeCount(int programId) {
+		return programDao.getProgramLikeCount(programId);
+	}
+
+	@Override
+	@Transactional
+	public boolean toggleProgramLike(int programId, int userId) {
+		if (checkProgramLike(programId, userId)) {
+			programDao.deleteProgramLike(programId, userId);
+			return false;
+		} else {
+			programDao.insertProgramLike(programId, userId);
+			return true;
 		}
 	}
 }

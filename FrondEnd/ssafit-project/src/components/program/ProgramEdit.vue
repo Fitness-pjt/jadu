@@ -189,7 +189,7 @@ const handleThumbnailChange = async (event) => {
 
   try {
     isSubmitting.value = true;
-    const response = await programStore.updateProgramThumbnail(formData);
+    const response = await programStore.updateProgramThumbnail(formData, programId);
 
     // 프로그램 데이터 업데이트
     programData.value = {
@@ -197,6 +197,14 @@ const handleThumbnailChange = async (event) => {
       programImgPath: response.filePath
     };
 
+    // currentProgram 직접 업데이트
+    programStore.currentProgram = {
+      ...programStore.currentProgram,
+      programImgPath: response.filePath
+    };
+
+    await programStore.getProgramById(programId); // 프로그램 정보 다시 불러오기
+    
     alert("썸네일이 성공적으로 변경되었습니다.");
   } catch (error) {
     console.error("썸네일 업로드 에러:", error);

@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.ssafit.model.dto.FileDto;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.service.file.FileService;
+import com.ssafy.ssafit.service.program.ProgramService;
 import com.ssafy.ssafit.service.user.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,10 +26,12 @@ import jakarta.servlet.http.HttpServletRequest;
 public class FileController {
 	FileService fileService;
 	UserService userService;
+	ProgramService programService;
 
-	public FileController(FileService fileService, UserService userService) {
+	public FileController(FileService fileService, UserService userService, ProgramService programService) {
 		this.fileService = fileService;
 		this.userService = userService;
+		this.programService = programService;
 	}
 
 	@Operation(summary = "파일 업로드 API")
@@ -44,13 +47,11 @@ public class FileController {
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String fileCase = request.getHeader("file-case");
 
-		System.out.println(fileCase);
-
 		FileDto fileDto = new FileDto();
 
 		fileDto.setFileCase(fileCase);
 		String filePath = fileService.upload(file, loginUser, fileDto);
-		
+
 		switch (fileCase) {
 
 		case "PROFILE":
@@ -63,8 +64,11 @@ public class FileController {
 		case "QUESTION":
 			break;
 		case "PROGRAM":
-			
-			
+			int programId = Integer.valueOf(request.getHeader("program-id"));
+			System.out.println(programId);
+			System.out.println(filePath);
+			programService.updateProgramImgPath(programId,filePath);
+
 			break;
 
 		}

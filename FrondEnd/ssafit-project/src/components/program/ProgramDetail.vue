@@ -36,9 +36,10 @@
                 <button class="btn btn-primary" @click="startProgram" :disabled="isLoading">
                     프로그램 시작하기
                 </button>
-                <button class="btn btn-outline-primary" @click="toggleLike" :disabled="isLoading">
+                <button class="btn" :class="isLiked ? 'btn-primary' : 'btn-outline-primary'" @click="toggleLike"
+                    :disabled="isLoading">
                     <i :class="isLiked ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
-                    좋아요
+                    좋아요 {{ likeCount > 0 ? `(${likeCount})` : '' }}
                 </button>
 
                 <!-- 작성자용 버튼 -->
@@ -156,8 +157,11 @@ const program = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
 const activeTab = ref('videos');
-const isLiked = ref(false);
 const videos = ref([]);
+
+const isLiked = computed(() => programStore.isLiked);
+const likeCount = computed(() => programStore.likeCount);
+
 
 
 const selectVideo = (video) => {
@@ -194,7 +198,14 @@ const fetchProgramDetail = async () => {
     try {
         isLoading.value = true;
         program.value = await programStore.getProgramById(programId);
-        await fetchProgramVideos(); // 프로그램 정보를 가져온 후 비디오 목록도 가져오기
+
+        // 프로그램 데이터를 가져온 후 비디오와 좋아요 정보도 함께 가져오기
+        await Promise.all([
+            fetchProgramVideos(),
+            programStore.checkLikeStatus(programId),
+            programStore.getLikeCount(programId)
+        ]);
+
     } catch (err) {
         error.value = '프로그램 정보를 불러오는데 실패했습니다.';
         console.error(err);
@@ -229,13 +240,16 @@ const startProgram = async () => {
 
 // 좋아요 토글
 const toggleLike = async () => {
+    if (!loginStore.loginUserId) {
+        alert('로그인이 필요한 기능입니다.');
+        router.push('/login');
+        return;
+    }
+
     try {
-        isLiked.value = !isLiked.value;
-        // TODO: 좋아요 API 호출 로직 구현
         await programStore.toggleProgramLike(programId);
     } catch (err) {
-        isLiked.value = !isLiked.value; // 실패시 원상복구
-        console.error(err);
+        console.error('좋아요 처리 실패:', err);
         alert('좋아요 처리에 실패했습니다.');
     }
 };
@@ -345,9 +359,11 @@ onMounted(() => {
 .btn:hover {
     transform: scale(0.98);
 }
+
 .video-player-wrapper {
     position: relative;
-    padding-top: 56.25%; /* 16:9 비율 */
+    padding-top: 56.25%;
+    /* 16:9 비율 */
     width: 100%;
     background: #000;
 }
@@ -401,5 +417,29 @@ onMounted(() => {
 
 .border-primary {
     box-shadow: 0 0 0 2px #0d6efd;
+}
+.btn-outline-primary:hover .bi-heart,
+.btn-primary .bi-heart-fill {
+    color: #fff;
+}
+
+.btn .bi {
+    margin-right: 0.5rem;
+}
+
+/* 좋아요 버튼 호버 효과 */
+.btn-outline-primary:hover {
+    transform: scale(1.05);
+}
+
+/* 좋아요 활성화 상태의 아이콘 애니메이션 */
+.bi-heart-fill {
+    animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 </style>
