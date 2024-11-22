@@ -1,19 +1,19 @@
+import GoogleCallback from "@/components/login/googleCallback.vue";
+import KakaoCallback from "@/components/login/KakaoCallback.vue";
+import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
+import ProgramDetail from "@/components/program/ProgramDetail.vue";
+import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
+import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
+import { useLoginStore } from "@/stores/login";
+import LoginView from "@/views/LoginView.vue";
+import MyPageView from "@/views/MyPageView.vue";
+import ProgramView from "@/views/ProgramView.vue";
+import SignUpView from "@/views/SignUpView.vue";
+import TodoView from "@/views/TodoView.vue";
 import UserProfileView from "@/views/UserProfileView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import LoginView from "@/views/LoginView.vue";
-import SignUpView from "@/views/SignUpView.vue";
-import MyPageView from "@/views/MyPageView.vue";
-import GoogleCallback from "@/components/login/googleCallback.vue";
-import KakaoCallback from "@/components/login/KakaoCallback.vue";
-import TodoView from "@/views/TodoView.vue";
-import { useUserStore } from "@/stores/user";
-import { useLoginStore } from "@/stores/login";
-import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
-import ProgramView from "@/views/ProgramView.vue";
-import ProgramDetail from "@/components/program/ProgramDetail.vue";
-import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
-import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
+import UserInfoDetail from "@/components/user/UserInfoDetail.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +57,11 @@ const router = createRouter({
           name: "updateUserInfo",
           component: UserInfoUpdate,
         },
+        {
+          path: "detailUserInfo",
+          name: "detailUserInfo",
+          component: UserInfoDetail,
+        },
       ],
       meta: { requiresAuth: true }, // 인증 필요
     },
@@ -89,8 +94,8 @@ const router = createRouter({
     {
       path: "/program/:programId",
       name: "programDetail",
-      component: ProgramDetail 
-    }
+      component: ProgramDetail,
+    },
   ],
 });
 

@@ -22,17 +22,16 @@
       </label>
     </div>
     <div v-if="todo.status">
-      <button @click="updateFavorite(todo)">
+      <button @click="updateFavorite(todo)" class="favorite-btn">
         <span>{{ isFavorite[todo.todoId] ? "❤️" : "🤍" }}</span>
       </button>
     </div>
     <div class="todo-actions" v-if="userId === loginUserId">
       <button class="action-btn edit-btn" @click="onClickUpdateTodo(todo)">
-        <!-- {{ editingStates[todo.todoId] ? "완료" : "수정" }} -->
-        수정
+        <i class="bi bi-pencil"></i>
       </button>
       <button class="action-btn delete-btn" @click="onClickDeleteTodo(todo)">
-        삭제
+        <i class="bi bi-trash"></i>
       </button>
     </div>
   </li>
@@ -141,7 +140,6 @@ onMounted(fetchFavoriteStatus);
 }
 
 .todo-item:hover {
-  /* transform: scale(1.01); */
   background-color: #dff0e9;
 }
 
@@ -152,7 +150,6 @@ onMounted(fetchFavoriteStatus);
 .todo-label {
   display: flex;
   align-items: center;
-  /* cursor: pointer; */
   gap: 1rem;
 }
 
@@ -163,21 +160,14 @@ onMounted(fetchFavoriteStatus);
   accent-color: #42b983;
 }
 
-/* 텍스트 */
 .todo-content {
   color: #333;
   font-size: 1rem;
 }
 
-/* .todo-content.completed {
-  text-decoration: line-through;
-  color: #888;
-} */
-
-/* Input 스타일 */
 .todo-label input[type="text"] {
   border: none;
-  border-bottom: 2px solid #42b983; /* 밑줄 */
+  border-bottom: 2px solid #42b983;
   background: transparent;
   outline: none;
   color: #333;
@@ -187,7 +177,7 @@ onMounted(fetchFavoriteStatus);
 }
 
 .todo-label input[type="text"]:focus {
-  border-bottom: 2px solid #357abd; /* 포커스 시 색 변경 */
+  border-bottom: 2px solid #357abd;
 }
 
 .todo-label input[type="text"]::placeholder {
@@ -206,6 +196,9 @@ onMounted(fetchFavoriteStatus);
   border: none;
   cursor: pointer;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .edit-btn {
@@ -224,5 +217,22 @@ onMounted(fetchFavoriteStatus);
 
 .delete-btn:hover {
   background-color: #c54646;
+}
+
+.favorite-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.favorite-btn:hover {
+  color: #42b983;
+}
+
+.bi {
+  font-size: 1.1rem;
+  margin-right: 0.3rem;
 }
 </style>

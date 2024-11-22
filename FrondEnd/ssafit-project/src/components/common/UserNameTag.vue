@@ -8,7 +8,11 @@
         class="profile-image"
       />
       <div v-else class="profile-placeholder">
-        {{ userData?.userNickname?.[0] }}
+        <img
+          src="../../assets/image/default_profile.png"
+          alt="기본 프로필 이미지"
+          class="profile-image"
+        />
       </div>
     </div>
 
