@@ -42,7 +42,7 @@ public class TodoController {
 //		System.out.println(list);
 
 		if (list == null || list.size() == 0) {
-			return new ResponseEntity<>("이 날짜에 투두 없음", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("이 날짜에 투두 없음", HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Todo>>(list, HttpStatus.OK);
 	}
