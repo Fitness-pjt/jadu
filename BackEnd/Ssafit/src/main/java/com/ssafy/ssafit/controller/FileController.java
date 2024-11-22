@@ -44,13 +44,13 @@ public class FileController {
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String fileCase = request.getHeader("file-case");
 
-//		System.out.println(fileCase);
+		System.out.println(fileCase);
 
 		FileDto fileDto = new FileDto();
 
 		fileDto.setFileCase(fileCase);
 		String filePath = fileService.upload(file, loginUser, fileDto);
-
+		
 		switch (fileCase) {
 
 		case "PROFILE":
@@ -61,6 +61,10 @@ public class FileController {
 		case "BOARD":
 			break;
 		case "QUESTION":
+			break;
+		case "PROGRAM":
+			
+			
 			break;
 
 		}

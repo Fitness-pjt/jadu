@@ -190,6 +190,36 @@ export const useProgramStore = defineStore("program", () => {
     }
   }
 
+  const updateProgramThumbnail = async (formData) => {
+    try {
+      // Authorization 헤더 추가
+      const response = await axios.post(
+        "http://localhost:8080/file/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "access-token": sessionStorage.getItem("access-token"),
+            "file-case": "PROGRAM",
+          },
+        }
+      );
+      if (response.data) {
+        userProfileImg.value = response.data;
+        return response.data;
+      }
+    } catch (error) {
+      // 토큰 관련 에러 처리 추가
+      if (error.response?.status === 401) {
+        console.error("인증 토큰이 유효하지 않습니다.");
+        // 필요한 경우 로그인 페이지로 리다이렉트 추가
+        // router.push('/login');
+      }
+      console.error("이미지 업로드 실패:", error);
+      throw error;
+    }
+  };
+
 
   return {
     isLoading,
@@ -201,6 +231,7 @@ export const useProgramStore = defineStore("program", () => {
     getProgramById,
     getProgramsByUserId,
     updateProgram, 
-    deleteProgram  
+    deleteProgram,
+    updateProgramThumbnail
   }
 })
