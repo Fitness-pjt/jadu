@@ -3,17 +3,39 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.ssafit.model.dao.ProgramDao">
+	<resultMap id="ProgramWithVideosResult"
+		type="com.ssafy.ssafit.model.dto.Program">
+		<id property="programId" column="program_id" />
+		<result property="userId" column="user_id" />
+		<result property="title" column="title" />
+		<result property="description" column="description" />
+		<result property="durationWeeks" column="duration_weeks" />
+		<result property="createdAt" column="created_at" />
+		<result property="level" column="level" />
+		<result property="videoCnt" column="video_cnt" />
+		<result property="programImgPath" column="program_img_path" />
+
+		<!-- video_id들을 담을 List 속성 -->
+		<collection property="videoIds" ofType="String">
+			<result column="video_id" />
+		</collection>
+	</resultMap>
+
 	<insert id="insertProgram" parameterType="Program"
 		useGeneratedKeys="true" keyProperty="programId">
 		INSERT INTO program (
-		user_id, title, description, duration_weeks, level
-		) VALUES (
-		#{userId}, #{title}, #{description}, #{durationWeeks}, #{level}
+		user_id,
+		title, description, duration_weeks, level,video_cnt,program_img_path
+		)
+		VALUES (
+		#{userId}, #{title}, #{description}, #{durationWeeks},
+		#{level}, #{videoCnt}, #{programImgPath}
 		)
 	</insert>
 
 	<insert id="insertVideoIfNotExists" parameterType="String">
-		INSERT IGNORE INTO video (video_id)
+		INSERT IGNORE
+		INTO video (video_id)
 		VALUES (#{videoId})
 	</insert>
 
@@ -21,26 +43,58 @@
 		INSERT INTO program_video (program_id, video_id)
 		VALUES (#{programId}, #{videoId})
 	</insert>
-	
+
 	<!-- 단일 프로그램 조회 -->
-<select id="selectByProgramId" parameterType="int" resultType="com.ssafy.ssafit.model.dto.Program">
-    SELECT *
-    FROM program
-    WHERE program_id = #{programId}
-</select>
 
-<!-- 전체 프로그램 조회 -->
-<select id="selectAllPrograms" resultType="com.ssafy.ssafit.model.dto.Program">
-    SELECT *
-    FROM program
-    ORDER BY created_at DESC
-</select>
+	<select id="selectByProgramId" parameterType="int"
+		resultMap="ProgramWithVideosResult">
+		SELECT p.*, pv.video_id
+		FROM program p
+		LEFT JOIN program_video
+		pv ON p.program_id = pv.program_id
+		WHERE p.program_id = #{programId}
+	</select>
 
-<!-- 사용자별 프로그램 조회 -->
-<select id="selectByUserId" parameterType="int" resultType="com.ssafy.ssafit.model.dto.Program">
-    SELECT *
-    FROM program
-    WHERE user_id = #{userId}
-    ORDER BY created_at DESC
-</select>
+	<!-- 전체 프로그램 조회 -->
+	<select id="selectAllPrograms"
+		resultType="com.ssafy.ssafit.model.dto.Program">
+		SELECT *
+		FROM program
+		ORDER BY created_at DESC
+	</select>
+
+	<!-- 사용자별 프로그램 조회 -->
+	<select id="selectByUserId" parameterType="int"
+		resultType="com.ssafy.ssafit.model.dto.Program">
+		SELECT *
+		FROM program
+		WHERE user_id = #{userId}
+		ORDER BY
+		created_at DESC
+	</select>
+	
+	<!-- 프로그램 수정 -->
+    <update id="updateProgram" parameterType="Program">
+        UPDATE program 
+        SET title = #{title},
+            description = #{description},
+            duration_weeks = #{durationWeeks},
+            level = #{level},
+            video_cnt = #{videoCnt}
+        WHERE program_id = #{programId}
+    </update>
+
+    <!-- 프로그램-비디오 관계 삭제 -->
+    <delete id="deleteProgramVideos" parameterType="int">
+        DELETE FROM program_video 
+        WHERE program_id = #{programId}
+    </delete>
+
+    <!-- 프로그램 삭제 -->
+    <delete id="deleteProgram" parameterType="int">
+        DELETE FROM program 
+        WHERE program_id = #{programId}
+    </delete>
+
+
 </mapper>

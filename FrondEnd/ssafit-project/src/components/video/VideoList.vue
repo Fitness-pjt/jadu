@@ -1,6 +1,27 @@
+<!-- VideoList.vue -->
 <template>
   <div class="container-fluid">
-    <!-- 메인 비디오 캐러셀 -->
+    <!-- 현재 선택된 프로그램 영상 리스트 -->
+    <div v-if="store.selectedVideos.length > 0" class="program-list">
+      <div class="program-header">
+        <h5 class="program-title">프로그램 영상 리스트</h5>
+        <span class="video-count">{{ store.selectedVideos.length }}개의 영상</span>
+      </div>
+      <div class="selected-videos">
+        <div v-for="(video, index) in store.selectedVideos" :key="video.id.videoId" class="selected-video-item">
+          <span class="video-number">{{ index + 1 }}</span>
+          <div class="video-info">
+            <span class="video-title">{{ decodeHTMLEntities(video.snippet.title) }}</span>
+          </div>
+          <button type="button" class="btn btn-outline-danger btn-sm rounded-circle btn-remove"
+            @click="store.toggleVideoSelection(video)" aria-label="영상 제거">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 검색된 비디오 목록 -->
     <swiper :slidesPerView="1" :spaceBetween="20" :navigation="true" :pagination="{ clickable: true }" :breakpoints="{
       '640': {
         slidesPerView: 2,
@@ -21,26 +42,6 @@
         </div>
       </swiper-slide>
     </swiper>
-
-    <!-- 선택된 프로그램 영상 리스트 -->
-    <div v-if="store.selectedVideos.length > 0" class="program-list">
-      <div class="program-header">
-        <h5 class="program-title">프로그램 영상 리스트</h5>
-        <span class="video-count">{{ store.selectedVideos.length }}개의 영상</span>
-      </div>
-      <div class="selected-videos">
-        <div v-for="(video, index) in store.selectedVideos" :key="video.id.videoId" class="selected-video-item">
-          <span class="video-number">{{ index + 1 }}</span>
-          <div class="video-info">
-            <span class="video-title">{{ decodeHTMLEntities(video.snippet.title) }}</span>
-          </div>
-          <button type="button" class="btn btn-outline-danger btn-sm rounded-circle btn-remove"
-            @click="store.toggleVideoSelection(video)" aria-label="영상 제거">
-            <i class="bi bi-x"></i>
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -49,22 +50,53 @@ import { useVideoStore } from "@/stores/video";
 import VideoListItem from "./VideoListItem.vue";
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper/modules';
+import { onMounted, watch } from 'vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+const props = defineProps({
+  initialVideos: {
+    type: Array,
+    default: () => []
+  }
+});
+
 const store = useVideoStore();
+
+// props로 받은 initialVideos를 selectedVideos에 설정
+onMounted(() => {
+  if (props.initialVideos.length > 0) {
+    store.setSelectedVideos(props.initialVideos);
+  }
+});
+
+// initialVideos가 변경될 때마다 selectedVideos 업데이트
+watch(() => props.initialVideos, (newVideos) => {
+  if (newVideos.length > 0) {
+    store.setSelectedVideos(newVideos);
+  }
+}, { deep: true });
 
 const isSelected = (video) => {
   return store.selectedVideos.some(v => v.id.videoId === video.id.videoId);
 };
+
 const decodeHTMLEntities = (text) => {
   const textArea = document.createElement('textarea');
   textArea.innerHTML = text;
   return textArea.value;
 };
+
+// 현재 선택된 비디오들을 외부에서 접근할 수 있도록
+defineExpose({
+  getCurrentVideos: () => store.selectedVideos
+});
 </script>
 
+<style scoped>
+/* 기존 스타일 유지 */
+</style>
 <style scoped>
 /* 캐러셀 스타일 */
 :deep(.swiper) {

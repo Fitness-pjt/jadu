@@ -26,18 +26,20 @@ INSERT INTO userInfo (user_id, gender, age, shape, goal, experience, location, f
 (9, 'MALE', '2030', 'FAT', 'DIET', 1, 'HOME', 3, 1),
 (10, 'FEMALE', '4050', 'SLIM', 'RECOVERY', 2, 'OUTSIDE', 4, 4);
 
+
 -- Program 더미데이터 (10개)
-INSERT INTO program (user_id, title, description, duration_weeks, level) VALUES
-(1, '초보자를 위한 전신운동', '처음 시작하는 분들을 위한 프로그램', 2, 'BEGINNER'),
-(2, '다이어트 특급 프로그램', '체지방 감소에 초점', 1, 'INTERMEDIATE'),
-(3, '근력 강화 프로그램', '근육량 증가를 위한 운동', 2, 'ADVANCED'),
-(4, '홈트레이닝 기초', '집에서 할 수 있는 운동', 1, 'BEGINNER'),
-(5, '스트레칭 마스터', '유연성 향상 프로그램', 1, 'BEGINNER'),
-(6, '체중감량 챌린지', '한달 완성 다이어트', 4, 'INTERMEDIATE'),
-(7, '파워 리프팅', '기초 근력 향상 프로그램', 3, 'ADVANCED'),
-(8, '시니어 건강운동', '노년층을 위한 운동', 2, 'BEGINNER'),
-(9, '코어 강화 운동', '복근 및 코어 강화', 2, 'INTERMEDIATE'),
-(10, '요가 플로우', '요가 기초부터 고급까지', 4, 'INTERMEDIATE');
+INSERT INTO program (user_id, title, description, duration_weeks, level, video_cnt, program_img_path) VALUES
+(1, '초보자를 위한 전신운동', '처음 시작하는 분들을 위한 프로그램', 2, 'BEGINNER', 10),
+(2, '다이어트 특급 프로그램', '체지방 감소에 초점', 1, 'INTERMEDIATE', 7),
+(3, '근력 강화 프로그램', '근육량 증가를 위한 운동', 2, 'ADVANCED', 14),
+(4, '홈트레이닝 기초', '집에서 할 수 있는 운동', 1, 'BEGINNER', 5),
+(5, '스트레칭 마스터', '유연성 향상 프로그램', 1, 'BEGINNER', 6),
+(6, '체중감량 챌린지', '한달 완성 다이어트', 4, 'INTERMEDIATE', 28),
+(7, '파워 리프팅', '기초 근력 향상 프로그램', 3, 'ADVANCED', 15),
+(8, '시니어 건강운동', '노년층을 위한 운동', 2, 'BEGINNER', 8),
+(9, '코어 강화 운동', '복근 및 코어 강화', 2, 'INTERMEDIATE', 12),
+(10, '요가 플로우', '요가 기초부터 고급까지', 4, 'INTERMEDIATE', 20);
+
 
 -- Video 더미데이터 (10개)
 INSERT INTO video (video_id) VALUES
