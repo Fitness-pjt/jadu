@@ -88,9 +88,6 @@
             <span class="badge bg-primary rounded-pill" v-if="keyword || directKeyword">
               {{ getSearchKeyword }}
             </span>
-            <span class="badge bg-success rounded-pill ms-2" v-if="selectedLevel">
-              {{ selectedLevel }}
-            </span>
           </div>
           <button @click="search" class="btn btn-primary rounded-pill px-4">
             <i class="bi bi-search me-2"></i>운동 영상 검색하기
@@ -111,13 +108,12 @@ const directKeyword = ref("");
 const showDirectSearch = ref(false);
 const store = useVideoStore();
 
-// 키워드를 하나의 배열로 통합
 const mainKeywords = [
   '상체', '하체', '가슴', '등', '어깨', '복부',
   '다이어트', '체력 증진', '근력 강화', '근육량 증가', 
   '심폐지구력 향상', '자세 교정', '스트레스 해소', '체형 개선'
 ];
-const levelKeywords = ['초급', '중급', '고급'];
+const levelKeywords = ['Beginner', 'INTERMEDIATE', 'ADVANCED'];
 
 const getSearchKeyword = computed(() => {
   if (directKeyword.value) return directKeyword.value;
