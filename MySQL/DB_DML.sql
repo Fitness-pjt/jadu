@@ -15,6 +15,7 @@ INSERT INTO users (user_nickname, user_email, user_password, user_name) VALUES
 
 -- UserInfo 더미데이터 (10개)
 INSERT INTO userInfo (user_id, gender, age, shape, goal, experience, location, frequency, duration) VALUES
+
 (1, 'MALE', '2030', 'NORMAL', 'MUSCLE', 2, 'FITNESS', 5, 3),
 (2, 'FEMALE', '2030', 'SLIM', 'DIET', 1, 'HOME', 3, 4),
 (3, 'MALE', '4050', 'FAT', 'DIET', 0, 'HOME', 4, 5),
@@ -38,6 +39,8 @@ INSERT INTO program (user_id, title, description, duration_weeks, level, video_c
 (8, '시니어 건강운동', '노년층을 위한 운동', 2, 'BEGINNER', 8),
 (9, '코어 강화 운동', '복근 및 코어 강화', 2, 'INTERMEDIATE', 12),
 (10, '요가 플로우', '요가 기초부터 고급까지', 4, 'INTERMEDIATE', 20);
+
+
 
 -- Video 더미데이터 (10개)
 INSERT INTO video (video_id) VALUES
@@ -117,18 +120,7 @@ INSERT INTO answer (question_id, user_id, content) VALUES
 (9, 10, '중량을 늘리거나 세트 수를 늘려보세요.'),
 (10, 1, '동작에 따라 들숨 날숨을 잘 조절하는 것이 중요합니다.');
 
--- Files 더미데이터 (10개)
-INSERT INTO files (file_case, file_name, extension, user_id, question_id) VALUES
-('PROFILE', 'profile1', 'jpg', 1, NULL),
-('BOARD', 'board1', 'png', 2, NULL),
-('QUESTION', 'question1', 'jpg', 3, 1),
-('PROGRAM', 'program1', 'mp4', 4, NULL),
-('PROFILE', 'profile2', 'png', 5, NULL),
-('BOARD', 'board2', 'jpg', 6, NULL),
-('QUESTION', 'question2', 'png', 7, 2),
-('PROGRAM', 'program2', 'jpg', 8, NULL),
-('PROFILE', 'profile3', 'jpg', 9, NULL),
-('BOARD', 'board3', 'png', 10, NULL);
+
 
 -- Todo 더미데이터 (10개)
 INSERT INTO todo (user_id, program_id, video_id, date, status, content) VALUES
@@ -205,6 +197,7 @@ INSERT INTO userInfo_keyword (user_id, keyword_code) VALUES
 (8, 8),
 (9, 9),
 (10, 10);
+
 -- 모든 테이블에 대한 SELECT 문
 SELECT * FROM users;
 SELECT * FROM userInfo;
@@ -221,3 +214,22 @@ SELECT * FROM todo_likes;
 SELECT * FROM keyword;
 SELECT * FROM program_keyword;
 SELECT * FROM userInfo_keyword;
+
+SELECT
+        ui.user_id,
+        ui.goal,
+        ui.gender,
+        ui.age,
+        ui.shape,
+        ui.experience,
+        ui.location,
+        ui.frequency,
+        ui.duration,
+        COALESCE(GROUP_CONCAT(uik.keyword_code SEPARATOR ','), '') AS keyword
+        FROM userInfo ui
+        LEFT JOIN userInfo_keyword uik ON ui.user_id = uik.user_id
+        WHERE ui.user_id = 11
+        GROUP BY ui.user_id, ui.goal, ui.gender, ui.age, ui.shape, ui.experience,
+        ui.location, ui.frequency, ui.duration;
+
+

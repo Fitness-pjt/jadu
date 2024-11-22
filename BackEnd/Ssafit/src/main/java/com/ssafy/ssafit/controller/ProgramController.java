@@ -1,6 +1,8 @@
 package com.ssafy.ssafit.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.ssafit.model.dto.Program;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.service.program.ProgramService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/program")
@@ -117,32 +122,71 @@ public class ProgramController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
 
-	   @DeleteMapping("/{programId}")
-	   public ResponseEntity<?> deleteProgram(@PathVariable int programId) {
-	       try {
-	           // 현재 로그인한 사용자와 프로그램 작성자가 같은지 확인
-	           Program existingProgram = programService.selectByProgramId(programId);
-	           if (existingProgram == null) {
-	               return new ResponseEntity<>("프로그램을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-	           }
+	@DeleteMapping("/{programId}")
+	public ResponseEntity<?> deleteProgram(@PathVariable int programId) {
+		try {
+			// 현재 로그인한 사용자와 프로그램 작성자가 같은지 확인
+			Program existingProgram = programService.selectByProgramId(programId);
+			if (existingProgram == null) {
+				return new ResponseEntity<>("프로그램을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+			}
 
-				User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-	          if (existingProgram.getUserId() != loginUser.getUserId()) {
-	               return new ResponseEntity<>("프로그램을 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN);
-	          }
+			if (existingProgram.getUserId() != loginUser.getUserId()) {
+				return new ResponseEntity<>("프로그램을 삭제할 권한이 없습니다.", HttpStatus.FORBIDDEN);
+			}
 
-	           boolean isDeleted = programService.deleteProgram(programId);
-	           if (isDeleted) {
-	               return new ResponseEntity<>("프로그램이 성공적으로 삭제되었습니다.", HttpStatus.OK);
-	           } else {
-	               return new ResponseEntity<>("프로그램 삭제에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-	           }
-	       } catch (Exception e) {
-	           return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	       }
-	   }
+			boolean isDeleted = programService.deleteProgram(programId);
+			if (isDeleted) {
+				return new ResponseEntity<>("프로그램이 성공적으로 삭제되었습니다.", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>("프로그램 삭제에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	// 좋아요 체크
+	@GetMapping("/{programId}/like/check")
+	public ResponseEntity<Boolean> checkProgramLike(@PathVariable int programId, HttpServletRequest request) {
+		// 세션에서 userId 가져오기
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		int userId = loginUser.getUserId();
+		if (userId == 0) {
+			return ResponseEntity.ok(false); // 비로그인 사용자는 항상 false
+		}
+		return ResponseEntity.ok(programService.checkProgramLike(programId, userId));
+	}
+
+	// 좋아요 수 조회
+	@GetMapping("/{programId}/like/count")
+	public ResponseEntity<Integer> getProgramLikeCount(@PathVariable int programId) {
+		return ResponseEntity.ok(programService.getProgramLikeCount(programId));
+	}
+
+	// 좋아요 토글
+	@PostMapping("/{programId}/like/toggle")
+	public ResponseEntity<Map<String, Object>> toggleProgramLike(@PathVariable int programId,
+			HttpServletRequest request) {
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		int userId = loginUser.getUserId();
+		if (userId == 0) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		boolean isLiked = programService.toggleProgramLike(programId, userId);
+		int likeCount = programService.getProgramLikeCount(programId);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("liked", isLiked);
+		response.put("likeCount", likeCount);
+
+		return ResponseEntity.ok(response);
+	}
 
 }

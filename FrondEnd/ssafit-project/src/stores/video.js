@@ -86,7 +86,32 @@ export const useVideoStore = defineStore("video", () => {
             isLoading.value = false;
         }
     };
-
+    const getVideosByProgramId = async (programId) => {
+        try {
+            isLoading.value = true;
+            error.value = null;
+            
+            // 프로그램 정보에서 비디오 ID 목록을 가져옵니다
+            const response = await axios.get(`/api/programs/${programId}`);
+            const videoIds = response.data.videoIds || [];
+            
+            // 비디오 ID가 있는 경우에만 YouTube API 호출
+            if (videoIds.length > 0) {
+                const videos = await getVideosByIds(videoIds);
+                videoList.value = videos;
+                return videos;
+            } else {
+                videoList.value = [];
+                return [];
+            }
+        } catch (err) {
+            console.error('Error fetching program videos:', err);
+            error.value = '프로그램의 비디오 목록을 가져오는 중 오류가 발생했습니다.';
+            throw error.value;
+        } finally {
+            isLoading.value = false;
+        }
+    };
     // 선택된 비디오 설정 (프로그램 수정 시 사용)
     const setSelectedVideos = (videos) => {
         selectedVideos.value = [...videos];
@@ -130,6 +155,7 @@ export const useVideoStore = defineStore("video", () => {
         setSelectedVideos,
         isVideoSelected,
         clearAll,
-        clearVideoList
+        clearVideoList,
+        getVideosByProgramId
     };
 });

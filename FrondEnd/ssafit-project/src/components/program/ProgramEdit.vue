@@ -48,17 +48,25 @@
         </div>
 
         <!-- 현재 썸네일 이미지 표시 -->
-        <div class="mb-4" v-if="programStore.currentProgram?.programImgPath">
-          <label class="form-label">현재 썸네일</label>
-          <img :src="programStore.currentProgram.programImgPath" alt="프로그램 썸네일" class="img-thumbnail"
-            style="max-width: 200px">
+        <div class="mb-4">
+          <label class="form-label">프로그램 썸네일</label>
+          <div class="thumbnail-upload-container">
+            <img :src="programStore.currentProgram?.programImgPath" alt="프로그램 썸네일" class="img-thumbnail"
+              style="max-width: 200px">
+            <div class="thumbnail-edit-overlay">
+              <label class="btn btn-light">
+                썸네일 변경
+                <input type="file" accept="image/*" @change="handleThumbnailChange" class="d-none" />
+              </label>
+            </div>
+          </div>
         </div>
 
         <!-- 비디오 목록/수정 영역 -->
         <!-- 비디오 섹션 수정 -->
         <div class="mb-4">
           <h3 class="h5 mb-3">운동 영상 관리</h3>
-          
+
           <!-- 비디오 검색 -->
           <div class="mb-4">
             <h4 class="h6">새 영상 검색</h4>
@@ -114,7 +122,7 @@ const programData = ref({
 const fetchProgramData = async () => {
   try {
     await programStore.getProgramById(programId);
-    
+
     // 기존 데이터로 폼 초기화
     programData.value = {
       title: programStore.currentProgram.title,
@@ -139,10 +147,10 @@ const fetchProgramData = async () => {
 const updateProgram = async () => {
   try {
     isSubmitting.value = true;
-    
+
     // VideoList 컴포넌트에서 현재 선택된 비디오들 가져오기
     const currentVideos = videoListRef.value.getCurrentVideos();
-    
+
     const updatedProgram = {
       ...programData.value,
       videoIds: currentVideos.map(video => video.id.videoId),
@@ -161,7 +169,51 @@ const updateProgram = async () => {
     isSubmitting.value = false;
   }
 };
+const handleThumbnailChange = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
 
+  if (!file.type.startsWith("image/")) {
+    alert("이미지 파일만 업로드 가능합니다.");
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert("파일 크기는 5MB를 초과할 수 없습니다.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("fileCase", "PROGRAM");
+
+  try {
+    isSubmitting.value = true;
+    const response = await programStore.updateProgramThumbnail(formData, programId);
+
+    // 프로그램 데이터 업데이트
+    programData.value = {
+      ...programData.value,
+      programImgPath: response.filePath
+    };
+
+    // currentProgram 직접 업데이트
+    programStore.currentProgram = {
+      ...programStore.currentProgram,
+      programImgPath: response.filePath
+    };
+
+    await programStore.getProgramById(programId); // 프로그램 정보 다시 불러오기
+    
+    alert("썸네일이 성공적으로 변경되었습니다.");
+  } catch (error) {
+    console.error("썸네일 업로드 에러:", error);
+    alert("썸네일 업로드에 실패했습니다.");
+  } finally {
+    isSubmitting.value = false;
+    event.target.value = "";
+  }
+};
 // 뒤로 가기
 const goBack = () => {
   router.back();
@@ -181,5 +233,47 @@ onMounted(() => {
 
 .img-thumbnail {
   border-radius: 8px;
+}
+
+.thumbnail-upload-container {
+  position: relative;
+  display: inline-block;
+}
+
+.thumbnail-edit-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.thumbnail-upload-container:hover .thumbnail-edit-overlay {
+  opacity: 1;
+}
+
+.thumbnail-edit-overlay .btn {
+  color: #000;
+  background: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.thumbnail-edit-overlay .btn:hover {
+  transform: scale(1.05);
+  background: #f8f9fa;
+}
+
+.img-thumbnail {
+  border-radius: 8px;
+  object-fit: cover;
 }
 </style>
