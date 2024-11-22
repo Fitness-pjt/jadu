@@ -1,7 +1,6 @@
 import GoogleCallback from "@/components/login/googleCallback.vue";
 import KakaoCallback from "@/components/login/KakaoCallback.vue";
 import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
-import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
 import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
 import { useLoginStore } from "@/stores/login";
