@@ -53,3 +53,34 @@ export const formatDisplayAnswer = (questionId, answer) => {
       return answer ? "네" : "아직이요";
   }
 };
+
+export const formatExerciseInfo = (exerciseInfo) => {
+  return {
+    gender: formatDisplayAnswer("gender", exerciseInfo.gender),
+    age: formatDisplayAnswer("age", exerciseInfo.age),
+    shape: formatDisplayAnswer("shape", exerciseInfo.shape),
+    goal: formatDisplayAnswer("goal", exerciseInfo.goal),
+    experience: formatDisplayAnswer("experience", exerciseInfo.experience),
+    location: formatDisplayAnswer("location", exerciseInfo.location),
+    frequency: formatDisplayAnswer("frequency", exerciseInfo.frequency),
+    duration: formatDisplayAnswer("duration", exerciseInfo.duration),
+    keyword: exerciseInfo.keyword.map((key) => {
+      switch (key) {
+        case 1:
+          return "상체";
+        case 2:
+          return "하체";
+        case 3:
+          return "가슴";
+        case 4:
+          return "등";
+        case 5:
+          return "어깨";
+        case 6:
+          return "복부";
+        default:
+          return "기타";
+      }
+    }),
+  };
+};

@@ -3,13 +3,16 @@
     <div class="container d-flex justify-content-between align-items-center">
       <!-- Logo Section -->
       <h1 class="logo fs-2 fw-bold m-0">
-        <RouterLink :to="{ name: 'home' }" class="text-decoration-none logo-text">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="text-decoration-none logo-text"
+        >
           <i class="bi bi-heart-pulse-fill me-2"></i>SSAFIT
         </RouterLink>
       </h1>
 
       <!-- Hamburger Menu Button -->
-      <button 
+      <button
         class="navbar-toggler d-lg-none"
         type="button"
         @click="toggleMenu"
@@ -19,36 +22,63 @@
       </button>
 
       <!-- Navigation Links -->
-      <nav class="nav gap-4" :class="{ 'show': isMenuOpen }">
-        <RouterLink :to="{ name: 'home' }" class="nav-link px-3 rounded-pill" @click="closeMenu">
+      <nav class="nav gap-4" :class="{ show: isMenuOpen }">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="nav-link px-3 rounded-pill"
+          @click="closeMenu"
+        >
           <i class="bi bi-house-door me-1"></i>홈
         </RouterLink>
-        <RouterLink :to="{ name: 'program' }" class="nav-link px-3 rounded-pill" @click="closeMenu">
+        <RouterLink
+          :to="{ name: 'program' }"
+          class="nav-link px-3 rounded-pill"
+          @click="closeMenu"
+        >
           <i class="bi bi-play-circle me-1"></i>프로그램
         </RouterLink>
-        <RouterLink :to="{ name: 'mypage' }" class="nav-link px-3 rounded-pill" v-if="token" @click="closeMenu">
+        <RouterLink
+          :to="{ name: 'mypage' }"
+          class="nav-link px-3 rounded-pill"
+          v-if="token"
+          @click="closeMenu"
+        >
           <i class="bi bi-person me-1"></i>마이페이지
         </RouterLink>
       </nav>
 
       <!-- Authentication Links -->
-      <div class="auth d-flex align-items-center gap-3" :class="{ 'show': isMenuOpen }">
+      <div
+        class="auth d-flex align-items-center gap-3"
+        :class="{ show: isMenuOpen }"
+      >
         <div v-if="!token" class="d-flex gap-3">
-          <RouterLink :to="{ name: 'login' }" class="btn btn-outline-primary rounded-pill px-4" @click="closeMenu">
+          <RouterLink
+            :to="{ name: 'login' }"
+            class="btn btn-outline-primary rounded-pill px-4"
+            @click="closeMenu"
+          >
             <i class="bi bi-box-arrow-in-right me-1"></i>로그인
           </RouterLink>
-          <RouterLink :to="{ name: 'signup' }" class="btn btn-primary rounded-pill px-4" @click="closeMenu">
+          <RouterLink
+            :to="{ name: 'signup' }"
+            class="btn btn-primary rounded-pill px-4"
+            @click="closeMenu"
+          >
             <i class="bi bi-person-plus me-1"></i>회원가입
           </RouterLink>
         </div>
         <div v-else class="d-flex align-items-center gap-3">
           <div class="welcome">
-            <RouterLink :to="getRoute(loginStore.loginUserId)" class="btn btn-light rounded-pill" @click="closeMenu">
-              <i class="bi bi-person-circle me-2"></i>
+            <RouterLink
+              :to="getRoute(loginStore.loginUserId)"
+              class="btn btn-light"
+              @click="closeMenu"
+            >
               <UserNameTag :user-id="loginStore.loginUserId" />
             </RouterLink>
           </div>
-          <button @click="logout" class="btn btn-outline-danger rounded-pill">
+          <button @click="logout" class="btn btn-outline-danger">
             <i class="bi bi-box-arrow-right me-1"></i>로그아웃
           </button>
         </div>
@@ -58,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 import { useLoginStore } from "@/stores/login";
 import UserNameTag from "./UserNameTag.vue";
 
@@ -89,25 +119,26 @@ const getRoute = (userId) => {
 <style scoped>
 .header {
   height: 6rem;
-  background-color: #FBFBFB;
+  background-color: #fbfbfb;
   border-bottom: 1px solid rgba(198, 231, 255, 0.3);
 }
 
 .logo-text {
-  color: #133E87;
+  color: #133e87;
 }
 
 .nav-link {
-  color: #133E87;
+  color: #133e87;
   font-size: 1.2rem;
   transition: all 0.3s ease;
   border: 2px solid transparent;
 }
 
-.nav-link:hover, .nav-link.router-link-active {
-  background-color: #D4F6FF;
-  color: #133E87;
-  border-color: #C6E7FF;
+.nav-link:hover,
+.nav-link.router-link-active {
+  background-color: #d4f6ff;
+  color: #133e87;
+  border-color: #c6e7ff;
 }
 
 .navbar-toggler {
@@ -115,47 +146,47 @@ const getRoute = (userId) => {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #133E87;
+  color: #133e87;
   cursor: pointer;
 }
 
 .btn-primary {
-  background-color: #C6E7FF;
-  border-color: #C6E7FF;
-  color: #133E87;
+  background-color: #c6e7ff;
+  border-color: #c6e7ff;
+  color: #133e87;
 }
 
 .btn-primary:hover {
-  background-color: #D4F6FF;
-  border-color: #C6E7FF;
-  color: #133E87;
+  background-color: #d4f6ff;
+  border-color: #c6e7ff;
+  color: #133e87;
 }
 
 .btn-outline-primary {
-  color: #133E87;
-  border-color: #C6E7FF;
+  color: #133e87;
+  border-color: #c6e7ff;
 }
 
 .btn-outline-primary:hover {
-  background-color: #D4F6FF;
-  border-color: #C6E7FF;
-  color: #133E87;
+  background-color: #d4f6ff;
+  border-color: #c6e7ff;
+  color: #133e87;
 }
 
 .btn-light {
-  background-color: #FBFBFB;
-  border-color: #C6E7FF;
-  color: #133E87;
+  background-color: #fbfbfb;
+  /* border-color: #c6e7ff; */
+  color: #133e87;
 }
 
 .btn-light:hover {
-  background-color: #D4F6FF;
-  color: #133E87;
+  background-color: #d4f6ff;
+  color: #133e87;
 }
 
 .btn-outline-danger {
   color: #ff6b6b;
-  border-color: #ff6b6b;
+  /* border-color: #ff6b6b; */
 }
 
 .btn-outline-danger:hover {
@@ -173,19 +204,21 @@ const getRoute = (userId) => {
     display: block;
   }
 
-  .nav, .auth {
+  .nav,
+  .auth {
     display: none !important;
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: #FBFBFB;
+    background-color: #fbfbfb;
     padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
   }
 
-  .nav.show, .auth.show {
+  .nav.show,
+  .auth.show {
     display: flex !important;
     flex-direction: column;
   }
@@ -203,7 +236,8 @@ const getRoute = (userId) => {
     width: 100%;
   }
 
-  .nav-link, .btn {
+  .nav-link,
+  .btn {
     width: 100%;
     text-align: center;
     margin: 0.5rem 0;

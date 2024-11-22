@@ -5,6 +5,14 @@
     <!-- 프로필 이미지 섹션 -->
     <div class="d-flex flex-column align-items-center mb-4">
       <img
+        v-if="!userStore.userProfileImg"
+        src="../../assets/image/default_profile.png"
+        alt="프로필 이미지"
+        class="rounded-circle img-thumbnail mb-3"
+        style="width: 8rem; height: 8rem; object-fit: cover"
+      />
+      <img
+        v-else
         :src="userStore.userProfileImg"
         alt="프로필 이미지"
         class="rounded-circle img-thumbnail mb-3"
@@ -31,14 +39,34 @@
             type="text"
             class="form-control"
             :placeholder="userStore.userNickname"
+            @input="resetNicknameCheck"
+            :class="{
+              'is-valid': isNicknameChecked && isNicknameAvailable,
+              'is-invalid': isNicknameChecked && !isNicknameAvailable,
+            }"
           />
           <button
             @click.prevent="checkNickname"
             class="btn btn-outline-secondary"
             type="button"
+            :disabled="!formData.nickname || isNicknameChecked"
           >
             중복확인
           </button>
+        </div>
+        <div class="feedback-message" v-if="isNicknameChecked">
+          <span
+            :class="{
+              'text-success': isNicknameAvailable,
+              'text-danger': !isNicknameAvailable,
+            }"
+          >
+            {{
+              isNicknameAvailable
+                ? "사용 가능한 닉네임입니다."
+                : "이미 사용 중인 닉네임입니다."
+            }}
+          </span>
         </div>
       </div>
 
@@ -83,7 +111,7 @@
         </button>
         <button
           type="button"
-          @click="router.go(-1)"
+          @click="cancelUpdateProfile"
           class="btn btn-secondary flex-grow-1"
         >
           취소
@@ -110,8 +138,6 @@ const formData = ref({
   name: "",
   status: true,
 });
-
-const isNicknameChecked = ref(false);
 
 // 초기 데이터 로드
 onMounted(() => {
@@ -144,6 +170,7 @@ const handleImageChange = async (event) => {
 
   try {
     const imagePath = await userStore.uploadProfileImage(formData);
+    console.log("imagePath :>> ", imagePath);
   } catch (error) {
     console.error("이미지 업로드 에러:", error);
     alert("이미지 업로드에 실패했습니다.");
@@ -152,6 +179,10 @@ const handleImageChange = async (event) => {
 };
 
 // 닉네임 중복 체크
+
+const isNicknameChecked = ref(false);
+const isNicknameAvailable = ref(false);
+
 const checkNickname = async () => {
   if (!formData.value.nickname) {
     alert("닉네임을 입력해주세요.");
@@ -159,18 +190,29 @@ const checkNickname = async () => {
   }
 
   try {
-    const isAvailable = await userStore.checkNicknameDuplicate(
+    // 기존 닉네임과 동일한 경우, 중복 확인 없이 사용 가능하다고 처리
+    if (formData.value.nickname === userStore.userNickname) {
+      isNicknameChecked.value = true;
+      isNicknameAvailable.value = true;
+      return;
+    }
+
+    const response = await userStore.checkNicknameDuplicate(
       formData.value.nickname
     );
-    if (isAvailable) {
-      isNicknameChecked.value = true;
-      alert("사용 가능한 닉네임입니다.");
-    } else {
-      alert("이미 사용중인 닉네임입니다.");
-    }
+    isNicknameChecked.value = true;
+    isNicknameAvailable.value = response;
   } catch (error) {
-    alert("중복 확인 중 오류가 발생했습니다.");
+    console.error("닉네임 중복 체크 중 오류 발생:", error);
+    isNicknameChecked.value = true;
+    isNicknameAvailable.value = false;
   }
+};
+
+// 재입력 시 체크 상태 초기화
+const resetNicknameCheck = () => {
+  isNicknameChecked.value = false;
+  isNicknameAvailable.value = false;
 };
 
 // 폼 제출 처리
@@ -194,6 +236,16 @@ const handleSubmit = async () => {
     alert("회원정보 수정에 실패했습니다.");
   }
   window.location.href = "/mypage";
+};
+
+// 취소하기 버튼
+const cancelUpdateProfile = (event) => {
+  event.preventDefault();
+  const confirm = window.confirm("정말로 취소하시겠습니까?");
+  if (confirm) {
+    router.replace({ name: "mypage" });
+  }
+  return;
 };
 </script>
 

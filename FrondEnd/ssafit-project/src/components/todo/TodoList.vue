@@ -59,12 +59,14 @@ watch(selectedDate, (newDate) => {
 watch(
   () => todoList.value,
   (newList, oldList) => {
-    // 투두 리스트 변경 시 수정 상태 초기화
-    newList.forEach((todo) => {
-      if (!editingStates.value.hasOwnProperty(todo.todoId)) {
-        editingStates.value[todo.todoId] = false;
-      }
-    });
+    if (newList.length > 0) {
+      // 투두 리스트 변경 시 수정 상태 초기화
+      newList.forEach((todo) => {
+        if (!editingStates.value.hasOwnProperty(todo.todoId)) {
+          editingStates.value[todo.todoId] = false;
+        }
+      });
+    }
   },
   { deep: true, immediate: true }
 );

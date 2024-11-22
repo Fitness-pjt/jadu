@@ -3,10 +3,8 @@
   <div class="card h-100">
     <!-- 썸네일 공간 -->
     <div class="thumbnail-container">
-      <img v-if="program?.programImgPath" 
-           :src="program?.programImgPath" 
-           :alt="program?.title"
-           class="thumbnail-image" />
+      <img v-if="program?.programImgPath" :src="program?.programImgPath" :alt="program?.title"
+        class="thumbnail-image" />
       <div v-else class="profile-placeholder">
         {{ userData?.userNickname?.[0] }}
       </div>
@@ -107,8 +105,10 @@ const formatDate = (dateString) => {
 .thumbnail-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 이미지 비율 유지하면서 컨테이너 채우기 */
-  object-position: center; /* 이미지 중앙 정렬 */
+  object-fit: cover;
+  /* 이미지 비율 유지하면서 컨테이너 채우기 */
+  object-position: center;
+  /* 이미지 중앙 정렬 */
 }
 
 .profile-placeholder {
