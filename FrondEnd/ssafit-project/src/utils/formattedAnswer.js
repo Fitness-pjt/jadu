@@ -30,7 +30,24 @@ export const formatAnswer = (questionId, answer) => {
       if (answer === "야외") return "OUTSIDE";
       if (answer === "기타") return "ETC";
     case "keyword":
-      return answer;
+      return answer.map((key) => {
+        switch (key) {
+          case "상체":
+            return 1;
+          case "하체":
+            return 2;
+          case "가슴":
+            return 3;
+          case "등":
+            return 4;
+          case "어깨":
+            return 5;
+          case "복부":
+            return 6;
+          default:
+            return 0; // 기타
+        }
+      });
     case "frequency":
       if (answer === "주 1회") return 1;
       if (answer === "주 2회") return 2;
@@ -45,4 +62,18 @@ export const formatAnswer = (questionId, answer) => {
     case "fighting":
       return answer === "네" ? true : false;
   }
+};
+
+export const formatExerciseInfoForServer = (exerciseInfo) => {
+  return {
+    gender: formatAnswer("gender", exerciseInfo.gender),
+    age: formatAnswer("age", exerciseInfo.age),
+    shape: formatAnswer("shape", exerciseInfo.shape),
+    goal: formatAnswer("goal", exerciseInfo.goal),
+    experience: formatAnswer("experience", exerciseInfo.experience),
+    location: formatAnswer("location", exerciseInfo.location),
+    frequency: formatAnswer("frequency", exerciseInfo.frequency),
+    duration: formatAnswer("duration", exerciseInfo.duration),
+    keyword: formatAnswer("keyword", exerciseInfo.keyword),
+  };
 };

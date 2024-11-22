@@ -18,7 +18,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         withCredentials: true,
       })
       .then((res) => {
-        console.log("API 응답 데이터: ", res.data); // 응답 데이터 구조 확인
+        // console.log("API 응답 데이터: ", res.data); // 응답 데이터 구조 확인
         userInfoList.value = res.data || {}; // 응답 데이터를 userInfoList에 할당
         // console.log("userInfoList.value :>> ", userInfoList.value);
         if (Object.keys(userInfoList.value).length > 0) {
@@ -85,25 +85,6 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     duration: "",
     fighting: "",
   });
-
-  // const updateExerciseInfo = (newInfo) => {
-  //   exerciseInfo.value = { ...exerciseInfo.value, ...newInfo };
-  // };
-
-  // const resetExerciseInfo = () => {
-  //   exerciseInfo.value = {
-  //     gender: "",
-  //     age: "",
-  //     shape: "",
-  //     goal: "",
-  //     experience: 1,
-  //     location: "",
-  //     keyword: [],
-  //     frequency: "",
-  //     duration: "",
-  //     fighting: "",
-  //   };
-  // };
 
   return {
     sendAnswerToServer,
