@@ -93,22 +93,26 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import BaseCheckboxGroup from "./BaseCheckboxGroup.vue";
 import BaseRadioGroup from "./BaseRadioGroup.vue";
 import BaseRangeGroup from "./BaseRangeGroup.vue";
 import { useUserInfoStore } from "@/stores/userInfo";
 
 const userInfoStore = useUserInfoStore();
-const exerciseInfo = userInfoStore.exerciseInfo;
-const userInfoList = userInfoStore.userInfoList;
-console.log("userInfoList", userInfoList.value);
+const exerciseInfo = computed(() => userInfoStore.exerciseInfo);
+const userInfoList = computed(() => userInfoStore.userInfoList);
 
-// const userInfoExists = computed(
-//   () => Object.keys(exerciseInfo.value).length > 0
-// );
-console.log("exerciseInfo :>> ", exerciseInfo);
-// console.log("exerciseInfo :>> ", exerciseInfo.gender == "");
+watch(
+  () => userInfoList.value,
+  (newList, oldList) => {
+    exerciseInfo.value = newList;
+    console.log("exerciseInfo :>> ", exerciseInfo.value);
+  },
+  { deep: true }
+);
+
+console.log("exerciseInfo :>> ", exerciseInfo.gender == "");
 
 const submitForm = () => {
   // 폼 제출 로직 (예: API 호출, 유효성 검사 등)

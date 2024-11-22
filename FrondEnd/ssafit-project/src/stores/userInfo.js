@@ -6,7 +6,7 @@ import router from "@/router";
 const REST_API_URL = "http://localhost:8080/user/info";
 export const useUserInfoStore = defineStore("userInfo", () => {
   // userInfoList 초기화
-  const userInfoList = ref(null);
+  const userInfoList = ref({});
 
   const getUserInfo = () => {
     axios
@@ -20,6 +20,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
       .then((res) => {
         console.log("API 응답 데이터: ", res.data); // 응답 데이터 구조 확인
         userInfoList.value = res.data || {}; // 응답 데이터를 userInfoList에 할당
+        // console.log("userInfoList.value :>> ", userInfoList.value);
         if (Object.keys(userInfoList.value).length > 0) {
           exerciseInfo.value = userInfoList.value; // 데이터가 있을 경우만 업데이트
         }
