@@ -75,7 +75,8 @@
 		experience = #{experience},
 		location = #{location},
 		frequency =
-		#{frequency}
+		#{frequency},
+		duration = #{duration}
 		WHERE user_id = #{userId}
 	</update>
 

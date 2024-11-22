@@ -90,7 +90,7 @@ public class UserController {
 	@PostMapping("/info")
 	@Operation(summary = "운동정보 등록", description = "운동정보 등록")
 	public ResponseEntity<?> createUserInfo(@RequestBody UserInfo userInfo) {
-		System.out.println(userInfo);
+		System.out.println("유저 운동정보 등록 : " + userInfo);
 
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -109,7 +109,7 @@ public class UserController {
 		UserInfo userInfo = userInfoService.selectUserInfo(loginUser.getUserId());
 
 		if (userInfo == null) {
-			return new ResponseEntity<>("등록된 운동 정보가 없습니다.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("등록된 운동 정보가 없습니다.", HttpStatus.NO_CONTENT);
 		}
 
 		// System.out.println("유저 운동 정보 조회하기 : " + userInfo);
@@ -120,7 +120,7 @@ public class UserController {
 	@Operation(summary = "운동정보 수정", description = "운동정보 수정")
 	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo userInfo) {
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		// System.out.println("유저 운동정보 수정 : " + userInfo);
+		 System.out.println("유저 운동정보 수정 : " + userInfo);
 
 
 		userInfo.setUserId(loginUser.getUserId());

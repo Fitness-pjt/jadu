@@ -21,13 +21,22 @@
 <script setup>
 import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
 const loginUserId = loginStore.loginUserId;
 
 const selectedDate = computed(() => todoStore.selectedDate);
+const todoList = computed(() => todoStore.todoList);
+
+watch(
+  () => todoList.value,
+  (newList, oldList) => {
+    console.log("newList :>> ", newList);
+  },
+  { deep: true }
+);
 
 const todo = ref({
   date: selectedDate,
@@ -35,13 +44,13 @@ const todo = ref({
 });
 
 // Todo 추가하기
-const addTodo = async () => {
+const addTodo = () => {
   if (!todo.value.content.trim()) {
     alert("todo를 작성해주세요!");
     return;
   }
 
-  await todoStore.addTodo(todo.value, loginUserId); // Todo 추가
+  todoStore.addTodo(todo.value, loginUserId); // Todo 추가
   todo.value.content = ""; // 빈값으로 v-model 초기화
   todoStore.getTodoList(loginUserId, selectedDate.value);
 };

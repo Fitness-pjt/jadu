@@ -1,7 +1,6 @@
 import GoogleCallback from "@/components/login/googleCallback.vue";
 import KakaoCallback from "@/components/login/KakaoCallback.vue";
 import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
-import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
 import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
 import { useLoginStore } from "@/stores/login";
@@ -14,6 +13,8 @@ import UserProfileView from "@/views/UserProfileView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import UserInfoDetail from "@/components/user/UserInfoDetail.vue";
+import ProgramDetail from "@/components/program/ProgramDetail.vue";
+import ProgramEdit from "@/components/program/ProgramEdit.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -94,8 +95,13 @@ const router = createRouter({
     {
       path: "/program/:programId",
       name: "programDetail",
-      component: ProgramDetail,
+      component: ProgramDetail 
     },
+    {
+      path: "/program/edit/:programId",
+      name: "programEdit",
+      component: ProgramEdit
+    }
   ],
 });
 

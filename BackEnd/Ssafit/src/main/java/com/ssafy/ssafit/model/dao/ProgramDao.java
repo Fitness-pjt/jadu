@@ -19,4 +19,11 @@ public interface ProgramDao {
     
     // 사용자별 프로그램 조회
     List<Program> selectByUserId(int userId);
+    
+    int deleteProgramVideos(int programId);
+    
+    int updateProgram(Program program);
+    
+    int deleteProgram(int programId);
+    
 }

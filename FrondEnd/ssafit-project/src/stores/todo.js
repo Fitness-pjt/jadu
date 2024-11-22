@@ -34,8 +34,6 @@ export const useTodoStore = defineStore("todo", () => {
 
   // 투두 추가하기
   const addTodo = (todo, userId) => {
-    // console.log("todo.date :>> ", todo.date);
-    // console.log("userId :>> ", userId);
     const REST_API_URL = getRestApiUrl(userId) + `/${todo.date}`;
     axios
       .post(REST_API_URL, todo, {
