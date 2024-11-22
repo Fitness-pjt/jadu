@@ -1,13 +1,19 @@
 <template>
-  <div>
-    <p>MyPage 입니다.</p>
+  <div class="container mt-4">
+    <div class="d-flex mb-3">
+      <RouterLink :to="{ name: 'mypage' }" class="btn">
+        <i class="bi bi-house-door-fill"></i> MyPage
+      </RouterLink>
 
-    <RouterLink :to="{ name: 'updateProfile' }">
-      <button>프로필 수정하기</button></RouterLink
-    >
-    <RouterLink :to="{ name: 'updateUserInfo' }">
-      <button>운동정보 수정하기</button></RouterLink
-    >
+      <RouterLink :to="{ name: 'updateProfile' }" class="btn">
+        <i class="bi bi-pencil-fill"></i> 프로필 수정하기
+      </RouterLink>
+
+      <RouterLink :to="{ name: 'detailUserInfo' }" class="btn">
+        <i class="bi bi-eye-fill"></i> 운동 정보 보기
+      </RouterLink>
+    </div>
+
     <RouterView />
   </div>
 </template>
@@ -22,9 +28,24 @@ let loginUserId = loginStore.loginUserId;
 </script>
 
 <style scoped>
-p {
-  font-size: larger;
-  font-weight: bold;
-  padding: 1rem;
+.container {
+  max-width: 900px;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+}
+
+.btn {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn i {
+  margin-right: 8px;
 }
 </style>

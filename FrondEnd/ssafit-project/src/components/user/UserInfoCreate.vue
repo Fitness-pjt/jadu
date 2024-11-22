@@ -37,15 +37,38 @@ const loginStore = useLoginStore();
 const currentQuestionIndex = ref(0);
 const answers = ref({}); // 답변을 담는 객체
 const isQuestionPage = ref(true); // 질문 화면 페이지
+const isValidInput = ref(true);
+
+// 답변 유효성 검사
+const validateAnswer = (answer) => {
+  // 중간 checkbox 데이터 선택 안 하면 안 넘어가게 하기
+  if (answer.length <= 0) {
+    console.log("answer.length :>> ", answer.length);
+    return false;
+  }
+
+  return true;
+};
 
 // 다음 질문으로 넘어갈 때, answer로 선택한 답변 answers 객체에 담기
 const handleNextQuestion = (answer) => {
+  // 답변이 다 작성되지 않은 경우, alert 띄우고 return
+  if (!validateAnswer(answer)) {
+    isValidInput.value = false;
+    alert("답변을 입력해주세요.");
+    return;
+  }
+
+  isValidInput.value = true;
+
   const question = questions[currentQuestionIndex.value];
 
   // 선택된 데이터를 DB에 넣을 수 있는 형태로 데이터 가공하기
   const formattedAnswer = formatAnswer(question.id, answer);
 
   // 현재 질문의 ID와 값을 저장
+  console.log("answer :>> ", answer);
+
   answers.value[question.id] = formattedAnswer;
 
   if (currentQuestionIndex.value === questions.length - 1) {

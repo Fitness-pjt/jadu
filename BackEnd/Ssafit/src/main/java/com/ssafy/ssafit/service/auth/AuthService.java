@@ -1,5 +1,7 @@
 package com.ssafy.ssafit.service.auth;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
@@ -59,7 +61,9 @@ public class AuthService {
 
 			if (user == null) {
 				// 새로운 회원일 경우 회원가입 처리
-				User newUser = new User(googleUser.getEmail(), googleUser.getName(), googleUser.getName());
+				// userNickname을 이름 뒤에 UUID 붙여서 유니크하게 만들기
+				String userNickname = googleUser.getName() + UUID.randomUUID().toString().substring(0,8);
+				User newUser = new User(googleUser.getEmail(), googleUser.getName(), userNickname);
 
 				userService.signup(newUser);
 				user = userService.searchByEmail(googleUser.getEmail());
@@ -78,7 +82,8 @@ public class AuthService {
 			
 			if(user == null) {
 				// 새로운 회원일 경우, 회원가입 시키기
-				User newUser = new User(kakaoUser.getEmail(), kakaoUser.getName(), kakaoUser.getName(), kakaoUser.getProfileImgPath());
+				String userNickname = kakaoUser.getName() + UUID.randomUUID().toString().substring(0,8);
+				User newUser = new User(kakaoUser.getEmail(), kakaoUser.getName(), userNickname, kakaoUser.getProfileImgPath());
 				
 				userService.signup(newUser);
 				user = userService.searchByEmail(kakaoUser.getEmail());

@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.ssafy.ssafit.model.dao.UserInfoDao">
+	<resultMap id="UserInfoMap"
+		type="com.ssafy.ssafit.model.dto.UserInfo">
+		<id property="userId" column="user_id" />
+		<result property="goal" column="goal" />
+		<result property="gender" column="gender" />
+		<result property="age" column="age" />
+		<result property="shape" column="shape" />
+		<result property="experience" column="experience" />
+		<result property="location" column="location" />
+		<result property="frequency" column="frequency" />
+		<result property="duration" column="duration" />
+		<collection property="keyword" ofType="java.lang.Integer">
+			<result column="keyword_code" />
+		</collection>
+	</resultMap>
 	<!-- 사용자 운동 정보 추가 -->
 	<insert id="insertUserInfo" parameterType="UserInfo">
 		INSERT INTO userInfo (
@@ -29,20 +43,25 @@
 		)
 	</insert>
 
-	<!-- 사용자 운동 정보 조회 -->
+
+
 	<select id="selectUserInfo" parameterType="Integer"
-		resultType="UserInfo">
+		resultMap="UserInfoMap">
 		SELECT
-		user_id as userId,
-		goal,
-		gender,
-		age,
-		shape,
-		experience,
-		location,
-		frequency
-		FROM userInfo
-		WHERE user_id = #{userId} 
+		ui.user_id,
+		ui.goal,
+		ui.gender,
+		ui.age,
+		ui.shape,
+		ui.experience,
+		ui.location,
+		ui.frequency,
+		ui.duration,
+		uik.keyword_code
+		FROM userInfo ui
+		LEFT JOIN userInfo_keyword uik ON ui.user_id =
+		uik.user_id
+		WHERE ui.user_id = #{userId}
 	</select>
 
 	<!-- 사용자 운동 정보 수정 -->
@@ -62,7 +81,8 @@
 
 	<!-- 사용자 info 업데이트 시, keyword 삭제 -->
 	<delete id="deleteKeyword" parameterType="Integer">
-		DELETE FROM userInfo_keyword
+		DELETE FROM
+		userInfo_keyword
 		WHERE user_id = #{loginUserId}
 	</delete>
 
