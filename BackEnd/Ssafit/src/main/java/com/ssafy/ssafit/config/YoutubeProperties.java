@@ -3,16 +3,18 @@ package com.ssafy.ssafit.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @ConfigurationProperties(prefix = "youtube.api")
+
 public class YoutubeProperties {
 	private String key; // API 키
-	private int maxResults = 10; // 검색 결과 수
+	private int maxResults; // 검색 결과 수
 	private String regionCode = "KR"; // 지역 코드
 	private String relevanceLanguage = "ko"; // 관련 언어
 	private String order = "relevance"; // 정렬 기준
 	private boolean safeSearch = true; // 세이프 서치 여부
-	private String videoDuration = "any"; // 비디오 길이
+	private String videoDuration = "medium"; // 비디오 길이
 	private String videoDefinition = "any"; // 비디오 화질
 	private String videoType = "any"; // 비디오 타입
 

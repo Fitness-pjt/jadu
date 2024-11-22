@@ -64,6 +64,7 @@ const validateAnswer = (answer) => {
 
 // 다음 질문으로 넘어갈 때, answer로 선택한 답변 answers 객체에 담기
 const handleNextQuestion = (answer) => {
+  // console.log("answer", answer);
   // 답변이 다 작성되지 않은 경우, alert 띄우고 return
   if (!validateAnswer(answer)) {
     isValidInput.value = false;

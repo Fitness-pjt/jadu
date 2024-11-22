@@ -32,14 +32,14 @@ public class YoutubeServiceImpl implements YoutubeService {
 	}
 	
 
-	public List<YoutubeVideoDto> searchVideos(String query) {
+	public List<YoutubeVideoDto> searchVideos(String query, int maxVideoNum) {
 		try {
 			// 1. 검색 요청 설정
 			YouTube.Search.List search = youtube.search().list(Collections.singletonList("snippet"));
 			search.setKey(youtubeProperties.getKey());
 			search.setQ(query);
 			search.setType(Collections.singletonList("video"));
-			search.setMaxResults((long) youtubeProperties.getMaxResults());
+			search.setMaxResults((long)maxVideoNum);
 			search.setRegionCode(youtubeProperties.getRegionCode());
 			search.setRelevanceLanguage(youtubeProperties.getRelevanceLanguage());
 			search.setOrder(youtubeProperties.getOrder());
@@ -57,7 +57,7 @@ public class YoutubeServiceImpl implements YoutubeService {
 
 			// 4. 비디오 상세 정보 요청
 			YouTube.Videos.List videoRequest = youtube.videos()
-					.list(Collections.singletonList("snippet,statistics,contentDetails"));
+					.list(Collections.singletonList("snippet,statistics,contentDetails,status"));
 			videoRequest.setKey(youtubeProperties.getKey());
 			videoRequest.setId(videoIds);
 
@@ -66,7 +66,8 @@ public class YoutubeServiceImpl implements YoutubeService {
 
 			// 6. 비디오 ID를 키로 하는 Map 생성
 			Map<String, Video> videoDetailsMap = videoResponse.getItems().stream()
-					.collect(Collectors.toMap(video -> video.getId(), video -> video));
+	                .filter(video -> video.getStatus().getEmbeddable()) // embeddable 필터링
+	                .collect(Collectors.toMap(Video::getId, video -> video));
 
 			// 7. 검색 결과와 상세 정보를 결합하여 DTO 생성
 			return searchResponse.getItems().stream().map(
@@ -104,4 +105,7 @@ public class YoutubeServiceImpl implements YoutubeService {
 
 		return builder.build();
 	}
+
+
+	
 }

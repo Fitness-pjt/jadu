@@ -1,19 +1,24 @@
 package com.ssafy.ssafit.controller;
 
-
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.ssafit.model.dto.AIResponse;
+import com.ssafy.ssafit.model.dto.Program;
 import com.ssafy.ssafit.model.dto.UserInfo;
+import com.ssafy.ssafit.model.dto.YoutubeVideoDto;
 import com.ssafy.ssafit.prompt.PromptGenerator;
+import com.ssafy.ssafit.service.program.ProgramService;
 import com.ssafy.ssafit.service.youtube.YoutubeService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,57 +30,80 @@ public class AIController {
 	private final OpenAiChatModel openAiChatModel;
 	private PromptGenerator promptGenerator;
 	private YoutubeService youtubeService;
+	private ProgramService programService;
 
-	public AIController(OpenAiChatModel openAiChatModel, PromptGenerator promptGenerator, YoutubeService youtubeService) {
+	public AIController(OpenAiChatModel openAiChatModel, PromptGenerator promptGenerator, YoutubeService youtubeService,
+			ProgramService programService) {
 		this.openAiChatModel = openAiChatModel;
 		this.promptGenerator = promptGenerator;
 		this.youtubeService = youtubeService;
+		this.programService = programService;
 	}
 
-//	@GetMapping("/chatGPT")
-//	public ResponseEntity<String> chat(@RequestParam("message") String message) {
-//		System.out.println(message);
-//
-//		String response = openAiChatModel.call(message);
-//		System.out.println(response);
-//		
-//		
-//		return new ResponseEntity<String>(response, HttpStatus.OK);
-//	}
-
 	@PostMapping("/chatGPT")
-	public ResponseEntity<String> chat(@RequestBody UserInfo userInfo) {
+	public ResponseEntity<?> chat(@RequestBody UserInfo userInfo) throws JsonMappingException, JsonProcessingException {
 		System.out.println(userInfo);
+
+		int videoNum = userInfo.getDuration(); // 하나의 키워드로 받을 영상 수
+		System.out.println(videoNum);
 
 		String message = promptGenerator.generatePrompt(userInfo);
 		System.out.println(message);
 
 		String response = openAiChatModel.call(message);
 		System.out.println("AI 답변 : " + response);
-		
-		 // 쉼표(,)를 기준으로 문자열 분리
-        String[] keywordsArray = response.split(",");
-        
-//        System.out.println(Arrays.toString(keywordsArray));
 
-        // Trim 처리하여 공백 제거 후 List로 변환
-        List<String> keywordsList = new ArrayList<>();
-        
-        for (String keyword : keywordsArray) {
-        	keywordsList.add(keyword.trim());
-        }
-        
-        for(int i=0; i<keywordsList.size(); i++) {
-        	youtubeService.searchVideos(keywordsList.get(i));
-        }
+		ObjectMapper mapper = new ObjectMapper();
+		AIResponse aiResponse = mapper.readValue(response, AIResponse.class);
 
-        // 결과 출력
-        System.out.println("키워드 리스트: " + keywordsList);
-		
-		
+		System.out.println(aiResponse);
 
-//		return new ResponseEntity<String>(response, HttpStatus.OK);
-		return null;
+		List<String> keywordsList = aiResponse.getKeywords();
+
+		List<YoutubeVideoDto> videoList = new ArrayList<>();
+		for (int i = 0; i < keywordsList.size(); i++) {
+			videoList.addAll(youtubeService.searchVideos(keywordsList.get(i), videoNum));
+		}
+
+		Program program = new Program();
+		List<String> videoIds = new ArrayList<>();
+
+		for (YoutubeVideoDto video : videoList) {
+			videoIds.add(video.getVideoId());
+		}
+
+		program.setVideoIds(videoIds);
+		program.setUserId(userInfo.getUserId());
+		program.setTitle(aiResponse.getTitle());
+		program.setDescription(aiResponse.getDescription());
+		program.setDurationWeeks(userInfo.getDuration());
+
+		String level = "";
+		if (userInfo.getExperience() == 1 || userInfo.getExperience() == 2)
+			level = "BEGINNER";
+		else if (userInfo.getExperience() == 3 || userInfo.getExperience() == 4)
+			level = "INTERMEDIATE";
+		else if (userInfo.getExperience() == 5)
+			level = "ADVANCED";
+
+		program.setLevel(level);
+		program.setVideoCnt(videoIds.size());
+
+		String thumbnailImg = videoList.get(0).getThumbnailMediumUrl();
+		program.setProgramImgPath(thumbnailImg);
+
+		try {
+			programService.createProgramWithVideos(program);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// 결과 출력
+//		System.out.println("키워드 리스트: " + keywordsList);
+
+		return new ResponseEntity<>(program, HttpStatus.OK);
+//		return null;
 	}
 
 }
