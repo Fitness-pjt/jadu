@@ -16,7 +16,7 @@ VALUES
 -- program 테이블에 데이터 추가
 INSERT INTO program (user_id, title, description, duration_weeks, level)
 VALUES 
-    (1, 'Full Body Workout', 'A complete workout plan', 12, 'BEGINNER'),
+    (1, 'Full Body Workout', 'A complete workout plan', 12, 'BEGINNER' ),
     (2, 'Advanced Cardio', 'High-intensity cardio program', 8, 'ADVANCED');
 
 -- video 테이블에 데이터 추가

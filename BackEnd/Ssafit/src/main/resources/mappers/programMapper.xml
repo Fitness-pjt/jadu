@@ -6,9 +6,9 @@
 	<insert id="insertProgram" parameterType="Program"
 		useGeneratedKeys="true" keyProperty="programId">
 		INSERT INTO program (
-		user_id, title, description, duration_weeks, level
+		user_id, title, description, duration_weeks, level,video_cnt,program_img_path
 		) VALUES (
-		#{userId}, #{title}, #{description}, #{durationWeeks}, #{level}
+		#{userId}, #{title}, #{description}, #{durationWeeks}, #{level}, #{videoCnt}, #{programImgPath}
 		)
 	</insert>
 
@@ -43,4 +43,6 @@
     WHERE user_id = #{userId}
     ORDER BY created_at DESC
 </select>
+
+
 </mapper>
