@@ -110,12 +110,15 @@ const createProgram = () => {
 
   userList.keyword = formattedKeywordList;
 
-  console.log("userList :>> ", userList);
-  userInfoStore.userInfoList.value = userList;
-  console.log("userInfoList :>> ", userInfoStore.userInfoList.value);
+  console.log("마지막 다음 :>> ", userList);
 
   // REST API 호출
-  userInfoStore.sendAnswerToServer(userInfoStore.userInfoList.value);
+  userInfoStore.sendAnswerToServer(userList);
+
+  console.log("rest api 호출 후 :>> ", userInfoList.value);
+  console.log("rest api 호출 후:>> ", userList);
+  userInfoList.value = userList;
+  console.log("userInfoList에 userList 담은 후 :>> ", userInfoList.value);
 };
 
 // 이전으로 돌아가는 버튼
@@ -128,13 +131,13 @@ const createProgram = () => {
 // AI program 추천 중
 const createAIProgram = () => {
   alert("프로그램 생성 중입니다.");
-  console.log("userInfoList :>> ", userInfoList.value);
-  userInfoStore.createAIProgram(userInfoStore.userInfoList.value);
+  console.log("userInfoList AI임? :>> ", userInfoList.value);
+  userInfoStore.createAIProgram(userInfoList.value);
 };
 
-// onMounted(() => {
-//   userInfoStore.getUserInfo();
-// });
+onMounted(() => {
+  userInfoStore.getUserInfo();
+});
 </script>
 
 <style scoped>

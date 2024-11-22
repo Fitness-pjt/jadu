@@ -76,7 +76,7 @@
 		location = #{location},
 		frequency =
 		#{frequency},
-		duration=#{duration}
+		duration = #{duration}
 		WHERE user_id = #{userId}
 	</update>
 

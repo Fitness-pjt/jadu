@@ -40,6 +40,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
 
   const sendAnswerToServer = (userInfo) => {
     // console.log("userInfo :>> ", userInfo);
+    console.log("userInfoList.value :>> ", userInfoList.value);
     const isUpdate =
       userInfoList.value && Object.keys(userInfoList.value).length > 0;
     // 데이터가 있으면 put 요청, 없으면 post 요청 날리기

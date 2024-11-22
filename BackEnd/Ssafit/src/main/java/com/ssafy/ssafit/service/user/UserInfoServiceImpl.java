@@ -32,7 +32,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	@Transactional
+//	@Transactional
 	public void updateUserInfo(UserInfo userInfo) {
 		userInfoDao.updateUserInfo(userInfo);
 

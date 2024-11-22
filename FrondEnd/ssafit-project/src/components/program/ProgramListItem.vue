@@ -3,8 +3,12 @@
   <div class="card h-100">
     <!-- 썸네일 공간 -->
     <div class="thumbnail-container">
-      <img v-if="program?.programImgPath" :src="program?.programImgPath" :alt="program?.title"
-        class="thumbnail-image" />
+      <img
+        v-if="program?.programImgPath"
+        :src="program?.programImgPath"
+        :alt="program?.title"
+        class="thumbnail-image"
+      />
       <div v-else class="profile-placeholder">
         {{ userData?.userNickname?.[0] }}
       </div>
@@ -19,17 +23,20 @@
 
       <!-- 설명 -->
       <p class="card-text text-truncate mb-3">
-        {{ program.description || '프로그램 설명이 없습니다.' }}
+        {{ program.description || "프로그램 설명이 없습니다." }}
       </p>
 
       <!-- 프로그램 정보 -->
       <div class="mb-3">
         <!-- 난이도 -->
-        <span class="badge me-2" :class="{
-          'bg-success': program.level === 'BEGINNER',
-          'bg-warning': program.level === 'INTERMEDIATE',
-          'bg-danger': program.level === 'ADVANCED'
-        }">
+        <span
+          class="badge me-2"
+          :class="{
+            'bg-success': program.level === 'BEGINNER',
+            'bg-warning': program.level === 'INTERMEDIATE',
+            'bg-danger': program.level === 'ADVANCED',
+          }"
+        >
           {{ getLevelText(program.level) }}
         </span>
 
@@ -42,7 +49,9 @@
 
     <!-- 하단 정보 -->
     <div class="card-footer bg-transparent">
-      <div class="d-flex justify-content-between align-items-center text-muted small">
+      <div
+        class="d-flex justify-content-between align-items-center text-muted small"
+      >
         <span>{{ formatDate(program.createdAt) }}</span>
         <span>
           <i class="bi bi-camera-video me-1"></i>
@@ -54,34 +63,33 @@
 </template>
 
 <script setup>
-import UserNameTag from '../common/UserNameTag.vue';
-
+import UserNameTag from "../common/UserNameTag.vue";
 
 const props = defineProps({
   program: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const getLevelText = (level) => {
   const levelMap = {
-    'BEGINNER': '입문',
-    'INTERMEDIATE': '중급',
-    'ADVANCED': '고급'
-  }
-  return levelMap[level] || level
-}
+    BEGINNER: "입문",
+    INTERMEDIATE: "중급",
+    ADVANCED: "고급",
+  };
+  return levelMap[level] || level;
+};
 
 const formatDate = (dateString) => {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  return new Intl.DateTimeFormat('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }).format(date)
-}
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(date);
+};
 </script>
 <style scoped>
 .card {
