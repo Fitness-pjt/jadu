@@ -15,18 +15,36 @@
         <div class="input-group">
           <div class="input-label">닉네임</div>
           <div class="input-with-button">
-            <input type="text" v-model="user.userNickname" placeholder="닉네임을 작성해주세요." @input="resetNicknameCheck"
+            <input
+              type="text"
+              v-model="user.userNickname"
+              placeholder="닉네임을 작성해주세요."
+              @input="resetNicknameCheck"
               :class="{
                 'is-valid': isNicknameChecked && isNicknameAvailable,
-                'is-invalid': isNicknameChecked && !isNicknameAvailable
-              }" />
-            <button class="check-button" @click="checkNickname" :disabled="!user.userNickname || isNicknameChecked">
+                'is-invalid': isNicknameChecked && !isNicknameAvailable,
+              }"
+            />
+            <button
+              class="check-button"
+              @click="checkNickname"
+              :disabled="!user.userNickname || isNicknameChecked"
+            >
               중복 확인
             </button>
           </div>
           <div class="feedback-message" v-if="isNicknameChecked">
-            <span :class="{ 'text-success': isNicknameAvailable, 'text-danger': !isNicknameAvailable }">
-              {{ isNicknameAvailable ? '사용 가능한 닉네임입니다.' : '이미 사용 중인 닉네임입니다.' }}
+            <span
+              :class="{
+                'text-success': isNicknameAvailable,
+                'text-danger': !isNicknameAvailable,
+              }"
+            >
+              {{
+                isNicknameAvailable
+                  ? "사용 가능한 닉네임입니다."
+                  : "이미 사용 중인 닉네임입니다."
+              }}
             </span>
           </div>
         </div>
@@ -34,12 +52,23 @@
         <div class="input-group">
           <div class="input-label">아이디</div>
           <div class="input-with-button">
-            <input type="email" v-model="user.userEmail" placeholder="아이디를 입력해주세요. ex) hong@gmail.com"
-              @input="resetEmailCheck" :class="{
+            <input
+              type="email"
+              v-model="user.userEmail"
+              placeholder="아이디를 입력해주세요. ex) hong@gmail.com"
+              @input="resetEmailCheck"
+              :class="{
                 'is-valid': isEmailChecked && isEmailAvailable,
-                'is-invalid': (!isEmailValid && user.userEmail) || (isEmailChecked && !isEmailAvailable)
-              }" />
-            <button class="check-button" @click="checkEmail" :disabled="!isEmailValid || isEmailChecked">
+                'is-invalid':
+                  (!isEmailValid && user.userEmail) ||
+                  (isEmailChecked && !isEmailAvailable),
+              }"
+            />
+            <button
+              class="check-button"
+              @click="checkEmail"
+              :disabled="!isEmailValid || isEmailChecked"
+            >
               중복 확인
             </button>
           </div>
@@ -47,24 +76,44 @@
             <span v-if="!isEmailValid && user.userEmail" class="text-danger">
               유효한 이메일 형식이 아닙니다.
             </span>
-            <span v-else-if="isEmailChecked"
-              :class="{ 'text-success': isEmailAvailable, 'text-danger': !isEmailAvailable }">
-              {{ isEmailAvailable ? '사용 가능한 이메일입니다.' : '이미 사용 중인 이메일입니다.' }}
+            <span
+              v-else-if="isEmailChecked"
+              :class="{
+                'text-success': isEmailAvailable,
+                'text-danger': !isEmailAvailable,
+              }"
+            >
+              {{
+                isEmailAvailable
+                  ? "사용 가능한 이메일입니다."
+                  : "이미 사용 중인 이메일입니다."
+              }}
             </span>
           </div>
         </div>
 
         <div class="input-group">
           <div class="input-label">비밀번호</div>
-          <input type="password" v-model="user.userPassword" placeholder="비밀번호를 입력해주세요." />
+          <input
+            type="password"
+            v-model="user.userPassword"
+            placeholder="비밀번호를 입력해주세요."
+          />
         </div>
 
         <div class="input-group">
           <div class="input-label">비밀번호 확인</div>
-          <input type="password" v-model="passwordConfirm" placeholder="비밀번호를 다시 입력해주세요."
-            :class="{ 'is-invalid': !isPasswordMatch && passwordConfirm }" />
+          <input
+            type="password"
+            v-model="passwordConfirm"
+            placeholder="비밀번호를 다시 입력해주세요."
+            :class="{ 'is-invalid': !isPasswordMatch && passwordConfirm }"
+          />
           <div class="feedback-message">
-            <span v-if="!isPasswordMatch && passwordConfirm" class="text-danger">
+            <span
+              v-if="!isPasswordMatch && passwordConfirm"
+              class="text-danger"
+            >
               비밀번호가 일치하지 않습니다.
             </span>
           </div>
@@ -72,12 +121,22 @@
 
         <div class="input-group">
           <div class="input-label">이름</div>
-          <input type="text" v-model="user.userName" placeholder="이름을 작성해주세요." />
+          <input
+            type="text"
+            v-model="user.userName"
+            placeholder="이름을 작성해주세요."
+          />
         </div>
       </div>
 
       <!-- 회원가입 버튼 -->
-      <button class="signup-button" @click="handleSignup" :disabled="!isFormValid">회원가입하기</button>
+      <button
+        class="signup-button"
+        @click="handleSignup"
+        :disabled="!isFormValid"
+      >
+        회원가입하기
+      </button>
 
       <!-- 로그인 링크 -->
       <div class="login-link">
@@ -121,25 +180,27 @@ const isPasswordMatch = computed(() => {
 });
 // 폼 전체 유효성 검사
 const isFormValid = computed(() => {
-  return isEmailChecked.value &&
+  return (
+    isEmailChecked.value &&
     isEmailAvailable.value &&
     isNicknameChecked.value &&
     isNicknameAvailable.value &&
     isPasswordMatch.value &&
     user.value.userPassword &&
-    user.value.userName;
+    user.value.userName
+  );
 });
 
 // 이메일 중복 체크
 const checkEmail = async () => {
   if (!isEmailValid.value) return;
-  
+
   try {
     const response = await userStore.checkEmailDuplicate(user.value.userEmail);
     isEmailChecked.value = true;
     isEmailAvailable.value = response;
   } catch (error) {
-    console.error('이메일 중복 체크 중 오류 발생:', error);
+    console.error("이메일 중복 체크 중 오류 발생:", error);
     isEmailChecked.value = true;
     isEmailAvailable.value = false;
   }
@@ -147,11 +208,13 @@ const checkEmail = async () => {
 // 닉네임 중복 체크
 const checkNickname = async () => {
   try {
-    const response = await userStore.checkNicknameDuplicate(user.value.userNickname);
+    const response = await userStore.checkNicknameDuplicate(
+      user.value.userNickname
+    );
     isNicknameChecked.value = true;
     isNicknameAvailable.value = response;
   } catch (error) {
-    console.error('닉네임 중복 체크 중 오류 발생:', error);
+    console.error("닉네임 중복 체크 중 오류 발생:", error);
     isNicknameChecked.value = true;
     isNicknameAvailable.value = false;
   }
@@ -170,7 +233,6 @@ const resetNicknameCheck = () => {
 
 const handleSignup = () => {
   // 회원가입 로직 구현
-  console.log("눌림");
   userStore.userSignUp(user.value);
 };
 

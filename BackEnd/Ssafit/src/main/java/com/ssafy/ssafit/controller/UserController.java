@@ -1,13 +1,14 @@
 package com.ssafy.ssafit.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.ssafit.jwt.JwtUtil;
-import com.ssafy.ssafit.model.dto.TokenInfo;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.model.dto.UserInfo;
 import com.ssafy.ssafit.service.user.UserInfoService;
@@ -26,7 +26,6 @@ import com.ssafy.ssafit.service.user.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
@@ -39,7 +38,8 @@ public class UserController {
 	private JwtUtil jwtUtil;
 
 	@Autowired
-	public UserController(UserService userService, UserInfoService userInfoService, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+	public UserController(UserService userService, UserInfoService userInfoService, PasswordEncoder passwordEncoder,
+			JwtUtil jwtUtil) {
 		this.userService = userService;
 		this.userInfoService = userInfoService;
 		this.passwordEncoder = passwordEncoder;
@@ -61,13 +61,12 @@ public class UserController {
 	public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable(name = "userId") int userId) {
 
 		user.setUserId(userId);
-//		System.out.println(user.toString());
+		System.out.println(user.toString());
+		user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
 		userService.update(user);
 
 		return new ResponseEntity<>("Update", HttpStatus.OK);
 	}
-
-
 
 	@GetMapping("/{userId}")
 	@Operation(summary = "유저 정보 조회", description = "유저 정보 조회")
@@ -90,11 +89,10 @@ public class UserController {
 
 	@PostMapping("/info")
 	@Operation(summary = "운동정보 등록", description = "운동정보 등록")
-	public ResponseEntity<?> createUserInfo(@RequestBody UserInfo userInfo, HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		if (loginUser == null) {
-			return new ResponseEntity<String>("로그인 먼저 하세요", HttpStatus.UNAUTHORIZED);
-		}
+	public ResponseEntity<?> createUserInfo(@RequestBody UserInfo userInfo) {
+		System.out.println("유저 운동정보 등록 : " + userInfo);
+
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		userInfo.setUserId(loginUser.getUserId());
 		userInfoService.insertUserInfo(userInfo);
@@ -105,27 +103,25 @@ public class UserController {
 
 	@GetMapping("/info")
 	@Operation(summary = "운동정보 조회", description = "운동정보 조회")
-	public ResponseEntity<?> getUserInfo(HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		if (loginUser == null) {
-			return new ResponseEntity<>("로그인이 필요한 서비스입니다.", HttpStatus.UNAUTHORIZED);
-		}
+	public ResponseEntity<?> getUserInfo() {
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		UserInfo userInfo = userInfoService.selectUserInfo(loginUser.getUserId());
+
 		if (userInfo == null) {
-			return new ResponseEntity<>("등록된 운동 정보가 없습니다.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("등록된 운동 정보가 없습니다.", HttpStatus.NO_CONTENT);
 		}
 
+		// System.out.println("유저 운동 정보 조회하기 : " + userInfo);
 		return new ResponseEntity<>(userInfo, HttpStatus.OK);
 	}
 
 	@PutMapping("/info")
 	@Operation(summary = "운동정보 수정", description = "운동정보 수정")
-	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo userInfo, HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		if (loginUser == null) {
-			return new ResponseEntity<>("로그인이 필요한 서비스입니다.", HttpStatus.UNAUTHORIZED);
-		}
+	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo userInfo) {
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		 System.out.println("유저 운동정보 수정 : " + userInfo);
+
 
 		userInfo.setUserId(loginUser.getUserId());
 
@@ -133,26 +129,23 @@ public class UserController {
 		return new ResponseEntity<>(userInfo, HttpStatus.OK);
 
 	}
-	
 
-    @GetMapping("/check-email/{email}")
-    @Operation(summary = "이메일 중복 확인", description = "회원가입 시 이메일 중복을 확인합니다.")
-    public ResponseEntity<Map<String, Boolean>> checkEmailDuplicate(@PathVariable String email) {
-        Map<String, Boolean> response = new HashMap<>();
-        boolean isAvailable = userService.isEmailAvailable(email);
-        response.put("available", isAvailable);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    
-    @GetMapping("/check-nickname/{nickname}")
-    @Operation(summary = "닉네임 중복 확인", description = "회원가입 시 닉네임 중복을 확인합니다.")
-    public ResponseEntity<Map<String, Boolean>> checkNicknameDuplicate(@PathVariable String nickname) {
-        Map<String, Boolean> response = new HashMap<>();
-        boolean isAvailable = userService.isNicknameAvailable(nickname);
-        response.put("available", isAvailable);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-	
-	
+	@GetMapping("/check-email/{email}")
+	@Operation(summary = "이메일 중복 확인", description = "회원가입 시 이메일 중복을 확인합니다.")
+	public ResponseEntity<Map<String, Boolean>> checkEmailDuplicate(@PathVariable String email) {
+		Map<String, Boolean> response = new HashMap<>();
+		boolean isAvailable = userService.isEmailAvailable(email);
+		response.put("available", isAvailable);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/check-nickname/{nickname}")
+	@Operation(summary = "닉네임 중복 확인", description = "회원가입 시 닉네임 중복을 확인합니다.")
+	public ResponseEntity<Map<String, Boolean>> checkNicknameDuplicate(@PathVariable String nickname) {
+		Map<String, Boolean> response = new HashMap<>();
+		boolean isAvailable = userService.isNicknameAvailable(nickname);
+		response.put("available", isAvailable);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 
 }

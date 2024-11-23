@@ -20,13 +20,15 @@ SELECT * FROM users;
 
 CREATE TABLE `userInfo` (
     `user_id` INT NOT NULL,
-    `goal` ENUM('DIET','MUSCLE','RECOVERY','STAMINA'),
-    `gender` ENUM('MALE', 'FEMALE') NOT NULL,
+	`gender` ENUM('MALE', 'FEMALE') NOT NULL,
     `age` ENUM('10','2030','4050','60'),
     `shape` ENUM('SLIM' , 'NORMAL', 'FAT'),
-    `experience` ENUM('1', '2', '3','4','5'),
+    `goal` ENUM('DIET','MUSCLE','RECOVERY','STAMINA'),
+    `experience` INT,
     `location` ENUM('HOME','FITNESS','OUTSIDE','ETC'),
     `frequency` INT ,
+    `duration` INT,
+    
     
     PRIMARY KEY (`user_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
@@ -41,6 +43,8 @@ CREATE TABLE `program` (
     `duration_weeks` INT NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `level` ENUM('BEGINNER', 'INTERMEDIATE', 'ADVANCED'),
+    `video_cnt` INT,
+    `program_img_path` VARCHAR(512),
     PRIMARY KEY (`program_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 );
@@ -109,7 +113,7 @@ CREATE TABLE `answer` (
 -- File management
 CREATE TABLE `files` (
     `file_id`  INT NOT NULL AUTO_INCREMENT,
-    `file_case` ENUM('PROFILE', 'BOARD', 'QUESTION'),
+    `file_case` ENUM('PROFILE', 'BOARD', 'QUESTION', 'PROGRAM'),
     `file_name` VARCHAR(100) NOT NULL,
     `extension` VARCHAR(20) NOT NULL,
     `user_id` INT NOT NULL,
@@ -128,7 +132,7 @@ CREATE TABLE `todo` (
     `video_id` VARCHAR(50),  
     `date` DATE NOT NULL,
     `status` BOOLEAN DEFAULT FALSE,
-    `content` VARCHAR(100) NOT NULL,
+    `content` VARCHAR(100),
     PRIMARY KEY (`todo_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
     FOREIGN KEY (`program_id`) REFERENCES `program` (`program_id`) ON DELETE CASCADE,

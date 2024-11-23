@@ -1,132 +1,260 @@
 <template>
-  <header class="header">
-    <!-- Logo Section -->
-    <h1 class="logo">
-      <RouterLink :to="{ name: 'home' }">SSAFIT</RouterLink>
-    </h1>
+  <header class="header container-fluid shadow-sm py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+      <!-- Logo Section -->
+      <h1 class="logo fs-2 fw-bold m-0">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="text-decoration-none logo-text"
+        >
+          <i class="bi bi-heart-pulse-fill me-2"></i>SSAFIT
+        </RouterLink>
+      </h1>
 
-    <!-- Navigation Links -->
-    <nav class="nav">
-      <RouterLink :to="{ name: 'home' }" class="nav-link">홈</RouterLink>
-      <RouterLink to="/program" class="nav-link">프로그램</RouterLink>
+      <!-- Hamburger Menu Button -->
+      <button
+        class="navbar-toggler d-lg-none"
+        type="button"
+        @click="toggleMenu"
+        aria-label="Toggle navigation"
+      >
+        <i class="bi" :class="isMenuOpen ? 'bi-x' : 'bi-list'"></i>
+      </button>
 
-      <RouterLink :to="{ name: 'mypage' }" class="nav-link" v-if="token">마이 투두리스트</RouterLink>
-    </nav>
+      <!-- Navigation Links -->
+      <nav class="nav gap-4" :class="{ show: isMenuOpen }">
+        <RouterLink
+          :to="{ name: 'home' }"
+          class="nav-link px-3 rounded-pill"
+          @click="closeMenu"
+        >
+          <i class="bi bi-house-door me-1"></i>홈
+        </RouterLink>
+        <RouterLink
+          :to="{ name: 'program' }"
+          class="nav-link px-3 rounded-pill"
+          @click="closeMenu"
+        >
+          <i class="bi bi-play-circle me-1"></i>프로그램
+        </RouterLink>
+        <RouterLink
+          :to="{ name: 'mypage' }"
+          class="nav-link px-3 rounded-pill"
+          v-if="token"
+          @click="closeMenu"
+        >
+          <i class="bi bi-person me-1"></i>마이페이지
+        </RouterLink>
+      </nav>
 
-    <!-- Authentication Links -->
-    <div class="auth">
-      <div v-if="!token">
-        <RouterLink :to="{ name: 'login' }" class="auth-link">로그인</RouterLink>
-        <RouterLink :to="{ name: 'signup' }" class="auth-link">회원가입</RouterLink>
-      </div>
-      <div v-else>
-        <div class="welcome">
-          <UserNameTag :userId="loginStore.loginUserId" />
-
-
+      <!-- Authentication Links -->
+      <div
+        class="auth d-flex align-items-center gap-3"
+        :class="{ show: isMenuOpen }"
+      >
+        <div v-if="!token" class="d-flex gap-3">
+          <RouterLink
+            :to="{ name: 'login' }"
+            class="btn btn-outline-primary rounded-pill px-4"
+            @click="closeMenu"
+          >
+            <i class="bi bi-box-arrow-in-right me-1"></i>로그인
+          </RouterLink>
+          <RouterLink
+            :to="{ name: 'signup' }"
+            class="btn btn-primary rounded-pill px-4"
+            @click="closeMenu"
+          >
+            <i class="bi bi-person-plus me-1"></i>회원가입
+          </RouterLink>
         </div>
-        <button @click="logout" class="logout-btn">로그아웃</button>
+        <div v-else class="d-flex align-items-center gap-3">
+          <div class="welcome">
+            <RouterLink
+              :to="getRoute(loginStore.loginUserId)"
+              class="btn btn-light"
+              @click="closeMenu"
+            >
+              <UserNameTag :user-id="loginStore.loginUserId" />
+            </RouterLink>
+          </div>
+          <button @click="logout" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-right me-1"></i>로그아웃
+          </button>
+        </div>
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useLoginStore } from "@/stores/login";
-import UserNameTag from "../user/UserNameTag.vue";
+import UserNameTag from "./UserNameTag.vue";
 
 const loginStore = useLoginStore();
 const token = sessionStorage.getItem("access-token");
+const isMenuOpen = ref(false);
 
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
+
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
 
 const logout = () => {
   loginStore.logout();
+  closeMenu();
+};
+
+const getRoute = (userId) => {
+  return loginStore.loginUserId === userId
+    ? { name: "mypage", params: { userId } }
+    : { name: "profile", params: { userId } };
 };
 </script>
 
 <style scoped>
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  background-color: #1b1b1b;
-  /* Matches the black background */
-  color: white;
-  font-size: 1rem;
-
-  height: 4rem;
+  height: 6rem;
+  background-color: #fbfbfb;
+  border-bottom: 1px solid rgba(198, 231, 255, 0.3);
 }
 
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.logo a {
-  text-decoration: none;
-  color: white;
-}
-
-.nav {
-  display: flex;
-  gap: 1rem;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-  font-weight: bold;
+.logo-text {
+  color: #133e87;
 }
 
 .nav-link {
-  color: white;
-  text-decoration: none;
-  font-weight: normal;
+  color: #133e87;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
-.nav-link:hover {
-  font-weight: bold;
-  /* text-decoration: underline; */
+.nav-link:hover,
+.nav-link.router-link-active {
+  background-color: #d4f6ff;
+  color: #133e87;
+  border-color: #c6e7ff;
 }
 
-.auth {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.auth>div {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.auth-link {
-  color: white;
-  text-decoration: none;
-}
-
-.auth-link:hover {
-  font-weight: bold;
-  color: #42b983;
-}
-
-.welcome {
-  margin: 0;
-}
-
-.logout-btn {
+.navbar-toggler {
+  display: none;
   background: none;
   border: none;
-  color: white;
+  font-size: 1.5rem;
+  color: #133e87;
   cursor: pointer;
-  text-decoration: underline;
 }
 
-.logout-btn:hover {
-  font-weight: bold;
+.btn-primary {
+  background-color: #c6e7ff;
+  border-color: #c6e7ff;
+  color: #133e87;
 }
 
-.nickname {
+.btn-primary:hover {
+  background-color: #d4f6ff;
+  border-color: #c6e7ff;
+  color: #133e87;
+}
+
+.btn-outline-primary {
+  color: #133e87;
+  border-color: #c6e7ff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #d4f6ff;
+  border-color: #c6e7ff;
+  color: #133e87;
+}
+
+.btn-light {
+  background-color: #fbfbfb;
+  /* border-color: #c6e7ff; */
+  color: #133e87;
+}
+
+.btn-light:hover {
+  background-color: #d4f6ff;
+  color: #133e87;
+}
+
+.btn-outline-danger {
+  color: #ff6b6b;
+  /* border-color: #ff6b6b; */
+}
+
+.btn-outline-danger:hover {
+  background-color: #ff6b6b;
   color: white;
+}
+
+@media (max-width: 991px) {
+  .header {
+    height: auto;
+    padding: 1rem 0;
+  }
+
+  .navbar-toggler {
+    display: block;
+  }
+
+  .nav,
+  .auth {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fbfbfb;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .nav.show,
+  .auth.show {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  .nav {
+    top: 5rem;
+  }
+
+  .auth {
+    top: calc(5rem + 150px);
+  }
+
+  .auth > div {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-link,
+  .btn {
+    width: 100%;
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+
+  .welcome {
+    width: 100%;
+  }
+
+  .welcome .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo {
+    font-size: 1.5rem !important;
+  }
 }
 </style>

@@ -20,4 +20,13 @@ public interface TodoService {
 
 	// 하나의 투두 상태 수정하기
 	public void modifyTodoStatus(int todoId, boolean isCompleted);
+
+	// 투두 좋아요 누른 상태 불러오기
+	public boolean getTodoLikesStatus(int todoId, int userId);
+	
+	// 투두 좋아요 누르기 == todo-likes 테이블에 추가하기
+	public void putTodoLikes(int todoId, int userId);
+
+	// 투두 좋아요 취소하기 == todo-likes 테이블에서 삭제하기
+	public void deleteTodoLikes(int todoId, int userId);
 }

@@ -1,27 +1,35 @@
 <template>
   <div>
-    <p>홈 화면입니다.</p>
-    <RouterLink :to="{ name: 'profile', params: { userId: 1 } }">
-      <button>USER 1번</button></RouterLink
-    >
-    <RouterLink :to="{ name: 'profile', params: { userId: 2 } }"
-      ><button>USER 2번</button></RouterLink
-    >
-
-    <RouterLink :to="{ name: 'profile', params: { userId: 1 } }">
-      <button><UserNameTag :user-id="1"/></button></RouterLink
-    >
-
-    <RouterLink :to="{ name: 'profile', params: { userId: 2 } }">
-      <button><UserNameTag :user-id="2"/></button></RouterLink
-    >
-    <TodoVCalendar />
+    <ProgramBanner />
+    <ProgramList :programs="programStore.programs" />
   </div>
 </template>
 
 <script setup>
-import TodoVCalendar from "@/components/todo/TodoVCalendar.vue";
-import UserNameTag from "@/components/user/UserNameTag.vue";
+import UserNameTag from "@/components/common/UserNameTag.vue";
+import ProgramBanner from "@/components/program/ProgramBanner.vue";
+import { useLoginStore } from "@/stores/login";
+import ProgramList from "@/components/program/ProgramList.vue";
+
+import { onMounted } from "vue";
+import { useProgramStore } from "@/stores/program";
+
+const loginStore = useLoginStore();
+const programStore = useProgramStore();
+
+onMounted(async () => {
+  try {
+    await programStore.getAllPrograms();
+  } catch (error) {
+    console.error("Failed to load programs:", error);
+  }
+});
+
+const getRoute = (userId) => {
+  return loginStore.loginUserId === userId
+    ? { name: "mypage", params: { userId } }
+    : { name: "profile", params: { userId } };
+};
 </script>
 
 <style scoped>

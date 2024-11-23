@@ -8,7 +8,7 @@ import com.ssafy.ssafit.model.dto.User;
 public interface FileService {
 	
 	
-	boolean upload (MultipartFile file, User user,FileDto fileDto);
+	String upload (MultipartFile file, User user,FileDto fileDto);
 	
 	String getFile(User user, String fileCase);
 	

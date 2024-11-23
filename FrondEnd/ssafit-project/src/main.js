@@ -8,6 +8,15 @@ import router from "./router";
 import VCalendar from "v-calendar";
 import "v-calendar/style.css";
 
+// Bootstrap 사용
+import 'bootstrap'
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'animate.css'
+
+
 const app = createApp(App);
 
 app.use(createPinia());

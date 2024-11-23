@@ -34,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		String accessToken = request.getHeader("access-token");
-		// System.out.println("accessToken : " + accessToken);
+//		 System.out.println("accessToken : " + accessToken);
 
 		if (accessToken == null) {
 			filterChain.doFilter(request, response);
@@ -54,8 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 																							// 얻어오기
 
 				Integer userId = claims.getBody().get("userId", Integer.class); // 클레임 안에 담겨 있는 userId 값 얻어오기
-				// System.out.println("userNickname : " + userNickname + ", userId : " +
-				// userId);
+//				 System.out.println("userNickname : " + userNickname + ", userId : " + userId);
 
 				userInfo.setUserNickname(userNickname);
 				userInfo.setUserId(userId);
@@ -63,7 +62,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 				// 권한 정보(인가 정보) 리스트
 				List<GrantedAuthority> authorityList = new ArrayList<>();
 
-				// principla : 사용자 이름 또는 사용자 객체 , credential : 비밀번호, 주로 null
+				// principal : 사용자 이름 또는 사용자 객체 , credential : 비밀번호, 주로 null
 				SecurityContextHolder.getContext()
 						.setAuthentication(new UsernamePasswordAuthenticationToken(userInfo, null, authorityList));
 
