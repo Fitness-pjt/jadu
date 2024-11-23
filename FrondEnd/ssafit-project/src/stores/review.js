@@ -5,7 +5,7 @@ import { ref } from "vue";
 
 export const useReviewStore = defineStore("review", () => {
   const getRestApiUrl = (programId) => {
-    return `http://localhost:8080/program/${programId}/review`; // Assuming reviews are a sub-resource
+    return `http://localhost:8080/program/${programId}/review`;
   };
 
   const review = ref({});

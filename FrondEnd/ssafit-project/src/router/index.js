@@ -26,6 +26,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import VideoListView from "@/views/VideoListView.vue";
 import ProgramVideoList from "@/components/program/ProgramVideoList.vue";
+import AnswerList from "@/components/question/AnswerList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -122,6 +123,13 @@ const router = createRouter({
               path: ":questionId",
               name: "questionDetail",
               component: QuestionDetail,
+              children: [
+                {
+                  path: "",
+                  name: "answer",
+                  component: AnswerList,
+                },
+              ],
             },
             {
               path: "create",
@@ -149,11 +157,6 @@ const router = createRouter({
               path: "create",
               name: "reviewCreate",
               component: ReviewCreate,
-            },
-            {
-              path: "update/:reviewId",
-              name: "reviewUpdate",
-              component: QuestionUpdate,
             },
           ],
         },

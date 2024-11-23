@@ -59,6 +59,11 @@
         </div>
       </div>
     </div>
+    <div>
+      <!-- 답변 -->
+      <AnswerCreate />
+      <AnswerList />
+    </div>
   </div>
 </template>
 
@@ -70,6 +75,8 @@ import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import UserNameTag from "../common/UserNameTag.vue";
 import { useLoginStore } from "@/stores/login";
+import AnswerCreate from "./AnswerCreate.vue";
+import AnswerList from "./AnswerList.vue";
 
 const route = useRoute();
 const questionId = route.params.questionId;
