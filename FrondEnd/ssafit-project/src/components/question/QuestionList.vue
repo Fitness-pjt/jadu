@@ -53,7 +53,7 @@
 <script setup>
 import router from "@/router";
 import { useQuestionStore } from "@/stores/question";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { formattedDate } from "@/utils/formattedDate";
 
@@ -61,6 +61,13 @@ const route = useRoute();
 const programId = route.params.programId;
 
 const questionStore = useQuestionStore();
+const questionList = computed(() => questionStore.questionList);
+watch(
+  () => {
+    questionList.value;
+  },
+  { deep: true }
+);
 
 onMounted(() => {
   questionStore.getQuestionList(programId);

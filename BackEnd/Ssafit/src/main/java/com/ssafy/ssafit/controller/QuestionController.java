@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,9 +41,8 @@ public class QuestionController {
 	@Operation(summary = "전체 질문 조회", description = "프로그램의 질문을 모두 조회합니다.")
 	public ResponseEntity<?> getList(@PathVariable("programId") int programId) {
 		List<Question> list = questionService.getQuestionList(programId);
-		
 
-		if(list == null || list.size() ==0) {
+		if (list == null || list.size() == 0) {
 			return new ResponseEntity<>("답변 없음.", HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Question>>(list, HttpStatus.OK);
@@ -64,9 +64,9 @@ public class QuestionController {
 	// 질문 등록하기
 	@PostMapping("/question")
 	@Operation(summary = "질문 등록하기", description = "질문을 등록합니다.")
-	public ResponseEntity<?> writequestion(@PathVariable("programId") int programId, @RequestBody Question question,
-			HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
+	public ResponseEntity<?> writequestion(@PathVariable("programId") int programId, @RequestBody Question question) {
+		// SecurityContext에서 인증된 사용자 정보 가져오기
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (loginUser == null) {
 			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
@@ -75,8 +75,7 @@ public class QuestionController {
 		int userId = loginUser.getUserId();
 		question.setUserId(userId);
 		question.setProgramId(programId);
-		
-		System.out.println(question);
+
 
 		questionService.writeQuestion(question);
 
@@ -87,12 +86,12 @@ public class QuestionController {
 	@DeleteMapping("/question/{questionId}")
 	@Operation(summary = "질문 삭제하기", description = "질문을 삭제합니다.")
 	public ResponseEntity<String> delete(@PathVariable("programId") int programId,
-			@PathVariable("questionId") int questionId, HttpSession session) {
+			@PathVariable("questionId") int questionId) {
 
 		Question question = questionService.readQuestion(questionId);
 		int writerUserId = question.getUserId(); // 글을 작성한 유저 아이디
 
-		User loginUser = (User) session.getAttribute("loginUser");
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (loginUser == null) {
 			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
@@ -115,12 +114,12 @@ public class QuestionController {
 	@PutMapping("/question/{questionId}")
 	@Operation(summary = "질문 수정하기", description = "질문을 수정합니다.")
 	public ResponseEntity<String> update(@PathVariable("programId") int programId,
-			@PathVariable("questionId") int questionId, @RequestBody Question question, HttpSession session) {
+			@PathVariable("questionId") int questionId, @RequestBody Question question) {
 
 		Question updatequestion = questionService.readQuestion(questionId);
 		int writerUserId = updatequestion.getUserId(); // 글을 작성한 유저 아이디
 
-		User loginUser = (User) session.getAttribute("loginUser");
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (loginUser == null) {
 			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
@@ -131,7 +130,6 @@ public class QuestionController {
 		if (writerUserId != loginUserId) {
 			return new ResponseEntity<>("글 작성자만 수 가능합니다.", HttpStatus.UNAUTHORIZED);
 		}
-		
 
 		question.setQuestionId(questionId);
 		System.out.println(question);

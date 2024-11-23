@@ -11,7 +11,7 @@
               type="text"
               id="writer"
               class="form-control"
-              v-model="writer"
+              v-model="question.writer"
               readonly
             />
           </div>
@@ -56,21 +56,44 @@
 <script setup>
 import { useQuestionStore } from "@/stores/question";
 import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { useUserStore } from "@/stores/user";
+import { useLoginStore } from "@/stores/login";
+import router from "@/router";
 
 const route = useRoute();
 const programId = route.params.programId;
 
-const store = useQuestionStore();
+const questionStore = useQuestionStore();
+const loginStore = useLoginStore();
+
+const userNickname = computed(() => loginStore.loginUserNickname);
+
+watch(
+  () => loginStore.value,
+  (newList, oldList) => {
+    console.log("newList", newList);
+  },
+  {
+    deep: true,
+  }
+);
+
+// console.log("userNickname :>> ", userNickname.value);
 
 const question = ref({
+  writer: userNickname,
   title: "",
   content: "",
 });
 
 const createQuestion = () => {
-  store.createQuestion(question.value, programId);
+  questionStore.createQuestion(question.value, programId);
+  alert("질문 등록이 완료되었습니다.");
+  router.replace({ name: "question" });
 };
+
+onMounted(() => {});
 </script>
 
 <style scoped>
