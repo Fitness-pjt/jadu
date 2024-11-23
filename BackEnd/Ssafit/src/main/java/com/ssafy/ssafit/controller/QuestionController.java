@@ -26,7 +26,6 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/program/{programId}")
 @Tag(name = "Question API", description = "질문 CRUD")
-@CrossOrigin("*")
 public class QuestionController {
 	private QuestionService questionService;
 

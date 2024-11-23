@@ -132,8 +132,8 @@ import { useProgramStore } from "@/stores/program";
 import { useLoginStore } from "@/stores/login";
 import { useVideoStore } from "@/stores/video";
 import ProgramVideoList from "./\bProgramVideoList.vue";
-import ReviewList from "./review/ReviewList.vue";
-import QuestionList from "./question/QuestionList.vue";
+import ReviewList from "../review/ReviewList.vue";
+import QuestionList from "../question/QuestionList.vue";
 
 const route = useRoute();
 const router = useRouter();
