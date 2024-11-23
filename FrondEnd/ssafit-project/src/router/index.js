@@ -15,6 +15,7 @@ import HomeView from "../views/HomeView.vue";
 import UserInfoDetail from "@/components/user/UserInfoDetail.vue";
 import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import ProgramEdit from "@/components/program/ProgramEdit.vue";
+import ProgramVideoList from "@/components/program/\bProgramVideoList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
