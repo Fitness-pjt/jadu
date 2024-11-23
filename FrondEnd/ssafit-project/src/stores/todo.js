@@ -2,6 +2,7 @@ import router from "@/router";
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { useProgramStore } from "./program";
 
 export const useTodoStore = defineStore("todo", () => {
   // Todo 날짜 전역으로 관리
@@ -25,6 +26,7 @@ export const useTodoStore = defineStore("todo", () => {
       .get(REST_API_URL)
       .then((res) => {
         // 요청 후 userId에 해당하는 todo만 todoList에 담기
+        // console.log("res.data", res.data);
         todoList.value = res.data;
       })
       .catch((err) => {
@@ -47,7 +49,9 @@ export const useTodoStore = defineStore("todo", () => {
         // console.log("투두 추가하기", res.data);
 
         // 새로운 투두 항목을 todoList에 추가
-        getTodoList(userId, todo.date);
+        // const response = getTodoList(userId, todo.date);
+        // console.log("response", response);
+
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {
@@ -235,6 +239,78 @@ export const useTodoStore = defineStore("todo", () => {
       });
   };
 
+  const startProgram = async (programId, userId, startDate) => {
+    try {
+      const programStore = useProgramStore();
+
+      const programData = await programStore.getProgramById(programId);
+
+      // 2. 프로그램의 비디오 리스트 가져오기
+      const programVideos = programData.videoIds || [];
+      if (programVideos.length === 0) {
+        throw new Error("프로그램에 등록된 영상이 없습니다.");
+      }
+
+      // 3. 프로그램 기간 계산 (주 단위를 일 단위로 변환)
+      const totalDays = programData.durationWeeks * 7;
+
+      // 4. 비디오당 간격 계산 (일 단위로)
+      const daysInterval = Math.floor(totalDays / programVideos.length);
+
+      // 5. 각 비디오에 대해 todo 생성
+      const todos = [];
+      for (let i = 0; i < programVideos.length; i++) {
+        // 날짜 계산
+        const todoDate = new Date(startDate);
+        todoDate.setDate(todoDate.getDate() + i * daysInterval);
+
+        const todo = {
+          programId: programId,
+          videoId: programVideos[i],
+          date: todoDate.toISOString().split("T")[0],
+          status: false,
+          content: `${programData.title} - ${i + 1}회차 운동`,
+        };
+
+        await addTodo(todo, userId);
+        todos.push(todo);
+      }
+
+      alert("프로그램이 Todo 리스트에 성공적으로 등록되었습니다!");
+      router.push("/todo");
+
+      return todos;
+    } catch (error) {
+      console.error("Todo 생성 중 오류 발생:", error);
+      if (error.response && error.response.status === 401) {
+        sessionStorage.removeItem("access-token");
+        sessionStorage.removeItem("refresh-token");
+        router.replace("/login");
+      }
+      throw new Error("프로그램을 Todo 리스트에 추가하는데 실패했습니다.");
+    }
+  };
+  // stores/todo.js
+  const checkProgramProgress = async (programId, userId) => {
+    try {
+      const REST_API_URL = getRestApiUrl(userId) + `/progress/${programId}`;
+      const response = await axios.get(REST_API_URL, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Progress check response:", response.data); // 디버깅용
+      if (response.data === undefined) {
+        return { inProgress: false };
+      }
+      return response.data; // { inProgress: true/false }
+    } catch (error) {
+      console.error("프로그램 진행상태 확인 실패:", error);
+      return { inProgress: false };
+    }
+  };
+
   // 투두 몇 개 있는지 조회하기
   const getTodoCount = () => {};
 
@@ -251,5 +327,7 @@ export const useTodoStore = defineStore("todo", () => {
     pushTodoLikes,
     cancelTodoLikes,
     isFavorite,
+    startProgram,
+    checkProgramProgress,
   };
 });

@@ -59,4 +59,10 @@ public class TodoServiceImpl implements TodoService {
 		todoDao.deleteTodoLikes(todoId, userId);
 	}
 
+	@Override
+	public boolean hasUncompletedTodos(int programId, int userId) {
+	    return todoDao.countUncompletedTodos(programId, userId) > 0;
+	}
+
+
 }

@@ -6,10 +6,17 @@
         <TodoVCalendar />
       </div>
       <div class="content-section">
-        <div v-if="userId == loginUserId" class="todo-create">
-          <TodoCreate />
+        <!-- 프로그램 투두 리스트 -->
+        <ProgramTodoListItem :userId="userId" />
+        
+        <!-- 일반 투두 섹션 -->
+        <div class="regular-todo-section">
+          <h3 class="section-title">📝 Todo List</h3>
+          <div v-if="userId == loginUserId" class="todo-create">
+            <TodoCreate />
+          </div>
+          <TodoList :userId="userId" />
         </div>
-        <TodoList :userId="userId" />
       </div>
     </div>
   </div>
@@ -22,6 +29,7 @@ import TodoVCalendar from "@/components/todo/TodoVCalendar.vue";
 import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
 import { computed, onMounted, ref } from "vue";
+import ProgramTodoListItem from '@/components/todo/ProgramTodoList.vue';
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();

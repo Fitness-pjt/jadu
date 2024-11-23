@@ -44,6 +44,7 @@ public class TodoController {
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<>("이 날짜에 투두 없음", HttpStatus.NO_CONTENT);
 		}
+		System.out.println(list);
 		return new ResponseEntity<List<Todo>>(list, HttpStatus.OK);
 	}
 
@@ -210,6 +211,18 @@ public class TodoController {
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK); // 좋아요 취소하기 : false 반환
 
+	}
+	
+	// TodoController에 추가
+	@GetMapping("/progress/{programId}")
+	public ResponseEntity<?> checkProgramProgress(
+	    @PathVariable int userId,
+	    @PathVariable int programId
+	) {
+	    boolean inProgress = todoService.hasUncompletedTodos(programId, userId);
+	    Map<String, Boolean> response = new HashMap<>();
+	    response.put("inProgress", inProgress);
+	    return ResponseEntity.ok(response);
 	}
 
 }

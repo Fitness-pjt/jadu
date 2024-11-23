@@ -38,14 +38,21 @@
 
       <!-- 버튼 그룹 -->
       <div class="d-flex gap-2 mb-4">
-        <!-- 일반 사용자용 버튼 -->
+        <!-- 시작하기/진행중 표시 버튼 -->
         <button
+          v-if="!isInProgress"
+          @click="openDatePicker"
           class="btn btn-primary"
-          @click="startProgram"
-          :disabled="isLoading"
         >
           프로그램 시작하기
         </button>
+        <div
+          v-else
+          class="program-status-badge bg-primary text-white px-3 py-2 rounded"
+        >
+          진행중
+        </div>
+
         <button
           class="btn"
           :class="isLiked ? 'btn-primary' : 'btn-outline-primary'"
@@ -66,7 +73,6 @@
           </button>
         </div>
       </div>
-
       <!-- 탭 네비게이션 -->
       <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
@@ -104,26 +110,67 @@
       <!-- 탭 컨텐츠 -->
       <div class="tab-content">
         <div v-if="activeTab === 'videos'" class="tab-pane active">
-          <!-- 비디오 컴포넌트 자리 -->
           <ProgramVideoList
             :videos="videos"
             v-model:selected-video="selectedVideo"
           />
-          <!-- <RouterView :videos="videos" v-model:selected-video="selectedVideo" /> -->
         </div>
         <div v-else-if="activeTab === 'reviews'" class="tab-pane active">
-          <!-- 리뷰 컴포넌트 자리 -->
           <RouterView />
         </div>
         <div v-else-if="activeTab === 'qna'" class="tab-pane active">
-          <!-- Q&A 컴포넌트 자리 -->
           <RouterView />
         </div>
       </div>
     </div>
+
+    <!-- 날짜 선택 모달 -->
+    <Teleport to="body">
+      <div v-if="showDatePicker" class="modal-overlay">
+        <div class="custom-modal">
+          <div class="modal-header">
+            <h5 class="modal-title">프로그램 시작 날짜 선택</h5>
+            <button
+              type="button"
+              class="btn-close"
+              @click="closeDatePicker"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <VCalendar
+              v-model="selectedStartDate"
+              :min-date="new Date()"
+              :attributes="attributes"
+              is-expanded
+              @dayclick="onDateSelect"
+              :model-config="{
+                type: 'string',
+                mask: 'YYYY-MM-DD',
+              }"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="closeDatePicker"
+            >
+              취소
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="confirmStartDate"
+              :disabled="!selectedStartDate"
+            >
+              시작하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
-
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -133,12 +180,14 @@ import { useVideoStore } from "@/stores/video";
 import ProgramVideoList from "./ProgramVideoList.vue";
 import ReviewList from "../review/ReviewList.vue";
 import QuestionList from "../question/QuestionList.vue";
+import { useTodoStore } from "@/stores/todo";
 
 const route = useRoute();
 const router = useRouter();
 const loginStore = useLoginStore();
 const programStore = useProgramStore();
 const videoStore = useVideoStore();
+const todoStore = useTodoStore();
 
 const programId = route.params.programId;
 
@@ -148,6 +197,7 @@ const error = ref(null);
 const activeTab = ref("videos");
 const videos = ref([]);
 const selectedVideo = ref(null);
+const isInProgress = ref(false);
 
 const isLiked = computed(() => programStore.isLiked);
 const likeCount = computed(() => programStore.likeCount);
@@ -214,17 +264,81 @@ const fetchProgramVideos = async () => {
 };
 
 // 프로그램 시작하기
-const startProgram = async () => {
-  try {
-    // TODO: 프로그램 시작 로직 구현
-    await programStore.startProgram(programId);
-    // TODO: Todo 리스트에 추가하는 로직 구현
-  } catch (err) {
-    console.error(err);
-    alert("프로그램 시작에 실패했습니다.");
-  }
+const showDatePicker = ref(false);
+const selectedStartDate = ref(null);
+
+const onDateSelect = (date) => {
+  console.log("Selected date in onDateSelect:", date); // 디버깅용
+  selectedStartDate.value = date;
+};
+const openDatePicker = () => {
+  showDatePicker.value = true;
 };
 
+const closeDatePicker = () => {
+  showDatePicker.value = false;
+  selectedStartDate.value = null;
+};
+const confirmStartDate = async () => {
+  try {
+    const userId = loginStore.loginUserId;
+    if (!userId) {
+      throw new Error("로그인이 필요합니다.");
+    }
+
+    // 선택된 날짜가 있는지 확인
+    if (!selectedStartDate.value) {
+      throw new Error("시작 날짜를 선택해주세요.");
+    }
+
+    // 선택된 날짜 값 확인
+    console.log("Raw selected date:", selectedStartDate.value);
+
+    // 날짜 문자열 생성 (YYYY-MM-DD 형식)
+    let formattedDate;
+    try {
+      // VCalendar의 날짜가 타임스탬프나 날짜 객체인 경우
+      if (
+        selectedStartDate.value.year &&
+        selectedStartDate.value.month &&
+        selectedStartDate.value.day
+      ) {
+        formattedDate = `${selectedStartDate.value.year}-${String(
+          selectedStartDate.value.month
+        ).padStart(2, "0")}-${String(selectedStartDate.value.day).padStart(
+          2,
+          "0"
+        )}`;
+      } else {
+        const date = new Date(selectedStartDate.value);
+        formattedDate = `${date.getFullYear()}-${String(
+          date.getMonth() + 1
+        ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+      }
+    } catch (err) {
+      console.error("Date formatting error:", err);
+      throw new Error("날짜 형식이 올바르지 않습니다.");
+    }
+
+    console.log("Formatted date:", formattedDate);
+
+    await todoStore.startProgram(route.params.programId, userId, formattedDate);
+    closeDatePicker();
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+const attributes = [
+  {
+    key: "today",
+    dates: new Date(),
+    highlight: true,
+    contentStyle: {
+      color: "white",
+    },
+  },
+];
 // 좋아요 토글
 const toggleLike = async () => {
   if (!loginStore.loginUserId) {
@@ -240,14 +354,27 @@ const toggleLike = async () => {
     alert("좋아요 처리에 실패했습니다.");
   }
 };
-
-// 컴포넌트 마운트 시 데이터 가져오기
-onMounted(() => {
-  fetchProgramDetail().then(() => {
-    if (videos.value.length > 0) {
-      selectedVideo.value = videos.value[0];
+const checkProgramStatus = async () => {
+  if (loginStore.loginUserId) {
+    try {
+      const status = await todoStore.checkProgramProgress(
+        programId, // route.params.programId 대신 상수 사용
+        loginStore.loginUserId
+      );
+      isInProgress.value = status.inProgress;
+      console.log("Program status:", status); // 디버깅용
+    } catch (err) {
+      console.error("프로그램 상태 체크 실패:", err);
     }
-  });
+  }
+};
+// 컴포넌트 마운트 시 데이터 가져오기
+onMounted(async () => {
+  await fetchProgramDetail(); // program 정보 가져오기 기다림
+  if (videos.value.length > 0) {
+    selectedVideo.value = videos.value[0];
+  }
+  await checkProgramStatus(); // program 정보 이후에 상태 체크
 });
 </script>
 
@@ -308,11 +435,67 @@ onMounted(() => {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
   }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.custom-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  padding: 1rem;
+}
+
+.modal-footer {
+  padding: 1rem;
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+:deep(.vc-container) {
+  border: none;
+  width: 100%;
+}
+
+:deep(.vc-header) {
+  padding: 10px 0;
+}
+
+:deep(.vc-weeks) {
+  padding: 0;
 }
 </style>

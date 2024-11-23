@@ -44,19 +44,30 @@ watch(
 );
 
 const todo = ref({
-  date: selectedDate,
   content: "",
+  date: selectedDate,
+  programId: null, // null로 명시
+  videoId: null, // null로 명시
+  status: false,
 });
 
 // Todo 추가하기
-const addTodo = async () => {
+const addTodo = () => {
   if (!todo.value.content.trim()) {
     alert("todo를 작성해주세요!");
     return;
   }
 
-  await todoStore.addTodo(todo.value, loginUserId); // Todo 추가
+  todoStore.addTodo(
+    {
+      ...todo.value,
+      date: selectedDate.value, // 현재 선택된 날짜 사용
+    },
+    loginUserId
+  );
+
   todo.value.content = ""; // 빈값으로 v-model 초기화
+  todoStore.getTodoList(loginUserId, selectedDate.value);
 };
 </script>
 
