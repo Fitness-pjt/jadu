@@ -26,7 +26,6 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/program/{programId}")
 @Tag(name = "Question API", description = "질문 CRUD")
-@CrossOrigin("*")
 public class QuestionController {
 	private QuestionService questionService;
 
@@ -44,7 +43,7 @@ public class QuestionController {
 		
 
 		if(list == null || list.size() ==0) {
-			return new ResponseEntity<>("답변 없음.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("답변 없음.", HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Question>>(list, HttpStatus.OK);
 	}

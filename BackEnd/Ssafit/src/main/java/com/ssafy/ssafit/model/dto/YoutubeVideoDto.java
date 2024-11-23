@@ -138,5 +138,27 @@ public class YoutubeVideoDto {
         public YoutubeVideoDto build() {
             return dto;
         }
+
+
+        
+        
+    }
+    
+    @Override
+    public String toString() {
+    	return "YoutubeVideoDto{" +
+    			"videoId='" + videoId + '\'' +
+    			", title='" + title + '\'' +
+    			", description='" + description + '\'' +
+    			", publishedAt='" + publishedAt + '\'' +
+    			", channelId='" + channelId + '\'' +
+    			", channelTitle='" + channelTitle + '\'' +
+    			", viewCount=" + viewCount +
+    			", likeCount=" + likeCount +
+    			", commentCount=" + commentCount +
+    			", duration='" + duration + '\'' +
+    			", definition='" + definition + '\'' +
+    			", licensedContent=" + licensedContent +
+    			'}';
     }
 }

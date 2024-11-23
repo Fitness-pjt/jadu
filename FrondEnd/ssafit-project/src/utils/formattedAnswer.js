@@ -8,7 +8,7 @@ export const formatAnswer = (questionId, answer) => {
       if (answer === "10대") return "10";
       if (answer === "20~30대") return "2030";
       if (answer === "40~50대") return "4050";
-      if (answer === "60대") return "60";
+      if (answer === "60대 이상") return "60";
     case "shape":
       if (answer === "마름") return "SLIM";
       if (answer === "보통") return "NORMAL";
@@ -65,6 +65,7 @@ export const formatAnswer = (questionId, answer) => {
 };
 
 export const formatExerciseInfoForServer = (exerciseInfo) => {
+  // console.log('exerciseInfo', exerciseInfo)
   return {
     gender: formatAnswer("gender", exerciseInfo.gender),
     age: formatAnswer("age", exerciseInfo.age),

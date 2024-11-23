@@ -1,65 +1,85 @@
 <template>
   <div class="container mt-4">
     <h1 class="text-center mb-4">운동 정보 디테일 페이지</h1>
+    <!-- 등록된 운동 정보가 없을 때 -->
+    <div
+      v-if="displayData.age == undefined"
+      class="empty-state text-center mt-5"
+    >
+      <h2 class="text-muted mb-4">운동 정보가 없습니다.</h2>
+      <p class="text-muted mb-4">
+        현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤
+        프로그램을 추천받아 보세요.
+      </p>
+      <RouterLink :to="{ name: 'createAIProgram' }"
+        ><button @click="navigateToForm" class="btn btn-primary btn-lg">
+          운동 정보 등록하기
+        </button></RouterLink
+      >
+    </div>
+    <div v-else>
+      <!-- 기본 정보 섹션 -->
+      <section class="info-section mb-4">
+        <h2 class="h4 text-primary">기본 정보</h2>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>성별:</strong> {{ displayData.gender }}
+          </li>
+          <li class="list-group-item">
+            <strong>연령대:</strong> {{ displayData.age }}
+          </li>
+          <li class="list-group-item">
+            <strong>체형:</strong> {{ displayData.shape }}
+          </li>
+        </ul>
+      </section>
 
-    <!-- 기본 정보 섹션 -->
-    <section class="info-section mb-4">
-      <h2 class="h4 text-primary">기본 정보</h2>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <strong>성별:</strong> {{ displayData.gender }}
-        </li>
-        <li class="list-group-item">
-          <strong>연령대:</strong> {{ displayData.age }}
-        </li>
-        <li class="list-group-item">
-          <strong>체형:</strong> {{ displayData.shape }}
-        </li>
-      </ul>
-    </section>
+      <!-- 운동 목표 섹션 -->
+      <section class="info-section mb-4">
+        <h2 class="h4 text-primary">운동 목표</h2>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>운동 목표:</strong> {{ displayData.goal }}
+          </li>
+          <li class="list-group-item">
+            <strong>운동 경험:</strong>
+            {{ formattedData(displayData.experience) }}
+          </li>
+        </ul>
+      </section>
 
-    <!-- 운동 목표 섹션 -->
-    <section class="info-section mb-4">
-      <h2 class="h4 text-primary">운동 목표</h2>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <strong>운동 목표:</strong> {{ displayData.goal }}
-        </li>
-        <li class="list-group-item">
-          <strong>운동 경험:</strong>
-          {{ formattedData(displayData.experience) }}
-        </li>
-      </ul>
-    </section>
+      <!-- 운동 환경 섹션 -->
+      <section class="info-section mb-4">
+        <h2 class="h4 text-primary">운동 환경</h2>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>운동 장소:</strong> {{ displayData.location }}
+          </li>
+          <li class="list-group-item">
+            <strong>운동 키워드:</strong>
+            <span v-for="(keyword, index) in displayData.keyword" :key="index">
+              {{ keyword
+              }}<span v-if="index < displayData.keyword.length - 1">, </span>
+            </span>
+          </li>
+          <li class="list-group-item">
+            <strong>운동 빈도:</strong> {{ displayData.frequency }}
+          </li>
+          <li class="list-group-item">
+            <strong>운동 기간:</strong> {{ displayData.duration }}
+          </li>
+        </ul>
+      </section>
 
-    <!-- 운동 환경 섹션 -->
-    <section class="info-section mb-4">
-      <h2 class="h4 text-primary">운동 환경</h2>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <strong>운동 장소:</strong> {{ displayData.location }}
-        </li>
-        <li class="list-group-item">
-          <strong>운동 키워드:</strong>
-          <span v-for="(keyword, index) in displayData.keyword" :key="index">
-            {{ keyword
-            }}<span v-if="index < displayData.keyword.length - 1">, </span>
-          </span>
-        </li>
-        <li class="list-group-item">
-          <strong>운동 빈도:</strong> {{ displayData.frequency }}
-        </li>
-        <li class="list-group-item">
-          <strong>운동 기간:</strong> {{ displayData.duration }}
-        </li>
-      </ul>
-    </section>
-
-    <!-- 수정 버튼 -->
-    <div class="text-center">
-      <button class="btn btn-primary" @click="goToUpdateUserInfo">
-        운동 정보 수정하기
-      </button>
+      <!-- 수정 버튼 -->
+      <div class="text-center">
+        <button class="btn btn-primary" @click="goToUpdateUserInfo">
+          운동 정보 수정하기
+        </button>
+        <button class="btn btn-primary" @click="goToCreateNewProgram">
+          새로운 맞춤 프로그램 만들기
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -102,6 +122,10 @@ const formattedData = (data) => {
 
 const goToUpdateUserInfo = () => {
   router.push({ name: "updateUserInfo" });
+};
+
+const goToCreateNewProgram = () => {
+  router.push({ name: "createAIProgram" });
 };
 </script>
 

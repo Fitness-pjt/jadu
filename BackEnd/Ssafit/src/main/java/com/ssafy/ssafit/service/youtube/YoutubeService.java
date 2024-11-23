@@ -7,7 +7,7 @@ import com.google.api.services.youtube.model.Video;
 import com.ssafy.ssafit.model.dto.YoutubeVideoDto;
 
 public interface YoutubeService {
-	public List<YoutubeVideoDto> searchVideos(String query);
+	public List<YoutubeVideoDto> searchVideos(String query, int maxVideoNum);
 	
 	public YoutubeVideoDto convertToDto(SearchResult searchResult, Video videoDetails);
 }
