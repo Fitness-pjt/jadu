@@ -132,7 +132,7 @@ CREATE TABLE `todo` (
     `video_id` VARCHAR(50),  
     `date` DATE NOT NULL,
     `status` BOOLEAN DEFAULT FALSE,
-    `content` VARCHAR(100) NOT NULL,
+    `content` VARCHAR(100),
     PRIMARY KEY (`todo_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
     FOREIGN KEY (`program_id`) REFERENCES `program` (`program_id`) ON DELETE CASCADE,
