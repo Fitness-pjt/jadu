@@ -132,6 +132,7 @@ export const useUserStore = defineStore("user", () => {
     userSignUp,
     getUserListProfileInfo,
     getUserProfileInfo,
+    getUserListProfileInfo,
     userNickname,
     checkEmailDuplicate,
     checkNicknameDuplicate,
