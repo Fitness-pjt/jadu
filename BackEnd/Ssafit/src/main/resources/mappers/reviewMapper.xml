@@ -6,19 +6,23 @@
 
 	<select id="selectAllReview" parameterType="int"
 		resultType="Review">
-		SELECT r.review_id, r.title, u.user_nickname AS
+		SELECT r.review_id, u.user_nickname AS
 		writer,
-		r.content, r.star, r.created_at, r.user_id, r.program_id
+		r.content,
+		r.star, r.created_at, r.user_id, r.program_id
 		FROM review r,
 		users u
 		WHERE r.program_id = #{programId} AND u.user_id =
-		r.user_id;
+		r.user_id
+		ORDER BY
+		r.created_at DESC;
 	</select>
 
 	<select id="selectOneReview" parameterType="int"
 		resultType="Review">
-		SELECT r.review_id, r.title, u.user_nickname AS writer,
-		r.content, r.star,
+		SELECT r.review_id, u.user_nickname AS writer,
+		r.content,
+		r.star,
 		r.created_at, r.user_id, r.program_id
 		FROM review r,
 		users u
@@ -28,20 +32,24 @@
 
 	<insert id="insertReview" parameterType="Review"
 		keyProperty="reviewId" useGeneratedKeys="true">
-		INSERT INTO review (title,
-		content, star, program_id, user_id)
-		VALUES(#{title}, #{content},
-		#{star}, #{programId}, #{userId});
+		INSERT INTO review (
+		content,
+		star, program_id, user_id)
+		VALUES( #{content},
+		#{star}, #{programId},
+		#{userId});
 	</insert>
 
 	<delete id="deleteReview" parameterType="int">
 		DELETE FROM review
-		WHERE review_id = #{reviewId};
+		WHERE
+		review_id = #{reviewId};
 	</delete>
 
 	<update id="updateReview" parameterType="Review">
 		UPDATE review
-		SET title = #{title}, content = #{content}, star = #{star},
+		SET title =
+		#{title}, content = #{content}, star = #{star},
 		created_at = now()
 		WHERE review_id = #{reviewId}
 	</update>

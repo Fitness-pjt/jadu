@@ -2,7 +2,12 @@
   <div>
     <form class="todo-form" @submit.prevent="addTodo">
       <!-- 내용 입력 -->
-      <input type="text" placeholder="📝 할 일 입력" class="todo-content-input" v-model="todo.content" />
+      <input
+        type="text"
+        placeholder="📝 할 일 입력"
+        class="todo-content-input"
+        v-model="todo.content"
+      />
       <!-- 추가 버튼 -->
       <div @keyup.enter="addTodo">
         <button type="button" class="add-button" @click="addTodo">
@@ -25,10 +30,15 @@ const loginUserId = loginStore.loginUserId;
 const selectedDate = computed(() => todoStore.selectedDate);
 const todoList = computed(() => todoStore.todoList);
 
+// 날짜 변화 감지
+watch(selectedDate, async (newDate) => {
+  await todoStore.getTodoList(loginUserId, newDate);
+});
+
 watch(
   () => todoList.value,
   (newList, oldList) => {
-    console.log("newList :>> ", newList);
+    // console.log("newList :>> ", newList);
   },
   { deep: true }
 );
@@ -36,24 +46,26 @@ watch(
 const todo = ref({
   content: "",
   date: selectedDate,
-  programId: null,  // null로 명시
-  videoId: null,    // null로 명시
-  status: false
+  programId: null, // null로 명시
+  videoId: null, // null로 명시
+  status: false,
 });
 
 // Todo 추가하기
-const addTodo = () => {
+const addTodo = async () => {
   if (!todo.value.content.trim()) {
     alert("todo를 작성해주세요!");
     return;
   }
 
-  todoStore.addTodo({
-    ...todo.value,
-    date: selectedDate.value  // 현재 선택된 날짜 사용
-  }, loginUserId);
+  await todoStore.addTodo(
+    {
+      ...todo.value,
+      date: selectedDate.value, // 현재 선택된 날짜 사용
+    },
+    loginUserId
+  );
   todo.value.content = ""; // 빈값으로 v-model 초기화
-  todoStore.getTodoList(loginUserId, selectedDate.value);
 };
 </script>
 

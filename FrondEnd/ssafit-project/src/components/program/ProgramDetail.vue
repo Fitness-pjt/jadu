@@ -17,13 +17,19 @@
       <!-- 헤더 섹션 -->
       <div class="row mb-4">
         <div class="col-md-4">
-          <img :src="program.programImgPath" :alt="program.title" class="img-fluid rounded" />
+          <img
+            :src="program.programImgPath"
+            :alt="program.title"
+            class="img-fluid rounded"
+          />
         </div>
         <div class="col-md-8">
           <h1 class="mb-3">{{ program.title }}</h1>
           <div class="program-meta mb-3">
             <span class="badge bg-primary me-2">{{ program.level }}</span>
-            <span class="badge bg-secondary me-2">{{ program.durationWeeks }}주 프로그램</span>
+            <span class="badge bg-secondary me-2"
+              >{{ program.durationWeeks }}주 프로그램</span
+            >
             <span class="badge bg-info">영상 {{ program.videoCnt }}개</span>
           </div>
           <p class="lead">{{ program.description }}</p>
@@ -33,15 +39,26 @@
       <!-- 버튼 그룹 -->
       <div class="d-flex gap-2 mb-4">
         <!-- 시작하기/진행중 표시 버튼 -->
-        <button v-if="!isInProgress" @click="openDatePicker" class="btn btn-primary">
+        <button
+          v-if="!isInProgress"
+          @click="openDatePicker"
+          class="btn btn-primary"
+        >
           프로그램 시작하기
         </button>
-        <div v-else class="program-status-badge bg-primary text-white px-3 py-2 rounded">
+        <div
+          v-else
+          class="program-status-badge bg-primary text-white px-3 py-2 rounded"
+        >
           진행중
         </div>
 
-        <button class="btn" :class="isLiked ? 'btn-primary' : 'btn-outline-primary'" @click="toggleLike"
-          :disabled="isLoading">
+        <button
+          class="btn"
+          :class="isLiked ? 'btn-primary' : 'btn-outline-primary'"
+          @click="toggleLike"
+          :disabled="isLoading"
+        >
           <i :class="isLiked ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
           좋아요 {{ likeCount > 0 ? `(${likeCount})` : "" }}
         </button>
@@ -59,20 +76,32 @@
       <!-- 탭 네비게이션 -->
       <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
-          <RouterLink class="nav-link" :class="{ active: activeTab === 'videos' }" @click="activeTab = 'videos'"
-            :to="{ name: 'video' }">
+          <RouterLink
+            class="nav-link"
+            :class="{ active: activeTab === 'videos' }"
+            @click="activeTab = 'videos'"
+            :to="{ name: 'video' }"
+          >
             운동 영상
           </RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link" :class="{ active: activeTab === 'reviews' }" @click="activeTab = 'reviews'"
-            :to="{ name: 'review' }">
+          <RouterLink
+            class="nav-link"
+            :class="{ active: activeTab === 'reviews' }"
+            @click="activeTab = 'reviews'"
+            :to="{ name: 'review' }"
+          >
             리뷰
           </RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink :to="{ name: 'question' }" class="nav-link" :class="{ active: activeTab === 'qna' }"
-            @click="activeTab = 'qna'">
+          <RouterLink
+            :to="{ name: 'question' }"
+            class="nav-link"
+            :class="{ active: activeTab === 'qna' }"
+            @click="activeTab = 'qna'"
+          >
             Q&A
           </RouterLink>
         </li>
@@ -81,7 +110,10 @@
       <!-- 탭 컨텐츠 -->
       <div class="tab-content">
         <div v-if="activeTab === 'videos'" class="tab-pane active">
-          <ProgramVideoList :videos="videos" v-model:selected-video="selectedVideo" />
+          <ProgramVideoList
+            :videos="videos"
+            v-model:selected-video="selectedVideo"
+          />
         </div>
         <div v-else-if="activeTab === 'reviews'" class="tab-pane active">
           <RouterView />
@@ -98,20 +130,39 @@
         <div class="custom-modal">
           <div class="modal-header">
             <h5 class="modal-title">프로그램 시작 날짜 선택</h5>
-            <button type="button" class="btn-close" @click="closeDatePicker"></button>
+            <button
+              type="button"
+              class="btn-close"
+              @click="closeDatePicker"
+            ></button>
           </div>
           <div class="modal-body">
-            <VCalendar v-model="selectedStartDate" :min-date="new Date()" :attributes="attributes" is-expanded
-              @dayclick="onDateSelect" :model-config="{
+            <VCalendar
+              v-model="selectedStartDate"
+              :min-date="new Date()"
+              :attributes="attributes"
+              is-expanded
+              @dayclick="onDateSelect"
+              :model-config="{
                 type: 'string',
-                mask: 'YYYY-MM-DD'
-              }" />
+                mask: 'YYYY-MM-DD',
+              }"
+            />
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="closeDatePicker">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="closeDatePicker"
+            >
               취소
             </button>
-            <button type="button" class="btn btn-primary" @click="confirmStartDate" :disabled="!selectedStartDate">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="confirmStartDate"
+              :disabled="!selectedStartDate"
+            >
               시작하기
             </button>
           </div>
@@ -247,11 +298,22 @@ const confirmStartDate = async () => {
     let formattedDate;
     try {
       // VCalendar의 날짜가 타임스탬프나 날짜 객체인 경우
-      if (selectedStartDate.value.year && selectedStartDate.value.month && selectedStartDate.value.day) {
-        formattedDate = `${selectedStartDate.value.year}-${String(selectedStartDate.value.month).padStart(2, '0')}-${String(selectedStartDate.value.day).padStart(2, '0')}`;
+      if (
+        selectedStartDate.value.year &&
+        selectedStartDate.value.month &&
+        selectedStartDate.value.day
+      ) {
+        formattedDate = `${selectedStartDate.value.year}-${String(
+          selectedStartDate.value.month
+        ).padStart(2, "0")}-${String(selectedStartDate.value.day).padStart(
+          2,
+          "0"
+        )}`;
       } else {
         const date = new Date(selectedStartDate.value);
-        formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        formattedDate = `${date.getFullYear()}-${String(
+          date.getMonth() + 1
+        ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
       }
     } catch (err) {
       console.error("Date formatting error:", err);
@@ -269,11 +331,11 @@ const confirmStartDate = async () => {
 };
 const attributes = [
   {
-    key: 'today',
+    key: "today",
     dates: new Date(),
     highlight: true,
     contentStyle: {
-      color: 'white',
+      color: "white",
     },
   },
 ];
@@ -296,7 +358,7 @@ const checkProgramStatus = async () => {
   if (loginStore.loginUserId) {
     try {
       const status = await todoStore.checkProgramProgress(
-        programId,  // route.params.programId 대신 상수 사용
+        programId, // route.params.programId 대신 상수 사용
         loginStore.loginUserId
       );
       isInProgress.value = status.inProgress;
@@ -308,7 +370,7 @@ const checkProgramStatus = async () => {
 };
 // 컴포넌트 마운트 시 데이터 가져오기
 onMounted(async () => {
-  await fetchProgramDetail();  // program 정보 가져오기 기다림
+  await fetchProgramDetail(); // program 정보 가져오기 기다림
   if (videos.value.length > 0) {
     selectedVideo.value = videos.value[0];
   }
