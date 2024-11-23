@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.ssafit.model.dao.TodoDao">
 
 	<select id="selectAllTodo" resultType="Todo">
@@ -14,9 +12,9 @@
 	<insert id="insertTodo" parameterType="Todo"
 		keyProperty="todoId" useGeneratedKeys="true">
 		INSERT INTO todo (user_id, date,
-		content )
+		content,program_id,video_id )
 		VALUES(#{userId}, #{date},
-		#{content});
+		#{content},#{programId},#{videoId});
 	</insert>
 
 	<delete id="deleteTodo" parameterType="int">
@@ -64,5 +62,13 @@
 		todo_likes
 		WHERE todo_id=#{todoId} AND user_id=#{userId};
 	</delete>
+
+	<select id="countUncompletedTodos" resultType="int">
+		SELECT COUNT(*)
+		FROM todo
+		WHERE program_id = #{programId}
+		AND user_id = #{userId}
+		AND status = false
+	</select>
 
 </mapper>

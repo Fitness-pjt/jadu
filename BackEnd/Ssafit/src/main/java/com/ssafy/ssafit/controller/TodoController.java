@@ -211,5 +211,17 @@ public class TodoController {
 		return new ResponseEntity<>(response, HttpStatus.OK); // 좋아요 취소하기 : false 반환
 
 	}
+	
+	// TodoController에 추가
+	@GetMapping("/progress/{programId}")
+	public ResponseEntity<?> checkProgramProgress(
+	    @PathVariable int userId,
+	    @PathVariable int programId
+	) {
+	    boolean inProgress = todoService.hasUncompletedTodos(programId, userId);
+	    Map<String, Boolean> response = new HashMap<>();
+	    response.put("inProgress", inProgress);
+	    return ResponseEntity.ok(response);
+	}
 
 }

@@ -7,7 +7,7 @@ public class Todo {
 	private String content; // 투두 내용
 
 	private int userId; // 투두를 추가한 유저 = 로그인한 유저
-	private int programId; // 어떤 프로그램이 추가 되었는지
+	private Integer programId; // 어떤 프로그램이 추가 되었는지
 	private String videoId; // 프로그램 내 어떤 영상이 투두에 추가되었는지
 
 	private int likeCnt; // 내 투두 하나에 대해서 사람들이 남긴 좋아요 수
@@ -15,7 +15,7 @@ public class Todo {
 	public Todo() {
 	}
 
-	public Todo(int todoId, String date, boolean status, String content, int userId, int programId, String videoId,
+	public Todo(int todoId, String date, boolean status, String content, int userId, Integer programId, String videoId,
 			int likeCnt) {
 		super();
 		this.todoId = todoId;
@@ -68,11 +68,11 @@ public class Todo {
 		this.userId = userId;
 	}
 
-	public int getProgramId() {
+	public Integer getProgramId() {
 		return programId;
 	}
 
-	public void setProgramId(int programId) {
+	public void setProgramId(Integer programId) {
 		this.programId = programId;
 	}
 
