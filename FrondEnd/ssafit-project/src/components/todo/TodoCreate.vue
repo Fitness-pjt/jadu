@@ -2,12 +2,7 @@
   <div>
     <form class="todo-form" @submit.prevent="addTodo">
       <!-- 내용 입력 -->
-      <input
-        type="text"
-        placeholder="📝 할 일 입력"
-        class="todo-content-input"
-        v-model="todo.content"
-      />
+      <input type="text" placeholder="📝 할 일 입력" class="todo-content-input" v-model="todo.content" />
       <!-- 추가 버튼 -->
       <div @keyup.enter="addTodo">
         <button type="button" class="add-button" @click="addTodo">
@@ -39,8 +34,11 @@ watch(
 );
 
 const todo = ref({
-  date: selectedDate,
   content: "",
+  date: selectedDate,
+  programId: null,  // null로 명시
+  videoId: null,    // null로 명시
+  status: false
 });
 
 // Todo 추가하기
@@ -50,7 +48,10 @@ const addTodo = () => {
     return;
   }
 
-  todoStore.addTodo(todo.value, loginUserId); // Todo 추가
+  todoStore.addTodo({
+    ...todo.value,
+    date: selectedDate.value  // 현재 선택된 날짜 사용
+  }, loginUserId);
   todo.value.content = ""; // 빈값으로 v-model 초기화
   todoStore.getTodoList(loginUserId, selectedDate.value);
 };

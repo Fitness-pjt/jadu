@@ -47,8 +47,15 @@ const props = defineProps({
 });
 
 const selectedDate = computed(() => todoStore.selectedDate);
-const todoList = computed(() => todoStore.todoList);
+// const todoList = computed(() => todoStore.todoList);
 const editingStates = ref({}); // 수정 상태
+
+const nonProgramTodos = computed(() => {
+  const todoList = todoStore.todoList;
+  if (!Array.isArray(todoList)) return [];
+  return todoList.filter(todo => todo.programId == null);
+});
+
 
 // 날짜 변화 감지
 watch(selectedDate, (newDate) => {
@@ -57,7 +64,7 @@ watch(selectedDate, (newDate) => {
 
 // todoList 변화 감지
 watch(
-  () => todoList.value,
+  () => nonProgramTodos.value,
   (newList, oldList) => {
     if (newList.length > 0) {
       // 투두 리스트 변경 시 수정 상태 초기화
@@ -73,12 +80,12 @@ watch(
 
 // 완료된 투두 리스트
 const isDoneTodoList = computed(() => {
-  return todoList.value.filter((todo) => todo.status === true);
+  return nonProgramTodos.value.filter((todo) => todo.status === true);
 });
 
 // 완료되지 않은 투두 리스트
 const isNotDoneTodoList = computed(() => {
-  return todoList.value.filter((todo) => todo.status === false);
+  return nonProgramTodos.value.filter((todo) => todo.status === false);
 });
 </script>
 

@@ -34,4 +34,6 @@ public interface TodoDao {
 	
 	// 투두 좋아요 취소하기
 	public void deleteTodoLikes(@Param("todoId")int todoId, @Param("userId") int userId);
+
+	public int countUncompletedTodos(int programId, int userId);
 }

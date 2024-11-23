@@ -29,4 +29,6 @@ public interface TodoService {
 
 	// 투두 좋아요 취소하기 == todo-likes 테이블에서 삭제하기
 	public void deleteTodoLikes(int todoId, int userId);
+	
+	public boolean hasUncompletedTodos(int programId, int userId);
 }
