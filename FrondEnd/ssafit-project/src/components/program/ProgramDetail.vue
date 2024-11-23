@@ -70,34 +70,34 @@
       <!-- 탭 네비게이션 -->
       <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
-          <a
+          <RouterLink
             class="nav-link"
             :class="{ active: activeTab === 'videos' }"
             @click="activeTab = 'videos'"
-            href="#"
+            :to="{ name: 'video' }"
           >
             운동 영상
-          </a>
+          </RouterLink>
         </li>
         <li class="nav-item">
-          <a
+          <RouterLink
             class="nav-link"
             :class="{ active: activeTab === 'reviews' }"
             @click="activeTab = 'reviews'"
-            href="#"
+            :to="{ name: 'review' }"
           >
             리뷰
-          </a>
+          </RouterLink>
         </li>
         <li class="nav-item">
-          <a
+          <RouterLink
+            :to="{ name: 'question' }"
             class="nav-link"
             :class="{ active: activeTab === 'qna' }"
             @click="activeTab = 'qna'"
-            href="#"
           >
             Q&A
-          </a>
+          </RouterLink>
         </li>
       </ul>
 
@@ -109,16 +109,16 @@
             :videos="videos"
             v-model:selected-video="selectedVideo"
           />
+          <!-- <RouterView :videos="videos" v-model:selected-video="selectedVideo" /> -->
         </div>
         <div v-else-if="activeTab === 'reviews'" class="tab-pane active">
           <!-- 리뷰 컴포넌트 자리 -->
           <p>리뷰가 들어갈 자리입니다.</p>
-          <ReviewList />
+          <RouterView />
         </div>
         <div v-else-if="activeTab === 'qna'" class="tab-pane active">
           <!-- Q&A 컴포넌트 자리 -->
-          <p>Q&A가 들어갈 자리입니다.</p>
-          <QuestionList />
+          <RouterView />
         </div>
       </div>
     </div>

@@ -33,7 +33,7 @@ export const useQuestionStore = defineStore("question", () => {
     const REST_API_URL = getRestApiUrl(programId);
 
     axios.get(REST_API_URL).then((res) => {
-      console.log("res.data", res.data);
+      console.log("질문 리스트 조회", res.data);
       questionList.value = res.data;
     });
   };
@@ -43,7 +43,7 @@ export const useQuestionStore = defineStore("question", () => {
   const getQuestion = (programId, questionId) => {
     const REST_API_URL = getRestApiUrl(programId) + `/${questionId}`;
     axios.get(REST_API_URL).then((res) => {
-      console.log("res.data", res.data);
+      console.log("질문 하나 조회", res.data);
       singleQuestion.value = res.data;
     });
   };

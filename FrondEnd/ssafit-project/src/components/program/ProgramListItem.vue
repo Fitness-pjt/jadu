@@ -52,7 +52,7 @@
       <div
         class="d-flex justify-content-between align-items-center text-muted small"
       >
-        <span>{{ formatDate(program.createdAt) }}</span>
+        <span>{{ formattedDate(program.createdAt) }}</span>
         <span>
           <i class="bi bi-camera-video me-1"></i>
           {{ program.videoCnt || 0 }} videos
@@ -63,6 +63,7 @@
 </template>
 
 <script setup>
+import { formattedDate } from "@/utils/formattedDate";
 import UserNameTag from "../common/UserNameTag.vue";
 
 const props = defineProps({
@@ -79,16 +80,6 @@ const getLevelText = (level) => {
     ADVANCED: "고급",
   };
   return levelMap[level] || level;
-};
-
-const formatDate = (dateString) => {
-  if (!dateString) return "";
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(date);
 };
 </script>
 <style scoped>

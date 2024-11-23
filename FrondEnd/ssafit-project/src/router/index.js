@@ -4,6 +4,12 @@ import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
 import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import ProgramEdit from "@/components/program/ProgramEdit.vue";
 
+import QuestionCreate from "@/components/question/QuestionCreate.vue";
+import QuestionDetail from "@/components/question/QuestionDetail.vue";
+import QuestionList from "@/components/question/QuestionList.vue";
+import QuestionUpdate from "@/components/question/QuestionUpdate.vue";
+import ReviewCreate from "@/components/review/ReviewCreate.vue";
+import ReviewList from "@/components/review/ReviewList.vue";
 import UserInfoCreate from "@/components/user/UserInfoCreate.vue";
 import UserInfoDetail from "@/components/user/UserInfoDetail.vue";
 import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
@@ -11,16 +17,15 @@ import { useLoginStore } from "@/stores/login";
 import LoginView from "@/views/LoginView.vue";
 import MyPageView from "@/views/MyPageView.vue";
 import QuestionView from "@/views/QuestionView.vue";
+import ReviewView from "@/views/ReviewView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import TodoView from "@/views/TodoView.vue";
 import UserInfoView from "@/views/UserInfoView.vue";
 import UserProfileView from "@/views/UserProfileView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import QuestionList from "@/components/question/QuestionList.vue";
-import QuestionDetail from "@/components/question/QuestionDetail.vue";
-import QuestionCreate from "@/components/question/QuestionCreate.vue";
-import QuestionUpdate from "@/components/question/QuestionUpdate.vue";
+import VideoListView from "@/views/VideoListView.vue";
+import ProgramVideoList from "@/components/program/\bProgramVideoList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -102,37 +107,74 @@ const router = createRouter({
       path: "/program/:programId",
       name: "programDetail",
       component: ProgramDetail,
+      children: [
+        {
+          path: "question",
+          name: "question",
+          component: QuestionView,
+          children: [
+            {
+              path: "",
+              name: "question",
+              component: QuestionList,
+            },
+            {
+              path: ":questionId",
+              name: "questionDetail",
+              component: QuestionDetail,
+            },
+            {
+              path: "create",
+              name: "questionCreate",
+              component: QuestionCreate,
+            },
+            {
+              path: "update/:questionId",
+              name: "questionUpdate",
+              component: QuestionUpdate,
+            },
+          ],
+        },
+        {
+          path: "review",
+          name: "review",
+          component: ReviewView,
+          children: [
+            {
+              path: "",
+              name: "review",
+              component: ReviewList,
+            },
+            {
+              path: "create",
+              name: "reviewCreate",
+              component: ReviewCreate,
+            },
+            // {
+            //   path: "update/:reviewId",
+            //   name: "reviewUpdate",
+            //   component: QuestionUpdate,
+            // },
+          ],
+        },
+        {
+          path: "video",
+          component: VideoListView,
+          children: [
+            {
+              path: "",
+              name: "video",
+              component: ProgramVideoList,
+              // props: true, // URL의 params를 props로 넘김
+            },
+          ],
+        },
+      ],
     },
     {
       path: "/program/edit/:programId",
       name: "programEdit",
       component: ProgramEdit,
-    },
-    {
-      path: "/program/:programId/question",
-      component: QuestionView,
-      children: [
-        {
-          path: "",
-          name: "question",
-          component: QuestionList,
-        },
-        {
-          path: ":questionId",
-          name: "questionDetail",
-          component: QuestionDetail,
-        },
-        {
-          path: "create",
-          name: "questionCreate",
-          component: QuestionCreate,
-        },
-        {
-          path: "update/:questionId",
-          name: "questionUpdate",
-          component: QuestionUpdate,
-        },
-      ],
     },
   ],
 });

@@ -1,33 +1,55 @@
 <template>
-  <div class="question-form-container">
-    <h4 class="question-form-title">질문 작성</h4>
-    <fieldset class="question-fieldset">
-      <legend>질문 등록</legend>
-      <div class="question-form-group">
-        <label for="title" class="question-form-label">제목 : </label>
-        <input
-          type="text"
-          id="title"
-          v-model="question.title"
-          class="question-form-input"
-        />
+  <div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title text-center mb-4">질문 작성</h4>
+        <form>
+          <!-- 작성자 -->
+          <div class="mb-3">
+            <label for="writer" class="form-label">작성자:</label>
+            <input
+              type="text"
+              id="writer"
+              class="form-control"
+              v-model="writer"
+              readonly
+            />
+          </div>
+          <!-- 제목 -->
+          <div class="mb-3">
+            <label for="title" class="form-label">제목:</label>
+            <input
+              type="text"
+              id="title"
+              class="form-control"
+              v-model="question.title"
+              placeholder="질문의 제목을 입력하세요."
+            />
+          </div>
+          <!-- 내용 -->
+          <div class="mb-3">
+            <label for="content" class="form-label">내용:</label>
+            <textarea
+              id="content"
+              class="form-control"
+              rows="6"
+              v-model="question.content"
+              placeholder="질문의 내용을 입력하세요."
+            ></textarea>
+          </div>
+          <!-- 등록 버튼 -->
+          <div class="d-grid">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="createQuestion"
+            >
+              등록
+            </button>
+          </div>
+        </form>
       </div>
-      <div class="question-form-group">
-        <label for="content" class="question-form-label">내용 : </label>
-        <textarea
-          id="content"
-          cols="30"
-          rows="10"
-          v-model="question.content"
-          class="question-form-textarea"
-        ></textarea>
-      </div>
-      <div class="question-form-group">
-        <button @click="createQuestion" class="question-form-button">
-          등록
-        </button>
-      </div>
-    </fieldset>
+    </div>
   </div>
 </template>
 
