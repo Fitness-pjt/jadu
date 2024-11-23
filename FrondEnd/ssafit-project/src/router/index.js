@@ -25,7 +25,7 @@ import UserProfileView from "@/views/UserProfileView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import VideoListView from "@/views/VideoListView.vue";
-import ProgramVideoList from "@/components/program/\bProgramVideoList.vue";
+import ProgramVideoList from "@/components/program/ProgramVideoList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
