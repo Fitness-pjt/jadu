@@ -38,7 +38,7 @@ watch(selectedDate, async (newDate) => {
 watch(
   () => todoList.value,
   (newList, oldList) => {
-    console.log("newList :>> ", newList);
+    // console.log("newList :>> ", newList);
   },
   { deep: true }
 );
@@ -57,7 +57,6 @@ const addTodo = async () => {
 
   await todoStore.addTodo(todo.value, loginUserId); // Todo 추가
   todo.value.content = ""; // 빈값으로 v-model 초기화
-  // todoStore.getTodoList(loginUserId, selectedDate.value);
 };
 </script>
 
