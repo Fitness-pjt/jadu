@@ -69,7 +69,11 @@
         />
 
         <div class="text-center mt-4">
-          <button type="submit" class="btn btn-primary btn-lg">
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg"
+            @click="submitForm"
+          >
             정보 수정 완료
           </button>
           <button type="submit" class="btn btn-lg" @click="goToDetailUserInfo">

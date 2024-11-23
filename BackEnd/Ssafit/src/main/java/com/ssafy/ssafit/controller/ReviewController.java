@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/program/{programId}")
 @Tag(name = "Review API", description = "리뷰 CRUD")
-@CrossOrigin("*")
+
 public class ReviewController {
 	private ReviewService reviewService;
 	private UserService userService;
@@ -45,7 +46,7 @@ public class ReviewController {
 		List<Review> list = reviewService.getReviewList(programId);
 
 		if(list == null || list.size() ==0) {
-			return new ResponseEntity<>("답변 없음.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("답변 없음.", HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Review>>(list, HttpStatus.OK);
 	}
@@ -60,15 +61,14 @@ public class ReviewController {
 		if (review != null) {
 			return new ResponseEntity<Review>(review, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("리뷰를 찾을 수 없음", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<String>("리뷰를 찾을 수 없음", HttpStatus.NO_CONTENT);
 	}
 
 	// 리뷰 등록하기
 	@PostMapping("/review")
 	@Operation(summary = "리뷰 등록하기", description = "리뷰를 등록합니다.")
-	public ResponseEntity<?> writeReview(@PathVariable("programId") int programId, @RequestBody Review review,
-			HttpSession session) {
-		User loginUser = (User) session.getAttribute("loginUser");
+	public ResponseEntity<?> writeReview(@PathVariable("programId") int programId, @RequestBody Review review) {
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (loginUser == null) {
 			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
@@ -87,12 +87,12 @@ public class ReviewController {
 	@DeleteMapping("/review/{reviewId}")
 	@Operation(summary = "리뷰 삭제하기", description = "리뷰를 삭제합니다.")
 	public ResponseEntity<String> delete(@PathVariable("programId") int programId,
-			@PathVariable("reviewId") int reviewId, HttpSession session) {
+			@PathVariable("reviewId") int reviewId) {
 
 		Review review = reviewService.readReview(reviewId);
 		int writerUserId = review.getUserId(); // 글을 작성한 유저 아이디
 
-		User loginUser = (User) session.getAttribute("loginUser");
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (loginUser == null) {
 			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);
@@ -115,12 +115,12 @@ public class ReviewController {
 	@PutMapping("/review/{reviewId}")
 	@Operation(summary = "리뷰 수정하기", description = "리뷰를 수정합니다.")
 	public ResponseEntity<String> update(@PathVariable("programId") int programId,
-			@PathVariable("reviewId") int reviewId, @RequestBody Review review, HttpSession session) {
+			@PathVariable("reviewId") int reviewId, @RequestBody Review review) {
 
 		Review updateReview = reviewService.readReview(reviewId);
 		int writerUserId = updateReview.getUserId(); // 글을 작성한 유저 아이디
 
-		User loginUser = (User) session.getAttribute("loginUser");
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (loginUser == null) {
 			return new ResponseEntity<>("로그인 정보 없음.", HttpStatus.UNAUTHORIZED);

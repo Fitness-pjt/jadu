@@ -1,21 +1,27 @@
 <template>
-  <div class="review-form-container">
-    <h4 class="review-form-title">리뷰 작성</h4>
-    <fieldset class="review-fieldset">
-      <legend>리뷰 등록</legend>
-
-      <div class="review-form-group">
-        <label for="content" class="review-form-label">내용 : </label>
+  <div class="review-form-container p-4 bg-light rounded shadow-sm">
+    <div class="review-header d-flex align-items-center mb-3">
+      <!-- User Avatar -->
+      <img :src="profileImg" alt="User Avatar" class="user-avatar me-3" />
+      <h4 class="review-form-title mb-0">리뷰 작성하기</h4>
+    </div>
+    <fieldset class="review-fieldset border-0 p-0">
+      <div class="review-form-group mb-3">
         <textarea
           id="content"
-          cols="100"
-          rows="10"
+          rows="4"
           v-model="review.content"
-          class="review-form-textarea"
+          class="review-form-textarea form-control"
+          placeholder="댓글을 작성하세요..."
         ></textarea>
       </div>
-      <div class="review-form-group">
-        <button @click="createReview" class="review-form-button">등록</button>
+      <div class="review-form-actions d-flex">
+        <button
+          @click="createReview"
+          class="review-form-submit-button btn btn-primary"
+        >
+          <i class="bi bi-check-circle me-2"></i>등록
+        </button>
       </div>
     </fieldset>
   </div>
@@ -23,86 +29,84 @@
 
 <script setup>
 import { useReviewStore } from "@/stores/review";
-import { useRoute } from "vue-router";
-import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { computed, onMounted, ref } from "vue";
+import { useUserStore } from "@/stores/user";
+import { useLoginStore } from "@/stores/login";
 
 const route = useRoute();
-const videoId = route.params.videoId;
+const router = useRouter();
+const programId = route.params.programId;
+const userStore = useUserStore();
+const profileImg = computed(() => userStore.userProfileImg);
+const loginStore = useLoginStore();
+const loginUserId = computed(() => loginStore.loginUserId);
 
-const store = useReviewStore();
-
+const reviewStore = useReviewStore();
 const review = ref({
-  title: "",
   content: "",
 });
 
+const token = computed(() => sessionStorage.getItem("access-token"));
+
 const createReview = () => {
-  store.createReview(review.value, videoId);
+  if (!token.value) {
+    alert("로그인을 해야 리뷰를 등록할 수 있습니다.");
+  } else {
+    reviewStore.createReview(review.value, programId);
+    review.value.content = "";
+    alert("리뷰가 등록되었습니다.");
+    router.push({ name: "review" });
+  }
 };
+
+onMounted(() => {
+  userStore.getUserProfileInfo(loginUserId.value);
+});
 </script>
 
 <style scoped>
 .review-form-container {
   max-width: 600px;
   margin: 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+  font-size: 18px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 .review-form-title {
-  font-size: 24px;
   font-weight: bold;
-  margin-bottom: 16px;
-  text-align: center;
 }
 
-.review-fieldset {
-  border: none;
-  padding: 20px;
-}
-
-.review-form-group {
-  margin-bottom: 16px;
-}
-
-.review-form-label {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.review-form-input,
 .review-form-textarea {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  resize: none;
 }
 
-.review-form-input:focus,
-.review-form-textarea:focus {
-  border-color: #007bff;
-  outline: none;
+.review-form-actions button {
+  font-size: 14px;
+  padding: 8px 16px;
 }
 
-.review-form-button {
+.review-form-submit-button {
   background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s;
 }
 
-.review-form-button:hover {
+.review-form-cancel-button {
+  background-color: #f44336;
+}
+
+.review-form-submit-button:hover {
   background-color: #0056b3;
+}
+
+.review-form-cancel-button:hover {
+  background-color: #d32f2f;
 }
 </style>

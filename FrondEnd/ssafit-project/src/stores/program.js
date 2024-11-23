@@ -42,7 +42,6 @@ export const useProgramStore = defineStore("program", () => {
 
       // 토큰 만료 시, 로그인 화면으로 이동
       if (error.response && error.response.status === 401) {
-        alert("로그인이 만료 되었습니다.");
         // 토큰이 만료되었으므로 access-token을 삭제
         sessionStorage.removeItem("access-token");
         sessionStorage.removeItem("refresh-token");
@@ -76,10 +75,6 @@ export const useProgramStore = defineStore("program", () => {
       return response.data;
     } catch (err) {
       console.error("Error fetching programs:", err.response);
-      // error.value =
-      //   err.response?.data?.message ||
-      //   "프로그램 목록 조회 중 오류가 발생했습니다.";
-
       // 토큰 만료 시, 로그인 화면으로 이동
       if (err.response && err.response.status === 401) {
         // 토큰이 만료되었으므로 access-token을 삭제
@@ -112,13 +107,10 @@ export const useProgramStore = defineStore("program", () => {
       });
 
       currentProgram.value = response.data;
-      console.log("currentProgram.value :>> ", currentProgram.value);
+      // console.log("currentProgram.value :>> ", currentProgram.value);
       return response.data;
     } catch (err) {
-      // console.error("Error fetching program:", err);
-      // error.value =
-      //   err.response?.data?.message || "프로그램 조회 중 오류가 발생했습니다.";
-      // throw error.value;
+      console.error("Error fetching program:", err);
 
       // 토큰 만료 시, 로그인 화면으로 이동
       if (err.response && err.response.status === 401) {

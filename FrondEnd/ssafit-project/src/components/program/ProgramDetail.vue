@@ -113,7 +113,6 @@
         </div>
         <div v-else-if="activeTab === 'reviews'" class="tab-pane active">
           <!-- 리뷰 컴포넌트 자리 -->
-          <p>리뷰가 들어갈 자리입니다.</p>
           <RouterView />
         </div>
         <div v-else-if="activeTab === 'qna'" class="tab-pane active">

@@ -150,11 +150,11 @@ const router = createRouter({
               name: "reviewCreate",
               component: ReviewCreate,
             },
-            // {
-            //   path: "update/:reviewId",
-            //   name: "reviewUpdate",
-            //   component: QuestionUpdate,
-            // },
+            {
+              path: "update/:reviewId",
+              name: "reviewUpdate",
+              component: QuestionUpdate,
+            },
           ],
         },
         {

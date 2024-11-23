@@ -30,6 +30,11 @@ const loginUserId = loginStore.loginUserId;
 const selectedDate = computed(() => todoStore.selectedDate);
 const todoList = computed(() => todoStore.todoList);
 
+// 날짜 변화 감지
+watch(selectedDate, async (newDate) => {
+  await todoStore.getTodoList(loginUserId, newDate);
+});
+
 watch(
   () => todoList.value,
   (newList, oldList) => {
@@ -44,15 +49,15 @@ const todo = ref({
 });
 
 // Todo 추가하기
-const addTodo = () => {
+const addTodo = async () => {
   if (!todo.value.content.trim()) {
     alert("todo를 작성해주세요!");
     return;
   }
 
-  todoStore.addTodo(todo.value, loginUserId); // Todo 추가
+  await todoStore.addTodo(todo.value, loginUserId); // Todo 추가
   todo.value.content = ""; // 빈값으로 v-model 초기화
-  todoStore.getTodoList(loginUserId, selectedDate.value);
+  // todoStore.getTodoList(loginUserId, selectedDate.value);
 };
 </script>
 

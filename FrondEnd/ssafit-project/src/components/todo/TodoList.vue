@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="date-header">📅 {{ selectedDate }}</h3>
-    <div v-if="todoStore.todoList.length > 0">
+    <div v-if="todoList.length > 0" :key="todoListKey">
       <ul class="todo-items">
         <!-- 진행 중인 투두 -->
         <h4>진행 중</h4>
@@ -41,18 +41,27 @@ import TodoListItem from "./TodoListItem.vue";
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
 const loginUserId = loginStore.loginUserId; // 로그인한 유저 아이디
-
-const props = defineProps({
-  userId: Number,
-});
+const todoListKey = ref(0);
 
 const selectedDate = computed(() => todoStore.selectedDate);
 const todoList = computed(() => todoStore.todoList);
 const editingStates = ref({}); // 수정 상태
 
+const props = defineProps({
+  userId: Number,
+});
+
+// todoList 변화 시 key 업데이트
+watch(
+  () => todoList.value,
+  () => {
+    todoListKey.value += 1;
+  }
+);
+
 // 날짜 변화 감지
-watch(selectedDate, (newDate) => {
-  todoStore.getTodoList(props.userId, newDate);
+watch(selectedDate, async (newDate) => {
+  await todoStore.getTodoList(props.userId, newDate);
 });
 
 // todoList 변화 감지

@@ -6,18 +6,20 @@
 
 	<select id="selectAllReview" parameterType="int"
 		resultType="Review">
-		SELECT r.review_id, r.title, u.user_nickname AS
+		SELECT r.review_id, u.user_nickname AS
 		writer,
 		r.content, r.star, r.created_at, r.user_id, r.program_id
 		FROM review r,
 		users u
 		WHERE r.program_id = #{programId} AND u.user_id =
-		r.user_id;
+		r.user_id
+		ORDER BY
+		r.created_at DESC;
 	</select>
 
 	<select id="selectOneReview" parameterType="int"
 		resultType="Review">
-		SELECT r.review_id, r.title, u.user_nickname AS writer,
+		SELECT r.review_id,  u.user_nickname AS writer,
 		r.content, r.star,
 		r.created_at, r.user_id, r.program_id
 		FROM review r,
@@ -28,9 +30,9 @@
 
 	<insert id="insertReview" parameterType="Review"
 		keyProperty="reviewId" useGeneratedKeys="true">
-		INSERT INTO review (title,
+		INSERT INTO review (
 		content, star, program_id, user_id)
-		VALUES(#{title}, #{content},
+		VALUES( #{content},
 		#{star}, #{programId}, #{userId});
 	</insert>
 
