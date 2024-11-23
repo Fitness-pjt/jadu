@@ -77,8 +77,8 @@ const router = createRouter({
       component: ProgramView,
     },
     {
-      path: "/program/userInfo",
-      name: "userInfo",
+      path: "/program/createAi",
+      name: "createAIProgram",
       component: UserInfoCreate,
       meta: { requiresAuth: true }, // 인증 필요
     },
@@ -95,13 +95,13 @@ const router = createRouter({
     {
       path: "/program/:programId",
       name: "programDetail",
-      component: ProgramDetail 
+      component: ProgramDetail,
     },
     {
       path: "/program/edit/:programId",
       name: "programEdit",
-      component: ProgramEdit
-    }
+      component: ProgramEdit,
+    },
   ],
 });
 

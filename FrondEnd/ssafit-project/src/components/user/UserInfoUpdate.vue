@@ -1,21 +1,7 @@
 <template>
   <div class="container">
-    <!-- 등록된 운동 정보가 없을 때 -->
-    <div v-if="displayData.age == ''" class="empty-state text-center mt-5">
-      <h2 class="text-muted mb-4">운동 정보가 없습니다.</h2>
-      <p class="text-muted mb-4">
-        현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤
-        프로그램을 추천받아 보세요.
-      </p>
-      <RouterLink :to="{ name: 'userInfo' }"
-        ><button @click="navigateToForm" class="btn btn-primary btn-lg">
-          운동 정보 등록하기
-        </button></RouterLink
-      >
-    </div>
-
     <!-- 등록된 운동 정보 수정 -->
-    <div v-else class="form-container">
+    <div class="form-container">
       <h2 class="text-center mb-4">운동 정보 수정</h2>
       <form @submit.prevent="submitForm">
         <BaseRadioGroup

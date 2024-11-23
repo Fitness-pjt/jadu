@@ -77,7 +77,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
     age: "",
     shape: "",
     goal: "",
-    experience: 3,
+    experience: 0,
     location: "",
     keyword: [],
     frequency: "",

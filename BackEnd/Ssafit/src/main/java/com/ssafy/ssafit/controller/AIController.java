@@ -45,18 +45,18 @@ public class AIController {
 		System.out.println(userInfo);
 
 		int videoNum = userInfo.getDuration(); // 하나의 키워드로 받을 영상 수
-		System.out.println(videoNum);
+//		System.out.println(videoNum);
 
 		String message = promptGenerator.generatePrompt(userInfo);
 		System.out.println(message);
 
 		String response = openAiChatModel.call(message);
-		System.out.println("AI 답변 : " + response);
+//		System.out.println("[AI 답변] : " + response);
 
 		ObjectMapper mapper = new ObjectMapper();
 		AIResponse aiResponse = mapper.readValue(response, AIResponse.class);
 
-		System.out.println(aiResponse);
+		System.out.println("[AI 답변 JSON] : " + aiResponse);
 
 		List<String> keywordsList = aiResponse.getKeywords();
 
@@ -99,8 +99,6 @@ public class AIController {
 			e.printStackTrace();
 		}
 
-		// 결과 출력
-//		System.out.println("키워드 리스트: " + keywordsList);
 
 		return new ResponseEntity<>(program.getProgramId(), HttpStatus.OK);
 //		return null;

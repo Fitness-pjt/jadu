@@ -30,7 +30,6 @@ import { useUserInfoStore } from "@/stores/userInfo";
 import { useLoginStore } from "@/stores/login";
 import { questions } from "@/utils/userInfoQuestions";
 import { formatAnswer } from "@/utils/formattedAnswer";
-import { computeStyles } from "@popperjs/core";
 import { useRouter } from "vue-router";
 
 const userInfoStore = useUserInfoStore();
@@ -48,7 +47,7 @@ const programId = computed(() => userInfoStore.programId);
 watch(
   () => userInfoList.value,
   (newList, oldList) => {
-    console.log("newList ,>> ", newList);
+    // console.log("newList ,>> ", newList);
   },
   { deep: true }
 );
@@ -113,13 +112,13 @@ const createProgram = () => {
 
   userList.keyword = formattedKeywordList;
 
-  console.log("마지막 다음 :>> ", userList);
+  // console.log("마지막 다음 :>> ", userList);
 
   // REST API 호출
   userInfoStore.sendAnswerToServer(userList);
 
-  console.log("rest api 호출 후 :>> ", userInfoList.value);
-  console.log("rest api 호출 후:>> ", userList);
+  // console.log("rest api 호출 후 :>> ", userInfoList.value);
+  // console.log("rest api 호출 후:>> ", userList);
   userInfoList.value = userList;
   console.log("userInfoList에 userList 담은 후 :>> ", userInfoList.value);
 };
