@@ -8,7 +8,6 @@
     >
       <thead class="table-light">
         <tr>
-          <th scope="col">번호</th>
           <th scope="col">제목</th>
           <th scope="col">작성자</th>
           <th scope="col">등록일</th>
@@ -19,7 +18,6 @@
           v-for="question in questionStore.questionList"
           :key="question.questionId"
         >
-          <td>{{ question.questionId }}</td>
           <td>
             <a
               href="#"

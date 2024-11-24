@@ -41,7 +41,6 @@ import TodoListItem from "./TodoListItem.vue";
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
 const loginUserId = loginStore.loginUserId; // 로그인한 유저 아이디
-const todoListKey = ref(0);
 
 const selectedDate = computed(() => todoStore.selectedDate);
 // const todoList = computed(() => todoStore.todoList);
