@@ -5,16 +5,28 @@
     <div v-if="store.selectedVideos.length > 0" class="program-list">
       <div class="program-header">
         <h5 class="program-title">프로그램 영상 리스트</h5>
-        <span class="video-count">{{ store.selectedVideos.length }}개의 영상</span>
+        <span class="video-count"
+          >{{ store.selectedVideos.length }}개의 영상</span
+        >
       </div>
       <div class="selected-videos">
-        <div v-for="(video, index) in store.selectedVideos" :key="video.id.videoId" class="selected-video-item">
+        <div
+          v-for="(video, index) in store.selectedVideos"
+          :key="video.id.videoId"
+          class="selected-video-item"
+        >
           <span class="video-number">{{ index + 1 }}</span>
           <div class="video-info">
-            <span class="video-title">{{ decodeHTMLEntities(video.snippet.title) }}</span>
+            <span class="video-title">{{
+              decodeHTMLEntities(video.snippet.title)
+            }}</span>
           </div>
-          <button type="button" class="btn btn-outline-danger btn-sm rounded-circle btn-remove"
-            @click="store.toggleVideoSelection(video)" aria-label="영상 제거">
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm rounded-circle btn-remove"
+            @click="store.toggleVideoSelection(video)"
+            aria-label="영상 제거"
+          >
             <i class="bi bi-x"></i>
           </button>
         </div>
@@ -22,21 +34,34 @@
     </div>
 
     <!-- 검색된 비디오 목록 -->
-    <swiper :slidesPerView="1" :spaceBetween="20" :navigation="true" :pagination="{ clickable: true }" :breakpoints="{
-      '640': {
-        slidesPerView: 2,
-        spaceBetween: 20,
-      },
-      '968': {
-        slidesPerView: 3,
-        spaceBetween: 30,
-      }
-    }" :modules="[Navigation, Pagination]" class="mySwiper mb-5">
+    <swiper
+      ref="swiperRef"
+      :slidesPerView="1"
+      :spaceBetween="20"
+      :navigation="true"
+      :pagination="{ clickable: true }"
+      :breakpoints="{
+        '640': {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        '968': {
+          slidesPerView: 3,
+          spaceBetween: 30,
+        },
+      }"
+      :modules="[Navigation, Pagination]"
+      class="mySwiper mb-5"
+    >
       <swiper-slide v-for="video in store.videoList" :key="video.id.videoId">
-        <div class="video-card" :class="{ 'selected': isSelected(video) }">
+        <div class="video-card" :class="{ selected: isSelected(video) }">
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" :checked="isSelected(video)"
-              @change="store.toggleVideoSelection(video)">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              :checked="isSelected(video)"
+              @change="store.toggleVideoSelection(video)"
+            />
             <VideoListItem :video="video" />
           </div>
         </div>
@@ -48,21 +73,25 @@
 <script setup>
 import { useVideoStore } from "@/stores/video";
 import VideoListItem from "./VideoListItem.vue";
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, Pagination } from 'swiper/modules';
-import { onMounted, watch } from 'vue';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Pagination } from "swiper/modules";
+import { computed, onMounted, ref, watch } from "vue";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const props = defineProps({
   initialVideos: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 });
 
 const store = useVideoStore();
+const videoList = computed(() => store.videoList);
+
+// Swiper 인스턴스 참고
+const swiperRef = ref(null);
 
 // props로 받은 initialVideos를 selectedVideos에 설정
 onMounted(() => {
@@ -72,25 +101,41 @@ onMounted(() => {
 });
 
 // initialVideos가 변경될 때마다 selectedVideos 업데이트
-watch(() => props.initialVideos, (newVideos) => {
-  if (newVideos.length > 0) {
-    store.setSelectedVideos(newVideos);
+watch(
+  () => props.initialVideos,
+  (newVideos) => {
+    if (newVideos.length > 0) {
+      store.setSelectedVideos(newVideos);
+    }
+  },
+  { deep: true }
+);
+
+// 비디오 리스트가 변경되면, swiper 슬라이드 초기화
+watch(
+  () => videoList.value,
+  () => {
+    if (swiperRef.value && swiperRef.value.swiper) {
+      // Swiper 인스턴스가 준비되었을 때만 slideTo를 호출
+      swiperRef.value.swiper.update(); // Swiper 업데이트
+      swiperRef.value.swiper.slideTo(0); // 첫 번째 슬라이드로 이동
+    }
   }
-}, { deep: true });
+);
 
 const isSelected = (video) => {
-  return store.selectedVideos.some(v => v.id.videoId === video.id.videoId);
+  return store.selectedVideos.some((v) => v.id.videoId === video.id.videoId);
 };
 
 const decodeHTMLEntities = (text) => {
-  const textArea = document.createElement('textarea');
+  const textArea = document.createElement("textarea");
   textArea.innerHTML = text;
   return textArea.value;
 };
 
 // 현재 선택된 비디오들을 외부에서 접근할 수 있도록
 defineExpose({
-  getCurrentVideos: () => store.selectedVideos
+  getCurrentVideos: () => store.selectedVideos,
 });
 </script>
 
@@ -299,7 +344,6 @@ defineExpose({
 .selected-video-item:hover {
   background: #e9ecef;
 }
-
 
 @media (max-width: 768px) {
   .btn-remove {
