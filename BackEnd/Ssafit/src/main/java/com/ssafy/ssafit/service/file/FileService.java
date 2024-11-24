@@ -11,6 +11,8 @@ public interface FileService {
 	String upload (MultipartFile file, User user,FileDto fileDto);
 	
 	String getFile(User user, String fileCase);
+
+	void updateFileName(int questionId, String questionFileName);
 	
 	
 }

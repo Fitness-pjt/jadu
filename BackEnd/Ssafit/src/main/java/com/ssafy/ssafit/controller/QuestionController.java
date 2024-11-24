@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.ssafit.model.dto.Question;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.service.board.QuestionService;
+import com.ssafy.ssafit.service.file.FileService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,11 +30,13 @@ import jakarta.servlet.http.HttpSession;
 @Tag(name = "Question API", description = "질문 CRUD")
 public class QuestionController {
 	private QuestionService questionService;
+	private FileService fileService;
 
 	@Autowired
-	public QuestionController(QuestionService questionService) {
+	public QuestionController(QuestionService questionService, FileService fileService) {
 		super();
 		this.questionService = questionService;
+		this.fileService = fileService;
 	}
 
 	// 전체 질문 조회하기
@@ -54,6 +57,8 @@ public class QuestionController {
 	public ResponseEntity<?> detailquestion(@PathVariable("questionId") int questionId,
 			@PathVariable("programId") int programId) {
 		Question question = questionService.readQuestion(questionId);
+		
+//		System.out.println("질문 조회 : " + question);
 
 		if (question != null) {
 			return new ResponseEntity<Question>(question, HttpStatus.OK);
@@ -65,6 +70,8 @@ public class QuestionController {
 	@PostMapping("/question")
 	@Operation(summary = "질문 등록하기", description = "질문을 등록합니다.")
 	public ResponseEntity<?> writequestion(@PathVariable("programId") int programId, @RequestBody Question question) {
+		System.out.println(question);
+
 		// SecurityContext에서 인증된 사용자 정보 가져오기
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -76,8 +83,15 @@ public class QuestionController {
 		question.setUserId(userId);
 		question.setProgramId(programId);
 
-
+		// 1. question 글 등
 		questionService.writeQuestion(question);
+
+		// 2. 글 등록 후, questionId 받아오기
+		int questionId = question.getQuestionId();
+		String questionFileName = question.getQuestionFileName();
+
+		// 3. 글 등록한 questionId 바탕으로 file table에서 fileName과 동일한거 찾아서 questionId 등록하기
+		fileService.updateFileName(questionId, questionFileName);
 
 		return new ResponseEntity<Question>(question, HttpStatus.CREATED);
 	}

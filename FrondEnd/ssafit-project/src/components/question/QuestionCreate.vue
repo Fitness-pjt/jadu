@@ -26,6 +26,11 @@
               placeholder="질문의 제목을 입력하세요."
             />
           </div>
+          <!-- 파일 업로드 -->
+          <label>
+            파일 업로드
+            <input type="file" accept="image/*" @change="uploadFile" />
+          </label>
           <!-- 내용 -->
           <div class="mb-3">
             <label for="content" class="form-label">내용:</label>
@@ -85,8 +90,46 @@ const question = ref({
   writer: userNickname,
   title: "",
   content: "",
+  questionFileName: "",
 });
 
+// 파일 업로드
+const uploadFile = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("이미지 파일만 업로드 가능합니다.");
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    alert("파일 크기는 5MB를 초과할 수 없습니다.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const imagePath = await questionStore.uploadFile(formData);
+    console.log("imagePath", imagePath);
+
+    // URL 앞부분을 제외하고 나머지 값만 추출
+    const baseURL = "https://attnnskybucket.s3.ap-northeast-2.amazonaws.com/";
+    const remainingPath = imagePath.replace(baseURL, "");
+
+    console.log(remainingPath);
+
+    question.value.questionFileName = remainingPath;
+  } catch (error) {
+    console.error("이미지 업로드 에러:", error);
+    alert("이미지 업로드에 실패했습니다.");
+    event.target.value = "";
+  }
+};
+
+// 질문 등록 메서드
 const createQuestion = async () => {
   // 제목과 내용이 없으면 등록 되지 않음
   const { title, content } = question.value;
@@ -105,8 +148,6 @@ const createQuestion = async () => {
   alert("질문 등록이 완료되었습니다.");
   router.replace({ name: "question" });
 };
-
-onMounted(() => {});
 </script>
 
 <style scoped>

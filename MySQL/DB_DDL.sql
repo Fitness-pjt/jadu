@@ -113,7 +113,7 @@ CREATE TABLE `answer` (
 CREATE TABLE `files` (
     `file_id`  INT NOT NULL AUTO_INCREMENT,
     `file_case` ENUM('PROFILE', 'BOARD', 'QUESTION', 'PROGRAM'),
-    `file_name` VARCHAR(100) NOT NULL,
+    `file_name` VARCHAR(512) NOT NULL,
     `extension` VARCHAR(20) NOT NULL,
     `user_id` INT NOT NULL,
     `question_id` INT,

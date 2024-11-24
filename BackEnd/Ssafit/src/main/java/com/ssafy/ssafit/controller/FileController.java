@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.ssafit.model.dto.FileDto;
+import com.ssafy.ssafit.model.dto.Question;
 import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.service.file.FileService;
 import com.ssafy.ssafit.service.program.ProgramService;
@@ -43,14 +44,20 @@ public class FileController {
 //			return new ResponseEntity<>("로그인이 필요한 서비스입니다.", HttpStatus.UNAUTHORIZED);
 //		}
 
+		System.out.println(file);
+
 		// SecurityContext에서 인증된 사용자 정보 가져오기
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String fileCase = request.getHeader("file-case");
 
+		Question question = new Question();
+		int userId = loginUser.getUserId(); // 로그인한 유저의 userId
+
 		FileDto fileDto = new FileDto();
 
 		fileDto.setFileCase(fileCase);
-		String filePath = fileService.upload(file, loginUser, fileDto);
+		String filePath = fileService.upload(file, loginUser, fileDto); // 파일 DB에 저
+		System.out.println(filePath);
 
 		switch (fileCase) {
 
@@ -62,12 +69,13 @@ public class FileController {
 		case "BOARD":
 			break;
 		case "QUESTION":
+//			question.setQuestionImgPath(filePath); // question 객체에
 			break;
 		case "PROGRAM":
 			int programId = Integer.valueOf(request.getHeader("program-id"));
-			System.out.println(programId);
-			System.out.println(filePath);
-			programService.updateProgramImgPath(programId,filePath);
+//			System.out.println(programId);
+//			System.out.println(filePath);
+			programService.updateProgramImgPath(programId, filePath);
 
 			break;
 

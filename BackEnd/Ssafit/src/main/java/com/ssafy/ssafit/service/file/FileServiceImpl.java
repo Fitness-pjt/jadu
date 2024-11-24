@@ -71,4 +71,10 @@ public class FileServiceImpl implements FileService {
 		return String.format("https://%s.s3.%s.amazonaws.com/%s", BUCKET_NAME, "ap-northeast-2", fileName);
 	}
 
+	// 파일테이블에 questionId 업로드 시 사용 
+	@Override
+	public void updateFileName(int questionId, String questionFileName) {
+		fileDao.updateFile(questionId, questionFileName);
+	}
+
 }

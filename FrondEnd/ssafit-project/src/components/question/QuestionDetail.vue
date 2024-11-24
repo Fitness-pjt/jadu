@@ -31,6 +31,10 @@
           </p>
         </div>
 
+        <!-- 사진 -->
+        <div v-if="questionStore.singleQuestion.questionFileName">
+          <img :src="questionImgUrl" alt="등록한 사진" />
+        </div>
         <!-- 질문 내용 -->
         <div class="mb-4">
           <h3 class="h5 mb-3">내용</h3>
@@ -71,7 +75,7 @@
 import router from "@/router";
 import { useQuestionStore } from "@/stores/question";
 import { formattedDate } from "@/utils/formattedDate";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import UserNameTag from "../common/UserNameTag.vue";
 import { useLoginStore } from "@/stores/login";
@@ -85,6 +89,14 @@ const programId = route.params.programId;
 const questionStore = useQuestionStore();
 const loginStore = useLoginStore();
 const loginUserId = computed(() => loginStore.loginUserId);
+
+const singleQuestion = computed(() => questionStore.singleQuestion);
+watch(() => singleQuestion.value, { deep: true });
+
+const baseURL = "https://attnnskybucket.s3.ap-northeast-2.amazonaws.com/";
+const questionImgUrl = baseURL + singleQuestion.value.questionFileName;
+
+console.log("questionImgUrl", questionImgUrl);
 
 onMounted(() => {
   questionStore.getQuestion(programId, questionId);
