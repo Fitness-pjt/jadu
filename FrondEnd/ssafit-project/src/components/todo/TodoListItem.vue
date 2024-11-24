@@ -23,7 +23,7 @@
     </div>
     <div v-if="todo.status">
       <button @click="updateFavorite(todo)" class="favorite-btn">
-        <span>{{ isFavorite[todo.todoId] ? "❤️" : "🤍" }}</span>
+        <span>{{ isFavorite ? "❤️" : "🤍" }}</span>
       </button>
     </div>
     <div class="todo-actions" v-if="userId === loginUserId">
@@ -40,7 +40,7 @@
 <script setup>
 import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
@@ -52,7 +52,10 @@ const props = defineProps({
 });
 
 const editingStates = ref({}); // 수정 상태
-const isFavorite = ref({}); // 각 todoId 별로 좋아요 상태 관리
+
+const isFavorite = computed(() => {
+  return todoStore.todoLikes.get(props.todo.todoId) || false;
+});
 
 // 초기 완료 상태 설정
 watch(
@@ -106,24 +109,22 @@ const fetchFavoriteStatus = async () => {
 };
 
 const updateFavorite = async (todo) => {
-  const currentStatus = isFavorite.value[todo.todoId];
-  isFavorite.value[todo.todoId] = !currentStatus;
-
   try {
-    if (!currentStatus) {
+    if (!isFavorite.value) {
       await todoStore.pushTodoLikes(todo.todoId, props.loginUserId);
     } else {
       await todoStore.cancelTodoLikes(todo.todoId, props.loginUserId);
     }
   } catch (error) {
     console.error("Failed to update favorite status:", error);
-    isFavorite.value[todo.todoId] = currentStatus; // 오류 시 상태 롤백
   }
 };
 
+
 // 초기 상태 설정 (마운트 시에 한 번만 호출)
-onMounted(fetchFavoriteStatus);
-</script>
+onMounted(async () => {
+  await todoStore.getTodoLikesStatus(props.todo.todoId, props.loginUserId);
+});</script>
 
 <style scoped>
 .todo-item {
