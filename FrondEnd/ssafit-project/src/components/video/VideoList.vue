@@ -12,7 +12,7 @@
       <div class="selected-videos">
         <div
           v-for="(video, index) in store.selectedVideos"
-          :key="video.id.videoId"
+          :key="video.id"
           class="selected-video-item"
         >
           <span class="video-number">{{ index + 1 }}</span>
@@ -35,7 +35,6 @@
 
     <!-- 검색된 비디오 목록 -->
     <swiper
-      ref="swiperRef"
       :slidesPerView="1"
       :spaceBetween="20"
       :navigation="true"
@@ -53,7 +52,7 @@
       :modules="[Navigation, Pagination]"
       class="mySwiper mb-5"
     >
-      <swiper-slide v-for="video in store.videoList" :key="video.id.videoId">
+      <swiper-slide v-for="video in store.videoList" :key="video.id">
         <div class="video-card" :class="{ selected: isSelected(video) }">
           <div class="form-check">
             <input
@@ -89,9 +88,20 @@ const props = defineProps({
 
 const store = useVideoStore();
 const videoList = computed(() => store.videoList);
+const selectedVideos = computed(() => store.selectedVideos);
+
+watch(
+  () => {
+    selectedVideos.value;
+  },
+  (newList, oldList) => {
+    console.log("newList", newList);
+  },
+  { deep: true }
+);
 
 // Swiper 인스턴스 참고
-const swiperRef = ref(null);
+// const swiperRef = ref(null);
 
 // props로 받은 initialVideos를 selectedVideos에 설정
 onMounted(() => {
@@ -112,19 +122,21 @@ watch(
 );
 
 // 비디오 리스트가 변경되면, swiper 슬라이드 초기화
-watch(
-  () => videoList.value,
-  () => {
-    if (swiperRef.value && swiperRef.value.swiper) {
-      // Swiper 인스턴스가 준비되었을 때만 slideTo를 호출
-      swiperRef.value.swiper.update(); // Swiper 업데이트
-      swiperRef.value.swiper.slideTo(0); // 첫 번째 슬라이드로 이동
-    }
-  }
-);
+// watch(
+//   () => videoList.value,
+//   () => {
+//     if (swiperRef.value && swiperRef.value.swiper) {
+//       // Swiper 인스턴스가 준비되었을 때만 slideTo를 호출
+//       swiperRef.value.swiper.update(); // Swiper 업데이트
+//       swiperRef.value.swiper.slideTo(0); // 첫 번째 슬라이드로 이동
+//     }
+//   }
+// );
 
 const isSelected = (video) => {
-  return store.selectedVideos.some((v) => v.id.videoId === video.id.videoId);
+  // console.log("video", video.id);
+  // console.log("store.selectedVideos", store.selectedVideos[0].id);
+  return store.selectedVideos.some((v) => v.id === video.id);
 };
 
 const decodeHTMLEntities = (text) => {

@@ -29,7 +29,7 @@ export const useVideoStore = defineStore("video", () => {
         q: keyword,
         type: "video",
         videoDuration: "medium",
-        regionCode: "KR", // 한국 지역 설정
+        // regionCode: "KR", // 한국 지역 설정
       },
     })
       .then(async (res) => {
@@ -79,9 +79,7 @@ export const useVideoStore = defineStore("video", () => {
 
   // 비디오 선택하기
   const toggleVideoSelection = (video) => {
-    const index = selectedVideos.value.findIndex(
-      (v) => v.id.videoId === video.id.videoId
-    );
+    const index = selectedVideos.value.findIndex((v) => v.id === video.id);
     if (index === -1) {
       selectedVideos.value.push(video);
     } else {
@@ -152,10 +150,6 @@ export const useVideoStore = defineStore("video", () => {
     selectedVideos.value = [...videos];
   };
 
-  // 비디오 선택 여부 확인
-  const isVideoSelected = (videoId) => {
-    return selectedVideos.value.some((v) => v.id.videoId === videoId);
-  };
   // videoList 초기화 메서드 추가
   const clearVideoList = () => {
     videoList.value = [];
@@ -187,7 +181,6 @@ export const useVideoStore = defineStore("video", () => {
     clearSelectedVideos,
     getVideosByIds,
     setSelectedVideos,
-    isVideoSelected,
     clearAll,
     clearVideoList,
     getVideosByProgramId,
