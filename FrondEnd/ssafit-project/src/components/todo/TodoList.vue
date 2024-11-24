@@ -59,7 +59,6 @@ const nonProgramTodos = computed(() => {
 // 날짜 변화 감지
 watch(selectedDate, async (newDate) => {
   await todoStore.getTodoList(props.userId, newDate);
-  console.log("todoStore.todoList", todoStore.todoList);
 });
 
 // todoList 변화 감지
