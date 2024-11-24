@@ -12,44 +12,46 @@ export const useReviewStore = defineStore("review", () => {
   const reviewList = ref([]);
 
   // 리뷰 등록하기
-  const createReview = (review, programId) => {
+  const createReview = async (review, programId) => {
     const REST_API_URL = getRestApiUrl(programId);
 
-    axios
-      .post(REST_API_URL, review, {
+    try {
+      const response = await axios.post(REST_API_URL, review, {
         headers: {
           "access-token": sessionStorage.getItem("access-token"),
           "Content-Type": "application/json",
         },
         withCredentials: true,
-      })
-      .then((res) => {
-        // 새로운 리뷰를 리스트에 바로 추가
-        reviewList.value.unshift(res.data); // 최신 리뷰를 맨 위에 추가
-      })
-      .catch((error) => {
-        // 토큰 만료 시, 로그인 화면으로 이동
-        if (error.response && error.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
       });
+
+      // 새로운 리뷰를 리스트에 바로 추가
+      reviewList.getReviewList(programId);
+      reviewList.value.unshift(response.data); // 최신 리뷰를 맨 위에 추가
+    } catch (error) {
+      // 토큰 만료 시, 로그인 화면으로 이동
+      if (error.response && error.response.status === 401) {
+        // 토큰이 만료되었으므로 access-token을 삭제
+        sessionStorage.removeItem("access-token");
+        sessionStorage.removeItem("refresh-token");
+
+        alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
+
+        // 로그인 페이지로 리다이렉트
+        router.replace("/login");
+      }
+    }
   };
 
   // 리뷰 전체 조회하기
-  const getReviewList = (programId) => {
+  const getReviewList = async (programId) => {
     const REST_API_URL = getRestApiUrl(programId);
-
-    axios.get(REST_API_URL).then((res) => {
-      console.log("res.data", res.data);
-      reviewList.value = res.data;
-    });
+    try {
+      const response = await axios.get(REST_API_URL);
+      // console.log("res.data", response.data);
+      reviewList.value = response.data;
+    } catch (error) {
+      console.error("Error fetching answer list:", error);
+    }
   };
 
   // 리뷰 삭제하기

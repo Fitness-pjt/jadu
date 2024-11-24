@@ -183,15 +183,36 @@ const router = createRouter({
 });
 
 // 네비게이션 가드 추가
+// 토큰이 없을 경우, login 페이지로 이동
 router.beforeEach((to, from, next) => {
   const token = sessionStorage.getItem("access-token");
 
   if (to.meta.requiresAuth && !token) {
     // 인증 필요하고 토큰이 없으면
-    alert("로그인이 필요합니다.");
+    // alert("로그인이 필요합니다.");
     next("/login"); // 로그인 페이지로 리다이렉트
   } else {
     next(); // 페이지 이동 허용
+  }
+});
+
+// 프로그램 상세 페이지에서 새로고침 시, 초기 detailPage 라우터로 이동
+router.beforeEach((to, from, next) => {
+  // 현재 경로가 `programDetail`과 그 자식 라우터인 경우
+  if (to.matched.some((record) => record.name === "programDetail")) {
+    // URL에 `programId`가 없고 자식 라우터가 아닌 경우 `programDetail`로 리다이렉트
+    if (!to.params.programId) {
+      console.log("to.query.programId", to.query.programId);
+      const defaultProgramId = to.query.programId;
+      next({
+        name: "programDetail",
+        params: { programId: defaultProgramId },
+      });
+    } else {
+      next(); // 그대로 진행
+    }
+  } else {
+    next(); // 다른 경로는 그대로 진행
   }
 });
 

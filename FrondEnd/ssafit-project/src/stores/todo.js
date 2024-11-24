@@ -5,7 +5,6 @@ import { ref } from "vue";
 import { useProgramStore } from "./program";
 import { handleError } from "@/utils/handleError";
 
-
 export const useTodoStore = defineStore("todo", () => {
   // Todo 날짜 전역으로 관리
   const selectedDate = ref(null); //선택된 날짜를 저장
@@ -28,6 +27,7 @@ export const useTodoStore = defineStore("todo", () => {
       .get(REST_API_URL)
       .then((res) => {
         // 요청 후 userId에 해당하는 todo만 todoList에 담기
+        // console.log("res.data", res.data);
         todoList.value = res.data;
       })
       .catch((err) => {
@@ -50,12 +50,13 @@ export const useTodoStore = defineStore("todo", () => {
         // console.log("투두 추가하기", res.data);
 
         // 새로운 투두 항목을 todoList에 추가
-        getTodoList(userId, todo.date);
+        // const response = getTodoList(userId, todo.date);
+        // console.log("response", response);
+
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {
         handleError(error);
-
       });
   };
 
@@ -80,7 +81,6 @@ export const useTodoStore = defineStore("todo", () => {
       })
       .catch((error) => {
         handleError(error);
-
       });
   };
 
@@ -100,7 +100,6 @@ export const useTodoStore = defineStore("todo", () => {
       })
       .catch((err) => {
         handleError(err);
-
       });
   };
 
@@ -120,7 +119,6 @@ export const useTodoStore = defineStore("todo", () => {
       })
       .catch((err) => {
         handleError(err);
-
       });
   };
 
@@ -177,80 +175,132 @@ export const useTodoStore = defineStore("todo", () => {
       handleError(err);
     }
   };
-  
-const startProgram = async (programId, userId, startDate) => {
-  try {
-    const programStore = useProgramStore();
-    
 
-    const programData = await programStore.getProgramById(programId);
-    
+  // todo에 프로그램 추가하기
+  const startProgram = async (programId, userId, startDate) => {
+    try {
+      const programStore = useProgramStore();
 
-    // 2. 프로그램의 비디오 리스트 가져오기
-    const programVideos = programData.videoIds || [];
-    if (programVideos.length === 0) {
-      throw new Error("프로그램에 등록된 영상이 없습니다.");
+      const programData = await programStore.getProgramById(programId);
+
+      // 2. 프로그램의 비디오 리스트 가져오기
+      const programVideos = programData.videoIds || [];
+      if (programVideos.length === 0) {
+        throw new Error("프로그램에 등록된 영상이 없습니다.");
+      }
+
+      // 3. 프로그램 기간 계산 (주 단위를 일 단위로 변환)
+      const totalDays = programData.durationWeeks * 7;
+
+      const videoCount = programVideos.length;
+
+      if (videoCount <= totalDays) {
+        // 비디오 개수가 날짜보다 적거나 같을 때 기존 로직 유지
+        const daysInterval = Math.floor(totalDays / videoCount);
+
+        const todos = [];
+        for (let i = 0; i < videoCount; i++) {
+          const todoDate = new Date(startDate);
+          todoDate.setDate(todoDate.getDate() + i * daysInterval);
+
+          const todo = {
+            programId,
+            videoId: programVideos[i],
+            date: todoDate.toISOString().split("T")[0],
+            status: false,
+            content: `${programData.title} - ${i + 1}회차 운동`,
+          };
+
+          await addTodo(todo, userId);
+          todos.push(todo);
+        }
+        alert("프로그램이 Todo 리스트에 성공적으로 등록되었습니다!");
+        router.push("/todo");
+
+        return todos;
+      } else {
+        // 비디오 개수가 날짜보다 많을 때
+        const basicAllocation = Math.floor(totalDays / videoCount); // 기본 할당 간격
+        const extraVideos = videoCount % totalDays; // 초과 비디오 개수
+
+        const todos = [];
+        let videoIndex = 0;
+
+        // 시작 날짜로부터 초과 비디오를 배분할 날짜 계산
+        const extraDaysGap = Math.floor(totalDays / extraVideos); // 초과 비디오 간 날짜 간격
+        const extraDays = [];
+        for (let i = 0; i < extraVideos; i++) {
+          extraDays.push(i * extraDaysGap); // 시작일로부터 간격으로 초과 날짜 설정
+        }
+
+        for (let day = 0; day < totalDays; day++) {
+          const todoDate = new Date(startDate);
+          todoDate.setDate(todoDate.getDate() + day);
+
+          // 기본 할당된 비디오 추가
+          if (videoIndex < videoCount) {
+            const todo = {
+              programId,
+              videoId: programVideos[videoIndex],
+              date: todoDate.toISOString().split("T")[0],
+              status: false,
+              content: `${programData.title} - ${videoIndex + 1}회차 운동`,
+            };
+
+            await addTodo(todo, userId);
+            todos.push(todo);
+            videoIndex++;
+          }
+
+          // 초과 비디오 추가
+          if (extraDays.includes(day) && videoIndex < videoCount) {
+            const extraTodoDate = new Date(startDate);
+            extraTodoDate.setDate(extraTodoDate.getDate() + day);
+
+            const extraTodo = {
+              programId,
+              videoId: programVideos[videoIndex],
+              date: extraTodoDate.toISOString().split("T")[0],
+              status: false,
+              content: `${programData.title} - ${videoIndex + 1}회차 운동`,
+            };
+
+            await addTodo(extraTodo, userId);
+            todos.push(extraTodo);
+            videoIndex++;
+          }
+        }
+
+        alert("프로그램이 Todo 리스트에 성공적으로 등록되었습니다!");
+        router.push("/todo");
+
+        return todos;
+      }
+    } catch (error) {
+      handleError(error);
     }
+  };
 
-    // 3. 프로그램 기간 계산 (주 단위를 일 단위로 변환)
-    const totalDays = programData.durationWeeks * 7;
-    
-    // 4. 비디오당 간격 계산 (일 단위로)
-    const daysInterval = Math.floor(totalDays / programVideos.length);
-    
-    // 5. 각 비디오에 대해 todo 생성
-    const todos = [];
-    for(let i = 0; i < programVideos.length; i++) {
-      // 날짜 계산
-      const todoDate = new Date(startDate);
-      todoDate.setDate(todoDate.getDate() + (i * daysInterval));
-      
-      const todo = {
-        programId: programId,
-        videoId: programVideos[i],
-        date: todoDate.toISOString().split('T')[0],
-        status: false,
-        content: `${programData.title} - ${i + 1}회차 운동`
-      };
-      
-      await addTodo(todo, userId);
-      todos.push(todo);
-    }
-    
-    alert("프로그램이 Todo 리스트에 성공적으로 등록되었습니다!");
-    router.push('/todo');
-    
-    return todos;
-
-  } catch (error) {
-    handleError(err);
-
-  }
-};
-// stores/todo.js
-const checkProgramProgress = async (programId, userId) => {
-  try {
-    const REST_API_URL = getRestApiUrl(userId) + `/progress/${programId}`;
-    const response = await axios.get(
-      REST_API_URL,
-      {
+  // stores/todo.js
+  const checkProgramProgress = async (programId, userId) => {
+    try {
+      const REST_API_URL = getRestApiUrl(userId) + `/progress/${programId}`;
+      const response = await axios.get(REST_API_URL, {
         headers: {
           "access-token": sessionStorage.getItem("access-token"),
           "Content-Type": "application/json",
         },
+      });
+      console.log("Progress check response:", response.data); // 디버깅용
+      if (response.data === undefined) {
+        return { inProgress: false };
       }
-    );
-    console.log("Progress check response:", response.data); // 디버깅용
-    if (response.data === undefined) {
+      return response.data; // { inProgress: true/false }
+    } catch (error) {
+      handleError(err);
       return { inProgress: false };
     }
-    return response.data; // { inProgress: true/false }
-  } catch (error) {
-    handleError(err);
-    return { inProgress: false };
-  }
-};
-
+  };
 
   // 투두 몇 개 있는지 조회하기
   const getTodoCount = () => {};
@@ -271,6 +321,5 @@ const checkProgramProgress = async (programId, userId) => {
     startProgram,
     checkProgramProgress,
     todoLikes,
-
   };
 });

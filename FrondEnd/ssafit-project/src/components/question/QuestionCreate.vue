@@ -87,8 +87,21 @@ const question = ref({
   content: "",
 });
 
-const createQuestion = () => {
-  questionStore.createQuestion(question.value, programId);
+const createQuestion = async () => {
+  // 제목과 내용이 없으면 등록 되지 않음
+  const { title, content } = question.value;
+
+  if (!title.trim()) {
+    alert("제목을 입력해 주세요.");
+    return;
+  }
+
+  if (!content.trim()) {
+    alert("내용을 입력해 주세요.");
+    return;
+  }
+
+  await questionStore.createQuestion(question.value, programId);
   alert("질문 등록이 완료되었습니다.");
   router.replace({ name: "question" });
 };

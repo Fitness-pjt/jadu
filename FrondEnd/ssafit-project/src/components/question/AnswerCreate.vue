@@ -33,13 +33,16 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useLoginStore } from "@/stores/login";
+import defaultProfileImg from "@/assets/image/default_profile.png";
 
 const route = useRoute();
 const router = useRouter();
 const programId = route.params.programId;
 const questionId = route.params.questionId;
 const userStore = useUserStore();
-const profileImg = computed(() => userStore.userProfileImg);
+const profileImg = computed(() => {
+  return userStore.userProfileImg || defaultProfileImg;
+});
 const loginStore = useLoginStore();
 const loginUserId = computed(() => loginStore.loginUserId);
 
@@ -52,15 +55,18 @@ const token = computed(() => sessionStorage.getItem("access-token"));
 
 const createAnswer = async (event) => {
   event.preventDefault();
+
+  // 빈 응답일 경우, 추가 X
+  if (!answer.value.content.trim()) {
+    alert("답변을 작성해주세요!");
+    return;
+  }
+
   if (!token.value) {
     alert("로그인을 해야 답변를 등록할 수 있습니다.");
   } else {
-    const response = await answerStore.createAnswer(
-      answer.value,
-      programId,
-      questionId
-    );
-    console.log("response", response);
+    await answerStore.createAnswer(answer.value, programId, questionId);
+
     answer.value.content = "";
     // alert("답변이 등록되었습니다.");
     // router.push({ name: "answer" });

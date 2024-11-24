@@ -26,24 +26,26 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import _ from "lodash";
-import { storeToRefs } from "pinia";
 import { useVideoStore } from "@/stores/video";
+import _ from "lodash";
+import { computed } from "vue";
+
 const props = defineProps({
   video: Object,
   displayOnly: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
+
+// console.log("props.video.value", props.video.value);
 
 const videoTitle = computed(() => {
   return _.unescape(props.video.snippet.title);
 });
 
 const videoURL = computed(() => {
-  const videoSrc = props.video.id.videoId;
+  const videoSrc = props.video.id;
   return `https://www.youtube.com/embed/${videoSrc}`;
 });
 

@@ -33,7 +33,7 @@ export const useProgramStore = defineStore("program", () => {
         withCredentials: true,
       });
 
-      // console.log("Response:", response.data); // 응답 데이터 로깅
+      console.log("프로그램 생성 후 반환데이터:", response.data); // 응답 데이터 로깅
       return response.data;
     } catch (err) {
       console.error("Error details:", err.response || err); // 상세 에러 로깅

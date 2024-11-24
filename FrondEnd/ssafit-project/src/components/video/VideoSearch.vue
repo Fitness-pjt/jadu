@@ -21,7 +21,7 @@
                     v-for="kw in mainKeywords"
                     :key="kw"
                     class="btn btn-outline-primary rounded-pill btn-sm"
-                    :class="{ 'active': keyword === kw }"
+                    :class="{ active: keyword === kw }"
                     @click="selectKeyword(kw)"
                   >
                     {{ kw }}
@@ -43,7 +43,7 @@
                     v-for="kw in levelKeywords"
                     :key="kw"
                     class="btn btn-outline-success rounded-pill btn-sm"
-                    :class="{ 'active': selectedLevel === kw }"
+                    :class="{ active: selectedLevel === kw }"
                     @click="selectLevel(kw)"
                   >
                     {{ kw }}
@@ -56,18 +56,23 @@
 
         <!-- 직접 검색 토글 -->
         <div class="text-center my-4">
-          <button 
+          <button
             class="btn btn-outline-secondary rounded-pill btn-sm"
             @click="toggleDirectSearch"
           >
-            <i class="bi" :class="showDirectSearch ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-            직접 검색 {{ showDirectSearch ? '닫기' : '열기' }}
+            <i
+              class="bi"
+              :class="showDirectSearch ? 'bi-chevron-up' : 'bi-chevron-down'"
+            ></i>
+            직접 검색 {{ showDirectSearch ? "닫기" : "열기" }}
           </button>
         </div>
 
         <!-- 직접 검색 입력창 -->
-        <div v-if="showDirectSearch" 
-             class="collapse show direct-search-wrapper">
+        <div
+          v-if="showDirectSearch"
+          class="collapse show direct-search-wrapper"
+        >
           <div class="input-group">
             <span class="input-group-text bg-white">
               <i class="bi bi-keyboard"></i>
@@ -85,7 +90,10 @@
         <!-- 검색 버튼 -->
         <div class="text-center mt-4" v-if="keyword || directKeyword">
           <div class="selected-keywords mb-3">
-            <span class="badge bg-primary rounded-pill" v-if="keyword || directKeyword">
+            <span
+              class="badge bg-primary rounded-pill"
+              v-if="!directKeyword && keyword"
+            >
               {{ getSearchKeyword }}
             </span>
           </div>
@@ -109,33 +117,44 @@ const showDirectSearch = ref(false);
 const store = useVideoStore();
 
 const mainKeywords = [
-  '상체', '하체', '가슴', '등', '어깨', '복부',
-  '다이어트', '체력 증진', '근력 강화', '근육량 증가', 
-  '심폐지구력 향상', '자세 교정', '스트레스 해소', '체형 개선'
+  "상체",
+  "하체",
+  "가슴",
+  "등",
+  "어깨",
+  "복부",
+  "다이어트",
+  "체력 증진",
+  "근력 강화",
+  "근육량 증가",
+  "심폐지구력 향상",
+  "자세 교정",
+  "스트레스 해소",
+  "체형 개선",
 ];
-const levelKeywords = ['Beginner', 'INTERMEDIATE', 'ADVANCED'];
+const levelKeywords = ["Beginner", "INTERMEDIATE", "ADVANCED"];
 
 const getSearchKeyword = computed(() => {
   if (directKeyword.value) return directKeyword.value;
-  return keyword.value + (selectedLevel.value ? ` ${selectedLevel.value}` : '');
+  return keyword.value + (selectedLevel.value ? ` ${selectedLevel.value}` : "");
 });
 
 const selectKeyword = (value) => {
-  keyword.value = keyword.value === value ? '' : value;
-  directKeyword.value = '';
+  keyword.value = keyword.value === value ? "" : value;
+  directKeyword.value = "";
 };
 
 const selectLevel = (value) => {
-  selectedLevel.value = selectedLevel.value === value ? '' : value;
+  selectedLevel.value = selectedLevel.value === value ? "" : value;
 };
 
 const toggleDirectSearch = () => {
   showDirectSearch.value = !showDirectSearch.value;
   if (showDirectSearch.value) {
-    keyword.value = '';
-    selectedLevel.value = '';
+    keyword.value = "";
+    selectedLevel.value = "";
   } else {
-    directKeyword.value = '';
+    directKeyword.value = "";
   }
 };
 
@@ -149,6 +168,7 @@ const search = () => {
   const searchTerm = getSearchKeyword.value;
   if (searchTerm) {
     store.youtubeSearch(searchTerm + " workout");
+    getSearchKeyword.value = "";
   }
 };
 </script>
@@ -222,11 +242,11 @@ const search = () => {
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
   }
-  
+
   .group-title {
     font-size: 1rem;
   }
-  
+
   .badge {
     font-size: 0.8rem;
     padding: 0.4rem 0.8rem;
