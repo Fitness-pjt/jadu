@@ -7,7 +7,7 @@
           :to="{ name: 'home' }"
           class="text-decoration-none logo-text"
         >
-          <i class="bi bi-heart-pulse-fill me-2"></i>SSAFIT
+          <i class="bi bi-heart-pulse-fill me-2"></i>JADU
         </RouterLink>
       </h1>
 
@@ -136,9 +136,11 @@ const getRoute = (userId) => {
 
 .nav-link:hover,
 .nav-link.router-link-active {
-  background-color: #d4f6ff;
+  /* background-color: #d4f6ff; */
   color: #133e87;
-  border-color: #c6e7ff;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  /* border-color: #c6e7ff; */
 }
 
 .navbar-toggler {
