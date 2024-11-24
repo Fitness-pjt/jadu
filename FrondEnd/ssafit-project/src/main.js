@@ -16,7 +16,35 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'animate.css'
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { 
+  faDumbbell, 
+  faPencilAlt, 
+  faRobot, 
+  faArrowRight, 
+  faMagic,
+  faFolderPlus,
+  faRunning,
+  faExclamationCircle,
+  faFolderOpen,
+  faPlus,
+  faSearch 
+} from '@fortawesome/free-solid-svg-icons'
 
+library.add(
+    faDumbbell, 
+    faPencilAlt, 
+    faRobot, 
+    faArrowRight, 
+    faMagic,
+    faFolderPlus,
+    faRunning,
+    faExclamationCircle,
+    faFolderOpen,
+    faPlus,
+    faSearch
+  )
 const app = createApp(App);
 
 app.use(createPinia());

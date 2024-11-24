@@ -68,7 +68,15 @@
 		FROM todo
 		WHERE program_id = #{programId}
 		AND user_id = #{userId}
-		AND status = false
+		AND
+		status = false
 	</select>
 
+
+	<select id="getTodoLikeCount" parameterType="int"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM todo_likes
+		WHERE todo_id = #{todoId}
+	</select>
 </mapper>

@@ -300,7 +300,27 @@ export const useTodoStore = defineStore("todo", () => {
       handleError(err);
       return { inProgress: false };
     }
-  };
+};
+
+const todoLikeCounts = ref(new Map()); // 좋아요 개수를 저장할 Map 추가
+const getTodoLikeCount = async (todoId, userId) => {
+  const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/likeTodo/count`;
+  try {
+    const response = await axios.get(REST_API_URL, {
+      headers: {
+        "access-token": sessionStorage.getItem("access-token"),
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+    // response.data가 직접 숫자값
+    todoLikeCounts.value.set(todoId, response.data);
+    return response.data;
+  } catch (err) {
+    handleError(err);
+    return 0;
+  }
+};
 
   // 투두 몇 개 있는지 조회하기
   const getTodoCount = () => {};
@@ -321,5 +341,8 @@ export const useTodoStore = defineStore("todo", () => {
     startProgram,
     checkProgramProgress,
     todoLikes,
+    todoLikeCounts,
+    getTodoLikeCount,
+
   };
 });

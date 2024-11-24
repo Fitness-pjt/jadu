@@ -61,8 +61,12 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public boolean hasUncompletedTodos(int programId, int userId) {
-	    return todoDao.countUncompletedTodos(programId, userId) > 0;
+		return todoDao.countUncompletedTodos(programId, userId) > 0;
 	}
 
+	@Override
+	public int getTodoLikeCount(int todoId) {
+		return todoDao.getTodoLikeCount(todoId);
+	}
 
 }
