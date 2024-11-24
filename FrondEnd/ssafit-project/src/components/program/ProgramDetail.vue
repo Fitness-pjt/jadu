@@ -25,6 +25,15 @@
         </div>
         <div class="col-md-8">
           <h1 class="mb-3">{{ program.title }}</h1>
+          <div class="mb-3">
+            <RouterLink
+              :to="getRoute(program.userId)"
+              class="btn btn-light"
+              @click="closeMenu"
+            >
+              <UserNameTag :user-id="program.userId" />
+            </RouterLink>
+          </div>
           <div class="program-meta mb-3">
             <span class="badge bg-primary me-2">{{ program.level }}</span>
             <span class="badge bg-secondary me-2"
@@ -181,6 +190,7 @@ import ProgramVideoList from "./ProgramVideoList.vue";
 import ReviewList from "../review/ReviewList.vue";
 import QuestionList from "../question/QuestionList.vue";
 import { useTodoStore } from "@/stores/todo";
+import UserNameTag from "../common/UserNameTag.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -368,6 +378,12 @@ const checkProgramStatus = async () => {
     }
   }
 };
+const getRoute = (userId) => {
+  return loginStore.loginUserId === userId
+    ? { name: "mypage", params: { userId } }
+    : { name: "profile", params: { userId } };
+};
+
 // 컴포넌트 마운트 시 데이터 가져오기
 onMounted(async () => {
   await fetchProgramDetail(); // program 정보 가져오기 기다림
