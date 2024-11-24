@@ -52,7 +52,8 @@ const todo = ref({
 });
 
 // Todo 추가하기
-const addTodo = () => {
+const addTodo = async () => {
+  // 빈 응답일 경우, 추가 X
   if (!todo.value.content.trim()) {
     alert("todo를 작성해주세요!");
     return;
@@ -67,7 +68,7 @@ const addTodo = () => {
   );
 
   todo.value.content = ""; // 빈값으로 v-model 초기화
-  todoStore.getTodoList(loginUserId, selectedDate.value);
+  await todoStore.getTodoList(loginUserId, selectedDate.value);
 };
 </script>
 
