@@ -3,6 +3,8 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useProgramStore } from "./program";
+import { handleError } from "@/utils/handleError";
+
 
 export const useTodoStore = defineStore("todo", () => {
   // Todo 날짜 전역으로 관리
@@ -52,14 +54,8 @@ export const useTodoStore = defineStore("todo", () => {
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
+        handleError(error);
 
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
       });
   };
 
@@ -83,14 +79,8 @@ export const useTodoStore = defineStore("todo", () => {
         );
       })
       .catch((error) => {
-        if (error.response && error.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
+        handleError(error);
 
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
       });
   };
 
@@ -109,16 +99,8 @@ export const useTodoStore = defineStore("todo", () => {
         // console.log("updateTodoContent res.data", res.data);
       })
       .catch((err) => {
-        if (err.response && err.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
+        handleError(err);
 
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
       });
   };
 
@@ -137,16 +119,8 @@ export const useTodoStore = defineStore("todo", () => {
         // console.log("updateTodoStatus res.data", res.data);
       })
       .catch((err) => {
-        if (err.response && err.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
+        handleError(err);
 
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
       });
   };
 
@@ -249,13 +223,8 @@ const startProgram = async (programId, userId, startDate) => {
     return todos;
 
   } catch (error) {
-    console.error("Todo 생성 중 오류 발생:", error);
-    if (error.response && error.response.status === 401) {
-      sessionStorage.removeItem("access-token");
-      sessionStorage.removeItem("refresh-token");
-      router.replace("/login");
-    }
-    throw new Error("프로그램을 Todo 리스트에 추가하는데 실패했습니다.");
+    handleError(err);
+
   }
 };
 // stores/todo.js
@@ -277,7 +246,7 @@ const checkProgramProgress = async (programId, userId) => {
     }
     return response.data; // { inProgress: true/false }
   } catch (error) {
-    console.error("프로그램 진행상태 확인 실패:", error);
+    handleError(err);
     return { inProgress: false };
   }
 };
