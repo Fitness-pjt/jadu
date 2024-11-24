@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.ssafit.model.dto.AIResponse;
 import com.ssafy.ssafit.model.dto.Program;
+import com.ssafy.ssafit.model.dto.User;
 import com.ssafy.ssafit.model.dto.UserInfo;
 import com.ssafy.ssafit.model.dto.YoutubeVideoDto;
 import com.ssafy.ssafit.prompt.PromptGenerator;
@@ -43,10 +45,10 @@ public class AIController {
 	@PostMapping("/chatGPT")
 	public ResponseEntity<?> chat(@RequestBody UserInfo userInfo) throws JsonMappingException, JsonProcessingException {
 		System.out.println(userInfo);
-
+		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		int videoNum = userInfo.getDuration(); // 하나의 키워드로 받을 영상 수
 //		System.out.println(videoNum);
-
+		
 		String message = promptGenerator.generatePrompt(userInfo);
 		System.out.println(message);
 
@@ -71,11 +73,11 @@ public class AIController {
 		for (YoutubeVideoDto video : videoList) {
 			videoIds.add(video.getVideoId());
 		}
-
+		String userNickName = loginUser.getUserNickname();
 		program.setVideoIds(videoIds);
 		program.setUserId(userInfo.getUserId());
 		program.setTitle(aiResponse.getTitle());
-		program.setDescription(aiResponse.getDescription());
+		program.setDescription(userNickName +"님을 위한 AI 맞춤형 프로그램 입니다.\n" + aiResponse.getDescription());
 		program.setDurationWeeks(userInfo.getDuration());
 
 		String level = "";

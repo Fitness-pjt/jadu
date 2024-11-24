@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="date-header">📅 {{ selectedDate }}</h3>
-    <div v-if="todoList.length > 0" :key="todoListKey">
+    <div v-if="todoStore.todoList.length > 0">
       <ul class="todo-items">
         <!-- 진행 중인 투두 -->
         <h4>진행 중</h4>
@@ -50,14 +50,6 @@ const editingStates = ref({}); // 수정 상태
 const props = defineProps({
   userId: Number,
 });
-
-// todoList 변화 시 key 업데이트
-watch(
-  () => todoList.value,
-  () => {
-    todoListKey.value += 1;
-  }
-);
 
 const nonProgramTodos = computed(() => {
   const todoList = todoStore.todoList;
