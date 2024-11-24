@@ -21,9 +21,12 @@
         />
       </label>
     </div>
-    <div v-if="todo.status">
+    <div v-if="todo.status" class="likes-container">
       <button @click="updateFavorite(todo)" class="favorite-btn">
-        <span>{{ isFavorite ? "❤️" : "🤍" }}</span>
+       <div class="heart-with-count">
+        <span class="heart-icon">{{ isFavorite ? "❤️" : "🤍" }}</span>
+        <span class="like-count-overlay">{{ likeCount }}</span>
+      </div>
       </button>
     </div>
     <div class="todo-actions" v-if="userId === loginUserId">
@@ -56,6 +59,11 @@ const editingStates = ref({}); // 수정 상태
 const isFavorite = computed(() => {
   return todoStore.todoLikes.get(props.todo.todoId) || false;
 });
+const likeCount = computed(() => {
+  return todoStore.todoLikeCounts.get(props.todo.todoId) || 0;
+});
+
+
 
 // 초기 완료 상태 설정
 watch(
@@ -115,16 +123,28 @@ const updateFavorite = async (todo) => {
     } else {
       await todoStore.cancelTodoLikes(todo.todoId, props.loginUserId);
     }
+    // 좋아요 개수 갱신
+    await todoStore.getTodoLikeCount(todo.todoId, props.loginUserId);
   } catch (error) {
     console.error("Failed to update favorite status:", error);
+  }
+};
+const fetchInitialStatus = async () => {
+  try {
+    await Promise.all([
+      todoStore.getTodoLikesStatus(props.todo.todoId, props.loginUserId),
+      todoStore.getTodoLikeCount(props.todo.todoId, props.loginUserId)
+    ]);
+  } catch (error) {
+    console.error("Failed to fetch initial status:", error);
   }
 };
 
 
 // 초기 상태 설정 (마운트 시에 한 번만 호출)
-onMounted(async () => {
-  await todoStore.getTodoLikesStatus(props.todo.todoId, props.loginUserId);
-});</script>
+onMounted(fetchInitialStatus);
+
+</script>
 
 <style scoped>
 .todo-item {
@@ -232,8 +252,65 @@ onMounted(async () => {
   color: #42b983;
 }
 
+.likes-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.like-count {
+  font-size: 0.9rem;
+  color: #666;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+
 .bi {
   font-size: 1.1rem;
   margin-right: 0.3rem;
+}
+.heart-with-count {
+  position: relative;
+  display: inline-block;
+}
+
+.heart-icon {
+  font-size: 1.5rem;
+  display: inline-block;
+}
+
+.like-count-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #000;
+  text-shadow: 
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+  pointer-events: none;
+}
+
+.favorite-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.favorite-btn:hover {
+  transform: scale(1.1);
+}
+
+.likes-container {
+  display: flex;
+  align-items: center;
+  margin: 0 0.5rem;
 }
 </style>

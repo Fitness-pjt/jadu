@@ -36,4 +36,6 @@ public interface TodoDao {
 	public void deleteTodoLikes(@Param("todoId")int todoId, @Param("userId") int userId);
 
 	public int countUncompletedTodos(int programId, int userId);
+
+	public int getTodoLikeCount(int todoId);
 }

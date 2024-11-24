@@ -224,5 +224,23 @@ public class TodoController {
 	    response.put("inProgress", inProgress);
 	    return ResponseEntity.ok(response);
 	}
+	
+	@GetMapping("/{todoId}/likeTodo/count")
+	@Operation(summary = "투두 좋아요 개수 조회", description = "완료된 투두의 전체 좋아요 개수를 조회합니다.")
+	public ResponseEntity<Integer> getTodoLikeCount(
+	        @PathVariable("userId") int userId,
+	        @PathVariable("todoId") int todoId) {
+	    
+	    // SecurityContext에서 인증된 사용자 정보 가져오기
+	    User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    
+	    
+	    // 좋아요 개수 조회
+	    int likeCount = todoService.getTodoLikeCount(todoId);
+	    
+	    
+	    
+	    return new ResponseEntity<>(likeCount, HttpStatus.OK);
+	}
 
 }
