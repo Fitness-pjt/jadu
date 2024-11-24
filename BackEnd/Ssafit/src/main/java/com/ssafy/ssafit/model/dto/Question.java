@@ -8,13 +8,13 @@ public class Question {
 	private String createdAt;
 	private int userId;
 	private int programId;
+	private String questionFileName;
 
 	public Question() {
-		super();
 	}
 
 	public Question(int questionId, String title, String writer, String content, String createdAt, int userId,
-			int programId) {
+			int programId, String questionFileName) {
 		super();
 		this.questionId = questionId;
 		this.title = title;
@@ -23,7 +23,7 @@ public class Question {
 		this.createdAt = createdAt;
 		this.userId = userId;
 		this.programId = programId;
-
+		this.questionFileName = questionFileName;
 	}
 
 	public int getQuestionId() {
@@ -42,6 +42,14 @@ public class Question {
 		this.title = title;
 	}
 
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
 	public String getContent() {
 		return content;
 	}
@@ -56,14 +64,6 @@ public class Question {
 
 	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
-	}
-
-	public String getWriter() {
-		return writer;
-	}
-
-	public void setWriter(String writer) {
-		this.writer = writer;
 	}
 
 	public int getUserId() {
@@ -82,10 +82,19 @@ public class Question {
 		this.programId = programId;
 	}
 
+	public String getQuestionFileName() {
+		return questionFileName;
+	}
+
+	public void setQuestionFileName(String questionFileName) {
+		this.questionFileName = questionFileName;
+	}
+
 	@Override
 	public String toString() {
-		return "question [questionId=" + questionId + ", title=" + title + ", writer=" + writer + ", content=" + content
-				+ ", createdAt=" + createdAt + ", userId=" + userId + ", programId=" + programId + "]";
+		return "Question [questionId=" + questionId + ", title=" + title + ", writer=" + writer + ", content=" + content
+				+ ", createdAt=" + createdAt + ", userId=" + userId + ", programId=" + programId + ", questionFileName="
+				+ questionFileName + "]";
 	}
 
 }

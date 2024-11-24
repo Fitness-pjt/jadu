@@ -18,13 +18,26 @@
 
 	<select id="selectOneQuestion" parameterType="int"
 		resultType="Question">
-		SELECT q.question_id, q.title, u.user_nickname AS writer,
+		SELECT
+		q.question_id,
+		q.title,
+		u.user_nickname AS writer,
 		q.content,
-		q.created_at, q.user_id, q.program_id
-		FROM question q,
-		users u
-		WHERE question_id = #{questionId} AND u.user_id =
-		q.user_id;
+		q.created_at,
+		q.user_id,
+		q.program_id,
+		f.file_name AS
+		questionFileName
+		FROM
+		question q
+		JOIN
+		users u ON u.user_id = q.user_id
+		LEFT JOIN
+		files f ON f.question_id = q.question_id
+		WHERE
+		q.question_id =
+		#{questionId};
+
 	</select>
 
 	<insert id="insertQuestion" parameterType="Question"

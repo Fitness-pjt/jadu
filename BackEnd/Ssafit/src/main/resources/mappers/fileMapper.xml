@@ -6,10 +6,18 @@
 	<insert id="addFile" parameterType="FileDto"
 		useGeneratedKeys="true" keyProperty="fileId">
 		INSERT INTO files (
-		file_id, file_case, file_name, extension, user_id
+		file_id,
+		file_case, file_name, extension, user_id
 		) VALUES (
-		#{fileId}, #{fileCase}, #{fileName}, #{extension}, #{userId}
+		#{fileId},
+		#{fileCase}, #{fileName}, #{extension}, #{userId}
 		)
 	</insert>
+
+	<update id="updateFile">
+		UPDATE files
+		SET question_id = #{questionId}
+		WHERE file_name = #{questionFileName}
+	</update>
 
 </mapper>

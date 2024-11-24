@@ -49,7 +49,6 @@ public class JwtUtil {
 	// access-token 생성
 	public String createAccessToken(User user) {
 		return createToken(user, 1000 * 60 * 60); // 60분
-
 	}
 
 	// refresh-token 생성

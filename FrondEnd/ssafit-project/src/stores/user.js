@@ -108,6 +108,7 @@ export const useUserStore = defineStore("user", () => {
       throw error;
     }
   };
+
   const updateUser = async (updateData) => {
     try {
       const response = await axios.put(`${REST_API_URL}/${updateData.userId}`, {

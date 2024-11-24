@@ -2,17 +2,19 @@ import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
+import { handleError } from "@/utils/handleError";
 
 export const useQuestionStore = defineStore("question", () => {
   const getRestApiUrl = (programId) => {
     return `http://localhost:8080/program/${programId}/question`;
   };
 
-  const question = ref({});
+  // const question = ref({});
   const questionList = ref([]);
 
   // 질문 등록하기
   const createQuestion = (question, programId) => {
+    console.log("question 등록 request 에 담김", question);
     const REST_API_URL = getRestApiUrl(programId);
 
     axios
@@ -124,8 +126,33 @@ export const useQuestionStore = defineStore("question", () => {
       });
   };
 
+  // 질문 등록시 이미지 업로드
+  const questionFileImg = ref(null);
+  const uploadFile = async (formData) => {
+    try {
+      // Authorization 헤더 추가
+      const response = await axios.post(
+        "http://localhost:8080/file/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "access-token": sessionStorage.getItem("access-token"),
+            "file-case": "QUESTION",
+          },
+        }
+      );
+
+      if (response.data) {
+        questionFileImg.value = response.data;
+        return response.data;
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   return {
-    question,
     createQuestion,
     getQuestionList,
     questionList,
@@ -133,5 +160,6 @@ export const useQuestionStore = defineStore("question", () => {
     singleQuestion,
     deleteQuestion,
     updateQuestion,
+    uploadFile,
   };
 });

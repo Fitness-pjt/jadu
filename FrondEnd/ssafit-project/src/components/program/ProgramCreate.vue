@@ -130,7 +130,7 @@ const submitProgram = async () => {
   if (!isFormValid.value) return;
 
   try {
-    const videoIds = videoStore.selectedVideos.map((video) => video.id.videoId);
+    const videoIds = videoStore.selectedVideos.map((video) => video.id);
     const thumbnailUrl =
       videoStore.selectedVideos[0].snippet.thumbnails.medium.url;
     const selectedVideoCount = videoIds.length;
