@@ -24,8 +24,8 @@ export const useAnswerStore = defineStore("answer", () => {
         withCredentials: true,
       });
 
-      // 최신 답변을 제일 위로 추가
       getAnswerList(programId, questionId);
+      // 최신 답변을 제일 위로 추가
       answerList.value.unshift(response.data); // answerList에 추가
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -41,7 +41,7 @@ export const useAnswerStore = defineStore("answer", () => {
     const REST_API_URL = getRestApiUrl(programId, questionId);
     try {
       const response = await axios.get(REST_API_URL);
-      console.log("res.data", response.data);
+      // console.log("res.data", response.data);
       answerList.value = response.data; // 데이터를 받아서 업데이트
     } catch (error) {
       console.error("Error fetching answer list:", error);

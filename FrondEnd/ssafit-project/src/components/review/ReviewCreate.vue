@@ -33,12 +33,18 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useLoginStore } from "@/stores/login";
+import defaultProfileImg from "@/assets/image/default_profile.png";
 
 const route = useRoute();
 const router = useRouter();
 const programId = route.params.programId;
 const userStore = useUserStore();
-const profileImg = computed(() => userStore.userProfileImg);
+const profileImg = computed(() => {
+  return userStore.userProfileImg || defaultProfileImg;
+});
+
+console.log("profileImg", profileImg.value);
+
 const loginStore = useLoginStore();
 const loginUserId = computed(() => loginStore.loginUserId);
 
@@ -49,14 +55,20 @@ const review = ref({
 
 const token = computed(() => sessionStorage.getItem("access-token"));
 
-const createReview = () => {
+const createReview = async () => {
+  if (!review.value.content.trim()) {
+    alert("리뷰를 작성해주세요.");
+    return;
+  }
+
   if (!token.value) {
     alert("로그인을 해야 리뷰를 등록할 수 있습니다.");
   } else {
-    reviewStore.createReview(review.value, programId);
+    await reviewStore.createReview(review.value, programId);
     review.value.content = "";
-    alert("리뷰가 등록되었습니다.");
-    router.push({ name: "review" });
+    // alert("리뷰가 등록되었습니다.");
+    // router.push({ name: "review" });
+    reviewStore.getReviewList(programId);
   }
 };
 

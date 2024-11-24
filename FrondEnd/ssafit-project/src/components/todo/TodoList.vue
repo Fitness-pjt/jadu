@@ -41,7 +41,6 @@ import TodoListItem from "./TodoListItem.vue";
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
 const loginUserId = loginStore.loginUserId; // 로그인한 유저 아이디
-const todoListKey = ref(0);
 
 const selectedDate = computed(() => todoStore.selectedDate);
 // const todoList = computed(() => todoStore.todoList);
@@ -60,6 +59,7 @@ const nonProgramTodos = computed(() => {
 // 날짜 변화 감지
 watch(selectedDate, async (newDate) => {
   await todoStore.getTodoList(props.userId, newDate);
+  console.log("todoStore.todoList", todoStore.todoList);
 });
 
 // todoList 변화 감지

@@ -53,19 +53,22 @@ const todo = ref({
 
 // Todo 추가하기
 const addTodo = async () => {
+  // 빈 응답일 경우, 추가 X
   if (!todo.value.content.trim()) {
     alert("todo를 작성해주세요!");
     return;
   }
 
-  await todoStore.addTodo(
+  todoStore.addTodo(
     {
       ...todo.value,
       date: selectedDate.value, // 현재 선택된 날짜 사용
     },
     loginUserId
   );
+
   todo.value.content = ""; // 빈값으로 v-model 초기화
+  await todoStore.getTodoList(loginUserId, selectedDate.value);
 };
 </script>
 

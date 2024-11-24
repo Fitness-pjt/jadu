@@ -135,8 +135,6 @@ const submitProgram = async () => {
       videoStore.selectedVideos[0].snippet.thumbnails.medium.url;
     const selectedVideoCount = videoIds.length;
 
-    console.log("thumbnailUrl :>> ", thumbnailUrl);
-    console.log("selectedVideoCount :>> ", selectedVideoCount);
     programData.value.programImgPath = thumbnailUrl;
     programData.value.videoCnt = selectedVideoCount;
 
@@ -145,7 +143,7 @@ const submitProgram = async () => {
       videoIds: videoIds,
     };
 
-    console.log("submitData :>> ", submitData);
+    // console.log("submitData :>> ", submitData);
     await programStore.createProgram(submitData);
 
     alert("프로그램이 성공적으로 생성되었습니다!");
@@ -153,12 +151,12 @@ const submitProgram = async () => {
     // 초기화 함수 호출
     initializeForm();
 
-    router.push("/programs");
+    router.push({ name: "program" });
   } catch (error) {
     console.error("프로그램 생성 실패:", error);
   }
 
-  window.location.href = "/";
+  // window.location.href = "/";
 };
 </script>
 

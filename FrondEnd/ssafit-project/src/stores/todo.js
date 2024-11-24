@@ -27,6 +27,7 @@ export const useTodoStore = defineStore("todo", () => {
       .get(REST_API_URL)
       .then((res) => {
         // 요청 후 userId에 해당하는 todo만 todoList에 담기
+        // console.log("res.data", res.data);
         todoList.value = res.data;
       })
       .catch((err) => {
@@ -49,7 +50,9 @@ export const useTodoStore = defineStore("todo", () => {
         // console.log("투두 추가하기", res.data);
 
         // 새로운 투두 항목을 todoList에 추가
-        getTodoList(userId, todo.date);
+        // const response = getTodoList(userId, todo.date);
+        // console.log("response", response);
+
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {

@@ -45,9 +45,9 @@
 
 <script setup>
 import { useLoginStore } from "@/stores/login";
-import { useTodoStore } from '@/stores/todo';
-import { computed, ref, watch } from 'vue';
-import ProgramTodoListItem from './ProgramTodoListItem.vue';
+import { useTodoStore } from "@/stores/todo";
+import { computed, ref, watch } from "vue";
+import ProgramTodoListItem from "./ProgramTodoListItem.vue";
 
 const props = defineProps({
   userId: Number,
@@ -63,7 +63,7 @@ const editingStates = ref({}); // 수정 상태 관리
 const programTodos = computed(() => {
   const list = todoStore.todoList;
   if (!Array.isArray(list)) return [];
-  return list.filter(todo => todo.programId != null);
+  return list.filter((todo) => todo.programId != null);
 });
 
 // programTodos 변화 감지
@@ -84,12 +84,12 @@ watch(
 
 // 진행중인 프로그램 todos
 const inProgressTodos = computed(() => {
-  return programTodos.value.filter(todo => !todo.status);
+  return programTodos.value.filter((todo) => !todo.status);
 });
 
 // 완료된 프로그램 todos
 const completedTodos = computed(() => {
-  return programTodos.value.filter(todo => todo.status);
+  return programTodos.value.filter((todo) => todo.status);
 });
 </script>
 
@@ -139,7 +139,7 @@ const completedTodos = computed(() => {
   .program-category {
     padding: 0.75rem;
   }
-  
+
   .section-title {
     font-size: 1.1rem;
   }
