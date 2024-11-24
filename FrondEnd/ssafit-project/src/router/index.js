@@ -27,6 +27,8 @@ import HomeView from "../views/HomeView.vue";
 import VideoListView from "@/views/VideoListView.vue";
 import ProgramVideoList from "@/components/program/ProgramVideoList.vue";
 import AnswerList from "@/components/question/AnswerList.vue";
+import ProgramView from "@/views/ProgramView.vue";
+import ProgramCreate from "@/components/program/ProgramCreate.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,7 +88,32 @@ const router = createRouter({
     {
       path: "/program",
       name: "program",
-      component: UserInfoView,
+      component: ProgramView,
+      children: [
+        // 기존 경로들...
+    
+        // 일반 프로그램 생성
+     
+        {
+          path: "manage",
+          name: "programManage",
+          component: ProgramView,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: "edit/:programId",
+          name: "programEdit",
+          component: ProgramEdit,
+          meta: { requiresAuth: true }
+        }
+    
+      ]    
+    },
+    {
+      path: "/program/create",
+      name: "programCreate",
+      component: ProgramCreate,
+      meta: { requiresAuth: true }
     },
     {
       path: "/program/createAi",

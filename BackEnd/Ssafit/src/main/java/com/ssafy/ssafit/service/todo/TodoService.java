@@ -31,4 +31,7 @@ public interface TodoService {
 	public void deleteTodoLikes(int todoId, int userId);
 	
 	public boolean hasUncompletedTodos(int programId, int userId);
+
+	int getTodoLikeCount(int todoId);
+
 }
