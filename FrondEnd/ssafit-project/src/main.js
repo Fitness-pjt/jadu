@@ -16,6 +16,11 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'animate.css'
 
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+
+
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { 

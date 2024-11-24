@@ -1,106 +1,100 @@
 <template>
-  <div class="container py-4">
-    <div class="card shadow-sm border-0">
-      <div class="card-body">
-        <!-- 헤더 -->
-        <h2 class="card-title text-center mb-4">
-          <i class="bi bi-search me-2"></i>운동 키워드 선택
-        </h2>
+  <div class="video-search">
+    <!-- 헤더 -->
+    <div class="header-content text-center">
+      <h2 class="main-title">운동 영상 검색</h2>
+      <p class="subtitle">원하는 운동 영상을 키워드로 검색하여 프로그램에 추가하세요</p>
+    </div>
 
-        <!-- 키워드 그룹 -->
-        <div class="row g-4">
-          <!-- 키워드 (부위 + 목적) -->
-          <div class="col-12">
-            <div class="card h-100 border-0 bg-light">
-              <div class="card-body">
-                <h3 class="group-title">
-                  <i class="bi bi-tags me-2"></i>키워드
-                </h3>
-                <div class="d-flex flex-wrap gap-2">
-                  <button
-                    v-for="kw in mainKeywords"
-                    :key="kw"
-                    class="btn btn-outline-primary rounded-pill btn-sm"
-                    :class="{ active: keyword === kw }"
-                    @click="selectKeyword(kw)"
-                  >
-                    {{ kw }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- 메인 콘텐츠 -->
+    <div class="content-wrapper">
+      <!-- 현재 선택된 검색어 표시 영역 -->
+      <div class="search-preview" v-if="getSearchKeyword &&!showDirectSearch" >
+        <h3 class="section-title">검색어</h3>
+        <div class="preview-box">
+          <span class="preview-text">{{ getSearchKeyword }}</span>
+        </div>
+      </div>
 
-          <!-- 난이도 -->
-          <div class="col-12">
-            <div class="card border-0 bg-light">
-              <div class="card-body">
-                <h3 class="group-title">
-                  <i class="bi bi-graph-up me-2"></i>난이도
-                </h3>
-                <div class="d-flex flex-wrap gap-2 justify-content-center">
-                  <button
-                    v-for="kw in levelKeywords"
-                    :key="kw"
-                    class="btn btn-outline-success rounded-pill btn-sm"
-                    :class="{ active: selectedLevel === kw }"
-                    @click="selectLevel(kw)"
-                  >
-                    {{ kw }}
-                  </button>
-                </div>
-              </div>
-            </div>
+      <!-- 키워드 그룹 -->
+      <div class="keyword-sections">
+        <!-- 운동 목적 키워드 -->
+        <div class="search-section">
+          <h3 class="section-title">운동 목적</h3>
+          <div class="keyword-container">
+            <button
+              v-for="kw in purposeKeywords"
+              :key="kw"
+              class="btn keyword-btn purpose-btn"
+              :class="{ 'btn-active': keyword === kw }"
+              @click="selectKeyword(kw)"
+            >
+              {{ kw }}
+            </button>
           </div>
         </div>
 
-        <!-- 직접 검색 토글 -->
-        <div class="text-center my-4">
-          <button
-            class="btn btn-outline-secondary rounded-pill btn-sm"
-            @click="toggleDirectSearch"
-          >
-            <i
-              class="bi"
-              :class="showDirectSearch ? 'bi-chevron-up' : 'bi-chevron-down'"
-            ></i>
-            직접 검색 {{ showDirectSearch ? "닫기" : "열기" }}
-          </button>
+        <!-- 운동 부위 키워드 -->
+        <div class="search-section">
+          <h3 class="section-title">운동 부위</h3>
+          <div class="keyword-container">
+            <button
+              v-for="kw in bodyPartKeywords"
+              :key="kw"
+              class="btn keyword-btn body-btn"
+              :class="{ 'btn-active': keyword === kw }"
+              @click="selectKeyword(kw)"
+            >
+              {{ kw }}
+            </button>
+          </div>
         </div>
 
-        <!-- 직접 검색 입력창 -->
-        <div
-          v-if="showDirectSearch"
-          class="collapse show direct-search-wrapper"
-        >
-          <div class="input-group">
-            <span class="input-group-text bg-white">
-              <i class="bi bi-keyboard"></i>
-            </span>
+        <!-- 난이도 선택 -->
+        <div class="search-section">
+          <h3 class="section-title">난이도</h3>
+          <div class="keyword-container">
+            <button
+              v-for="kw in levelKeywords"
+              :key="kw"
+              class="btn keyword-btn level-btn"
+              :class="{ 'btn-active': selectedLevel === kw }"
+              @click="selectLevel(kw)"
+            >
+              {{ getLevelText(kw) }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 직접 검색 -->
+      <div class="direct-search-section">
+        <button class="btn toggle-btn" @click="toggleDirectSearch">
+          {{ showDirectSearch ? '키워드 선택으로 돌아가기' : '직접 검색하기' }}
+        </button>
+
+        <div v-if="showDirectSearch" class="direct-search animate__animated animate__fadeIn">
+          <div class="search-input-wrapper">
             <input
               type="text"
               v-model.trim="directKeyword"
               @keyup.enter="searchWithDirectKeyword"
-              class="form-control"
+              class="search-input"
               placeholder="검색어를 직접 입력하세요"
             />
           </div>
         </div>
+      </div>
 
-        <!-- 검색 버튼 -->
-        <div class="text-center mt-4" v-if="keyword || directKeyword">
-          <div class="selected-keywords mb-3">
-            <span
-              class="badge bg-primary rounded-pill"
-              v-if="!directKeyword && keyword"
-            >
-              {{ getSearchKeyword }}
-            </span>
-          </div>
-          <button @click="search" class="btn btn-primary rounded-pill px-4">
-            <i class="bi bi-search me-2"></i>운동 영상 검색하기
-          </button>
-        </div>
+      <!-- 검색 버튼 -->
+      <div class="search-button-container">
+        <button 
+          @click="search" 
+          class="btn search-btn"
+          :disabled="!isSearchable"
+        >
+          운동 영상 검색하기
+        </button>
       </div>
     </div>
   </div>
@@ -115,34 +109,44 @@ const selectedLevel = ref("");
 const directKeyword = ref("");
 const showDirectSearch = ref(false);
 const store = useVideoStore();
-
-const mainKeywords = [
-  "상체",
-  "하체",
-  "가슴",
-  "등",
-  "어깨",
-  "복부",
+const purposeKeywords = [
   "다이어트",
   "체력 증진",
   "근력 강화",
   "근육량 증가",
   "심폐지구력 향상",
   "자세 교정",
-  "스트레스 해소",
-  "체형 개선",
 ];
-const levelKeywords = ["Beginner", "INTERMEDIATE", "ADVANCED"];
+
+const bodyPartKeywords = [
+  "전신",
+  "상체",
+  "하체",
+  "가슴",
+  "등",
+  "어깨",
+  "복부",
+];
+const levelKeywords = ["BEGINNER", "INTERMEDIATE", "ADVANCED"];
+
+const getLevelText = (level) => {
+  const levels = {
+    'BEGINNER': '초급자',
+    'INTERMEDIATE': '중급자',
+    'ADVANCED': '상급자'
+  };
+  return levels[level] || level;
+};
 
 const getSearchKeyword = computed(() => {
   if (directKeyword.value) return directKeyword.value;
-  return keyword.value + (selectedLevel.value ? ` ${selectedLevel.value}` : "");
+  return keyword.value + (selectedLevel.value ? ` ${getLevelText(selectedLevel.value)}` : "");
 });
 
-const selectKeyword = (value) => {
-  keyword.value = keyword.value === value ? "" : value;
-  directKeyword.value = "";
-};
+const isSearchable = computed(() => {
+  return Boolean(directKeyword.value || keyword.value);
+});
+
 
 const selectLevel = (value) => {
   selectedLevel.value = selectedLevel.value === value ? "" : value;
@@ -163,6 +167,14 @@ const searchWithDirectKeyword = () => {
     search();
   }
 };
+// script setup 부분에 추가
+const selectKeyword = (value) => {
+  if (showDirectSearch.value) {
+    showDirectSearch.value = false;
+    directKeyword.value = "";
+  }
+  keyword.value = keyword.value === value ? "" : value;
+};
 
 const search = () => {
   const searchTerm = getSearchKeyword.value;
@@ -172,84 +184,267 @@ const search = () => {
   }
 };
 </script>
-
 <style scoped>
-.group-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #495057;
-  margin-bottom: 1rem;
+:root {
+ --primary-blue: #C6E7FF;
+ --secondary-blue: #D4F6FF;
+ --neutral: #FBFBFB;
+ --accent: #FFDDAE;
 }
 
-.card {
-  transition: all 0.3s ease;
+.video-search {
+ max-width: 1000px;
+ margin: 0 auto;
+ padding: 2rem;
 }
 
-.btn-outline-primary,
-.btn-outline-success {
-  --bs-btn-hover-transform: translateY(-2px);
-  transition: all 0.2s ease;
+.header-content {
+ margin-bottom: 3rem;
 }
 
-.btn-outline-primary:hover,
-.btn-outline-success:hover {
-  transform: translateY(-2px);
+.main-title {
+ font-size: 2rem;
+ font-weight: 600;
+ color: #333;
+ margin-bottom: 0.5rem;
 }
 
-.btn-outline-primary.active,
-.btn-outline-success.active {
-  transform: translateY(0);
+.subtitle {
+ color: #666;
+ font-size: 1.1rem;
 }
 
-.direct-search-wrapper {
-  max-width: 500px;
-  margin: 0 auto;
+.content-wrapper {
+ background: white;
+ padding: 2.5rem;
+ border-radius: 20px;
+ box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-.input-group-text {
-  border-right: none;
-  background-color: transparent;
+.search-preview {
+ background: var(--accent);
+ padding: 1.5rem;
+ border-radius: 15px;
+ margin-bottom: 2rem;
+ text-align: center;
+ animation: fadeIn 0.5s ease;
 }
 
-.form-control {
-  border-left: none;
+.preview-box {
+ background: white;
+ padding: 1rem 2rem;
+ border-radius: 10px;
+ display: inline-block;
+ min-width: 200px;
+ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-control:focus {
-  border-color: #dee2e6;
-  box-shadow: none;
+.preview-text {
+ font-size: 1.2rem;
+ font-weight: 600;
+ color: #333;
 }
 
-.input-group:focus-within {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  border-radius: 0.375rem;
+.keyword-sections {
+ display: flex;
+ flex-direction: column;
+ gap: 2rem;
 }
 
-.selected-keywords {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+.section-title {
+ font-size: 1.2rem;
+ font-weight: 600;
+ color: #333;
+ margin-bottom: 1.5rem;
+ display: flex;
+ align-items: center;
+ gap: 0.5rem;
 }
 
-.badge {
-  font-size: 0.9rem;
-  padding: 0.5rem 1rem;
+.search-section {
+ background: white;
+ padding: 1.5rem;
+ border-radius: 15px;
+ border: 1px solid #eee;
+ transition: all 0.3s ease;
 }
 
+.search-section:hover {
+ border-color: var(--primary-blue);
+ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.keyword-container {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 0.8rem;
+}
+
+/* 버튼 기본 스타일 */
+.btn {
+ padding: 0.8rem 2rem;
+ border-radius: 10px;
+ font-weight: 600;
+ transition: all 0.3s ease;
+ font-size: 1.1rem;
+ border: none;
+ color: #333;
+ background: var(--primary-blue);
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover:not(:disabled) {
+ background: var(--accent);
+ transform: translateY(-2px);
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+ color: #333;
+}
+
+/* 키워드 버튼 스타일 */
+.keyword-btn {
+ padding: 0.6rem 1.2rem;
+ font-size: 1rem;
+ position: relative;
+ overflow: hidden;
+}
+
+/* 목적별 버튼 스타일 */
+.purpose-btn {
+ background: #FFE2E2;
+}
+
+.purpose-btn:hover, .purpose-btn.btn-active {
+ background: #FFB3B3;
+}
+
+/* 부위별 버튼 스타일 */
+.body-btn {
+ background: #E2F0FF;
+}
+
+.body-btn:hover, .body-btn.btn-active {
+ background: #B3D9FF;
+}
+
+/* 난이도 버튼 스타일 */
+.level-btn {
+ background: #E2FFE2;
+}
+
+.level-btn:hover, .level-btn.btn-active {
+ background: #B3FFB3;
+}
+
+.direct-search-section {
+ margin: 2rem 0;
+ text-align: center;
+}
+
+.toggle-btn {
+ background: var(--neutral);
+ margin-bottom: 1rem;
+}
+
+.toggle-btn:hover {
+ background: var(--secondary-blue);
+}
+
+.search-input-wrapper {
+ max-width: 600px;
+ margin: 0 auto;
+ animation: slideDown 0.3s ease;
+}
+
+.search-input {
+ width: 100%;
+ padding: 1rem 1.5rem;
+ border: 2px solid var(--primary-blue);
+ border-radius: 10px;
+ font-size: 1.1rem;
+ transition: all 0.3s ease;
+ background: white;
+}
+
+.search-input:focus {
+ outline: none;
+ border-color: var(--accent);
+ box-shadow: 0 0 0 4px rgba(255, 221, 174, 0.25);
+}
+
+.search-button-container {
+ margin-top: 3rem;
+ text-align: center;
+}
+
+.search-btn {
+ padding: 1rem 3rem;
+ font-size: 1.2rem;
+ background: var(--primary-blue);
+ min-width: 250px;
+}
+
+.search-btn:hover:not(:disabled) {
+ background: var(--accent);
+}
+
+.search-btn:disabled {
+ background: #e0e0e0;
+ cursor: not-allowed;
+ transform: none;
+ box-shadow: none;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+ from { opacity: 0; transform: translateY(-10px); }
+ to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+ from { opacity: 0; transform: translateY(-20px); }
+ to { opacity: 1; transform: translateY(0); }
+}
+
+/* 반응형 디자인 */
 @media (max-width: 768px) {
-  .btn-sm {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-  }
+ .video-search {
+   padding: 1rem;
+ }
 
-  .group-title {
-    font-size: 1rem;
-  }
+ .content-wrapper {
+   padding: 1.5rem;
+ }
 
-  .badge {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-  }
+ .preview-text {
+   font-size: 1rem;
+ }
+
+ .keyword-btn {
+   padding: 0.5rem 1rem;
+   font-size: 0.9rem;
+ }
+
+ .search-section {
+   padding: 1rem;
+ }
+
+ .keyword-container {
+   gap: 0.5rem;
+ }
+
+ .section-title {
+   font-size: 1.1rem;
+   margin-bottom: 1rem;
+ }
+
+ .search-btn {
+   width: 100%;
+   min-width: auto;
+ }
+
+ .preview-box {
+   width: 100%;
+   min-width: auto;
+ }
 }
 </style>
