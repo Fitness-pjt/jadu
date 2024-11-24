@@ -111,14 +111,15 @@
 }
 
 .btn-primary {
-  background-color: #c6e7ff;
-  border-color: #c6e7ff;
-  color: #133e87; /* 버튼 텍스트 색상 변경 */
+  background-color: #133e87;
+  border-color: #133e87;
+  color: white; /* 버튼 텍스트 색상 변경 */
 }
 
 .btn-primary:hover {
   background-color: #ffddae;
   border-color: #ffddae;
+  /* color: #133e87; */
 }
 
 .btn-outline-primary {
