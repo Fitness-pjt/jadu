@@ -11,7 +11,7 @@
           class="video-player"
         ></iframe>
       </div>
-      <div class="video-info mt-3">
+      <div class="video-info mt-4">
         <h3>{{ selectedVideo.snippet.title }}</h3>
       </div>
     </div>
@@ -25,6 +25,9 @@
         </div>
 
         <!-- 비디오 리스트 -->
+        <div>
+          <h5>프로그램 추천 운동 영상</h5>
+        </div>
         <div
           v-for="video in videos"
           :key="video.id.videoId"
@@ -139,7 +142,6 @@ const selectVideo = (video) => {
 .video-player-wrapper {
   position: relative;
   padding-top: 56.25%;
-  /* 16:9 비율 */
   width: 100%;
   background: #000;
 }
@@ -150,8 +152,14 @@ const selectVideo = (video) => {
   left: 0;
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  /* max-height: 60vh; */
 }
 
+.video-info h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
 .play-overlay {
   position: absolute;
   top: 0;
