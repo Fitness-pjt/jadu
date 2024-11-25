@@ -330,13 +330,14 @@ const confirmStartDate = async () => {
       throw new Error("날짜 형식이 올바르지 않습니다.");
     }
 
-    console.log("Formatted date:", formattedDate);
+    // console.log("Formatted date:", formattedDate);
 
     await todoStore.startProgram(route.params.programId, userId, formattedDate);
     closeDatePicker();
+    router.push({ name: "mypage" });
   } catch (err) {
-    console.error(err);
-    alert(err.message);
+    console.error(err.message);
+    // alert(err.message);
   }
 };
 const attributes = [

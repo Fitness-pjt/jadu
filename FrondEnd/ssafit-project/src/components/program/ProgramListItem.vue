@@ -102,18 +102,26 @@ const getLevelText = (level) => {
 
   /* 썸네일 크기 조정 */
   .thumbnail-container {
+    width: 100%;
     height: 150px; /* 썸네일 높이를 줄여서 작은 화면에 맞게 조정 */
+    overflow: hidden;
   }
 
   .thumbnail-image {
+    width: 100%;
     height: 100%; /* 썸네일 이미지 높이 조정 */
+    object-fit: cover;
+  }
+
+  .card-text {
+    -webkit-line-clamp: 1; /* 텍스트가 1줄만 보이도록 수정 */
   }
 }
 
 /* 화면 크기가 576px 이하일 때 카드 크기 더욱 축소 */
 @media (max-width: 576px) {
   .card {
-    /* width: 90%; 카드 너비를 100%로 설정 */
+    /* width: 90%; */
     margin: 0.25rem; /* 카드 간의 여백 줄이기 */
   }
 
@@ -161,7 +169,7 @@ const getLevelText = (level) => {
 .card-text {
   /* height: 60px; */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
