@@ -72,7 +72,7 @@
         </button>
         <div
           v-else
-          class="program-status-badge bg-primary text-white px-3 py-2 rounded"
+          class="program-status-badge bg-navy text-white px-3 py-2 rounded"
         >
           진행중
         </div>
@@ -176,16 +176,12 @@
             />
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="closeDatePicker"
-            >
+            <button type="button" class="btn btn-gray" @click="closeDatePicker">
               취소
             </button>
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-navy"
               @click="confirmStartDate"
               :disabled="!selectedStartDate"
             >
@@ -293,9 +289,10 @@ const showDatePicker = ref(false);
 const selectedStartDate = ref(null);
 
 const onDateSelect = (date) => {
-  console.log("Selected date in onDateSelect:", date); // 디버깅용
-  selectedStartDate.value = date;
+  // console.log("date", date.id);
+  selectedStartDate.value = date.id;
 };
+
 const openDatePicker = () => {
   showDatePicker.value = true;
 };
@@ -304,6 +301,7 @@ const closeDatePicker = () => {
   showDatePicker.value = false;
   selectedStartDate.value = null;
 };
+
 const confirmStartDate = async () => {
   try {
     const userId = loginStore.loginUserId;
@@ -316,55 +314,37 @@ const confirmStartDate = async () => {
       throw new Error("시작 날짜를 선택해주세요.");
     }
 
-    // 선택된 날짜 값 확인
-    console.log("Raw selected date:", selectedStartDate.value);
-
-    // 날짜 문자열 생성 (YYYY-MM-DD 형식)
-    let formattedDate;
-    try {
-      // VCalendar의 날짜가 타임스탬프나 날짜 객체인 경우
-      if (
-        selectedStartDate.value.year &&
-        selectedStartDate.value.month &&
-        selectedStartDate.value.day
-      ) {
-        formattedDate = `${selectedStartDate.value.year}-${String(
-          selectedStartDate.value.month
-        ).padStart(2, "0")}-${String(selectedStartDate.value.day).padStart(
-          2,
-          "0"
-        )}`;
-      } else {
-        const date = new Date(selectedStartDate.value);
-        formattedDate = `${date.getFullYear()}-${String(
-          date.getMonth() + 1
-        ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-      }
-    } catch (err) {
-      console.error("Date formatting error:", err);
-      throw new Error("날짜 형식이 올바르지 않습니다.");
-    }
-
-    // console.log("Formatted date:", formattedDate);
-
-    await todoStore.startProgram(route.params.programId, userId, formattedDate);
+    await todoStore.startProgram(
+      route.params.programId,
+      userId,
+      selectedStartDate.value
+    );
     closeDatePicker();
     router.push({ name: "mypage" });
   } catch (err) {
     console.error(err.message);
-    // alert(err.message);
   }
 };
+
 const attributes = [
   {
     key: "today",
-    dates: new Date(),
-    highlight: true,
-    contentStyle: {
-      color: "white",
+    highlight: {
+      color: "blue",
+      fillMode: "light",
     },
+    dates: new Date(),
+  },
+  {
+    key: "selected",
+    highlight: {
+      color: "blue",
+      fillMode: "outline",
+    },
+    dates: null, // 처음에는 null, 이후 선택된 날짜로 동적 업데이트
   },
 ];
+
 // 좋아요 토글
 const toggleLike = async () => {
   if (!loginStore.loginUserId) {
@@ -559,6 +539,12 @@ onMounted(async () => {
 
 :deep(.vc-header) {
   padding: 10px 0;
+  margin-top: 0px;
+  height: auto;
+}
+
+:deep(.vc-title-wrapper) > button {
+  background-color: transparent;
 }
 
 :deep(.vc-weeks) {

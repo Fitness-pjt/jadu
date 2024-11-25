@@ -1,13 +1,13 @@
 <template>
   <div class="calendar-container">
     <VCalendar
-    borderless
-    :attributes="attrs"
-    :color="selectedColor"
-    @dayclick="onDayClick"
-    class="custom-calendar"
-    trim
-  />
+      borderless
+      :attributes="attrs"
+      :color="selectedColor"
+      @dayclick="onDayClick"
+      class="custom-calendar"
+      trim
+    />
   </div>
 </template>
 
@@ -22,9 +22,9 @@ let attrs = ref([
   {
     key: "workout",
     highlight: {
-      fillMode: 'solid',
-      color: '#ffaa2a',
-      contentClass: 'custom-content'
+      fillMode: "solid",
+      color: "#ffaa2a",
+      contentClass: "custom-content",
     },
     dates: new Date(),
   },
@@ -40,9 +40,9 @@ const onDayClick = (day) => {
     {
       key: "selected",
       highlight: {
-        fillMode: 'solid',
-        color: '#ffaa2a',
-        contentClass: 'custom-content'
+        fillMode: "solid",
+        color: "#ffaa2a",
+        contentClass: "custom-content",
       },
       dates: selectedDate,
     },
@@ -61,7 +61,7 @@ const onDayClick = (day) => {
 .custom-calendar {
   --calendar-width: 100%;
   --calendar-height: 100%;
-  
+
   /* 날짜 셀 크기 조정 */
   :deep(.vc-weeks) {
     width: 100%;
@@ -98,7 +98,7 @@ const onDayClick = (day) => {
     padding: 0;
 
     &::before {
-      content: '';
+      content: "";
       display: block;
       padding-top: 100%; /* 정사각형 비율 유지 */
     }

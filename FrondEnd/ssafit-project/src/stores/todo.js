@@ -214,7 +214,7 @@ export const useTodoStore = defineStore("todo", () => {
           await addTodo(todo, userId);
           todos.push(todo);
         }
-        alert("프로그램이 Todo 리스트에 성공적으로 등록되었습니다!");
+        alert("프로그램이 마이 투두리스트에 성공적으로 등록되었습니다!");
         router.push("/todo");
 
         return todos;

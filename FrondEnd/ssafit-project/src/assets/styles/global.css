@@ -45,9 +45,9 @@
 }
 
 .btn-gray:hover {
-  background-color: white;
-  border-color: #133e87;
-  color: #133e87;
+  background-color: #999999;
+  border-color: #999999;
+  color: white;
 }
 
 .btn-point-orange {
@@ -110,4 +110,9 @@
 .bg-blue {
   background-color: #94d2ff;
   color: #737d91;
+}
+
+.bg-navy {
+  background-color: #133e87;
+  color: white;
 }
