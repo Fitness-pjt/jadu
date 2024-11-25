@@ -219,8 +219,9 @@ onMounted(() => {
 }
 
 .review-body {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  width: 100%;
+  padding-left: 4rem;
+  padding-right: 4rem;
 }
 
 /* 수정 모드 스타일 */
@@ -280,9 +281,9 @@ onMounted(() => {
 
 .empty-state {
   text-align: center;
-  padding: 3rem; /* 2rem에서 증가 */
+  padding: 2rem;
   color: #666;
-  font-size: 1.1rem; /* 크기 증가 */
+  font-size: 1.2rem;
 }
 
 @media (max-width: 768px) {

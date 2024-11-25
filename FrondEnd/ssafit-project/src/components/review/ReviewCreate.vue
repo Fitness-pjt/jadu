@@ -6,7 +6,7 @@
         <textarea
           v-model="review.content"
           class="create-textarea"
-          placeholder="댓글을 작성하세요..."
+          placeholder="리뷰를 작성하세요..."
           rows="3"
         ></textarea>
       </div>
@@ -98,7 +98,7 @@ onMounted(() => {
 
 .create-textarea {
   flex: 1;
-  width: 100%;
+  width: 80%;
   padding: 1rem;
   border: 1px solid #eee;
   border-radius: 8px;
