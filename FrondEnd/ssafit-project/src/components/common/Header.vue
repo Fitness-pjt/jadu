@@ -1,5 +1,5 @@
 <template>
-  <header class="header container-fluid shadow-sm py-3">
+  <header class="header container-fluid shadow-sm py-3" ref="header">
     <div class="container d-flex justify-content-between align-items-center">
       <!-- Logo Section -->
       <h1 class="logo fs-2 fw-bold m-0">
@@ -52,8 +52,9 @@
       <div
         class="auth d-flex align-items-center gap-3"
         :class="{ show: isMenuOpen }"
+        :style="{ top: authTopValue }"
       >
-        <div v-if="!token" class="d-flex gap-3">
+        <div v-if="!token" class="d-flex gap-3 logout-status">
           <RouterLink
             :to="{ name: 'login' }"
             class="btn btn-outline-primary rounded-pill px-4"
@@ -69,7 +70,7 @@
             <i class="bi bi-person-plus me-1"></i>회원가입
           </RouterLink>
         </div>
-        <div v-else class="d-flex align-items-center gap-3">
+        <div v-else class="d-flex align-items-center gap-3 login-status">
           <div class="welcome">
             <RouterLink
               :to="getRoute(loginStore.loginUserId)"
@@ -89,13 +90,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount, computed } from "vue";
 import { useLoginStore } from "@/stores/login";
 import UserNameTag from "./UserNameTag.vue";
 
 const loginStore = useLoginStore();
 const token = sessionStorage.getItem("access-token");
 const isMenuOpen = ref(false);
+const header = ref(null);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -104,6 +106,11 @@ const toggleMenu = () => {
 const closeMenu = () => {
   isMenuOpen.value = false;
 };
+
+// 동적으로 top 값을 계산하는 computed 속성
+const authTopValue = computed(() => {
+  return token ? "calc(5rem + 200px)" : "calc(5rem + 130px)";
+});
 
 const logout = () => {
   loginStore.logout();
@@ -115,6 +122,21 @@ const getRoute = (userId) => {
     ? { name: "mypage", params: { userId } }
     : { name: "profile", params: { userId } };
 };
+
+// Event listener for detecting clicks outside the header
+const handleClickOutside = (event) => {
+  if (header.value && !header.value.contains(event.target)) {
+    closeMenu();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <style scoped>
@@ -137,11 +159,9 @@ const getRoute = (userId) => {
 
 .nav-link:hover,
 .nav-link.router-link-active {
-  /* background-color: #d4f6ff; */
   color: #133e87;
   font-weight: 700;
   transition: all 0.3s ease;
-  /* border-color: #c6e7ff; */
 }
 
 .navbar-toggler {
@@ -184,18 +204,15 @@ const getRoute = (userId) => {
 
 .btn-name-tag {
   background-color: #fbfbfb;
-  /* border-color: #c6e7ff; */
   color: #133e87;
 }
 
 .btn-name-tag:hover {
-  /* background-color: #d4f6ff; */
   color: #133e87;
 }
 
 .btn-outline-logout {
   color: #ff6b6b;
-  /* border-color: #ff6b6b; */
 }
 
 .btn-outline-logout:hover {
@@ -223,7 +240,7 @@ const getRoute = (userId) => {
     width: 100%;
     background-color: #fbfbfb;
     padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
     z-index: 1000;
   }
 
@@ -233,20 +250,39 @@ const getRoute = (userId) => {
     flex-direction: column;
   }
 
+  .auth.show {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
   .nav {
-    top: 5rem;
+    top: 4rem;
+    z-index: 1000;
   }
 
   .auth {
-    top: calc(5rem + 150px);
+    top: calc(4rem + 150px);
+    z-index: 999;
   }
 
   .auth > div {
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
   }
 
-  .nav-link,
+  .auth > div > button {
+    max-width: 200px;
+  }
+
+  .logout-status {
+    max-width: 400px;
+  }
+
+  .nav-link {
+    width: 100%;
+    /* text-align: center; */
+    visibility: visible !important; /* 링크가 화면에 보이도록 */
+  }
+
   .btn {
     width: 100%;
     text-align: center;

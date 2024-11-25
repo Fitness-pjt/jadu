@@ -13,7 +13,7 @@
               class="lead text-secondary mb-4 animate__animated animate__fadeInUp animate__delay-1s"
             >
               AI가 분석하여 제공하는<br />
-              당신만의 완벽한 운동 루틴
+              당신만의 완벽한 운동 프로그램 제공
             </p>
             <div
               class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-2s"
@@ -25,7 +25,7 @@
                 <button
                   class="btn btn-primary btn-lg d-flex align-items-center gap-2 shadow-lg"
                 >
-                  맞춤 추천 받기
+                  AI 맞춤 추천 받기
                   <i class="bi bi-arrow-right"></i>
                 </button>
               </RouterLink>
