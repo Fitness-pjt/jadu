@@ -9,12 +9,22 @@
 
     <!-- 로그인 폼 -->
     <div class="login-form">
-      <h2>Login</h2>
+      <h2>LOGIN</h2>
 
       <!-- 입력 필드들 -->
       <div class="input-group">
         <div class="input-label">아이디</div>
-        <input type="text" v-model="loginUser.userEmail" placeholder="이메일" />
+        <input
+          type="text"
+          v-model="loginUser.userEmail"
+          placeholder="이메일을 입력해주세요. ex) hong@gmail.com"
+        />
+        <!-- 아이디 입력이 비었을 경우 경고 메시지 -->
+        <p v-if="emailError" class="error-message">아이디를 입력해주세요.</p>
+        <!-- 아이디가 유효하지 않을 경우 경고 메시지 -->
+        <!-- <p v-if="invalidEmailError" class="error-message">
+          유효한 이메일 형식이 아닙니다.
+        </p> -->
       </div>
 
       <div class="input-group">
@@ -22,8 +32,12 @@
         <input
           type="password"
           v-model="loginUser.userPassword"
-          placeholder="비밀번호"
+          placeholder="비밀번호를 입력해주세요."
         />
+        <!-- 비밀번호 입력이 비었을 경우 경고 메시지 -->
+        <p v-if="passwordError" class="error-message">
+          비밀번호를 입력해주세요.
+        </p>
       </div>
 
       <!-- 로그인 버튼 -->
@@ -31,16 +45,18 @@
 
       <!-- 회원가입 링크 -->
       <div class="signup-link">
-        아직 회원이 아니신가요? <a @click="moveToSignup">회원가입하기</a>
+        아직 회원이 아니신가요?
+        <a @click="moveToSignup">회원가입하기</a>
       </div>
 
       <!-- 소셜 로그인 -->
       <div class="social-login">
         <button class="social-button google" @click="handleGoogleLogin()">
+          <img src="@/assets/image/google-logo.svg" />
           Google
         </button>
         <button class="social-button kakao" @click="handleKakaoLogin()">
-          Kakao
+          <img src="@/assets/image/kakao-logo.svg" />Kakao
         </button>
       </div>
     </div>
@@ -49,7 +65,6 @@
 
 <script setup>
 import { useLoginStore } from "@/stores/login";
-import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -61,9 +76,33 @@ const loginUser = ref({
   userPassword: "",
 });
 
+// 입력 필드 오류 상태
+const emailError = ref(false);
+const passwordError = ref(false);
+
+// 이메일 유효성 검사
+// const invalidEmailError = ref(false); // 유효하지 않은 이메일 형식 에러
+
+// const isEmailValid = (email) => {
+//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   return emailRegex.test(email);
+// };
+
 const handleLogin = () => {
-  loginStore.login(loginUser.value);
-  // console.log("Login attempt:", loginUser.value);
+  // 유효성 검사
+  emailError.value = loginUser.value.userEmail === "";
+  passwordError.value = loginUser.value.userPassword === "";
+
+  // invalidEmailError.value =
+  //   !emailError.value && !isEmailValid(loginUser.value.userEmail);
+
+  if (!emailError.value && !passwordError.value) {
+    loginStore.login(loginUser.value);
+
+    // 입력 후 필드 초기화
+    loginUser.value.userEmail = "";
+    loginUser.value.userPassword = "";
+  } // 로그인하기
 };
 
 const moveToSignup = () => {
@@ -101,6 +140,7 @@ const handleKakaoLogin = async () => {
 .login-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 100vh;
   align-items: center;
   background-color: #f8f9fa;
@@ -118,8 +158,16 @@ const handleKakaoLogin = async () => {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   margin-bottom: 2rem;
+  text-align: center; /* 텍스트 정렬 추가 */
+}
+
+.login-form h2 {
+  text-align: center; /* 수평 가운데 정렬 */
+  margin-bottom: 1.5rem; /* 아래 간격 추가 */
+  font-size: 1.8rem; /* 글씨 크기 조절 */
+  font-weight: bold; /* 강조 */
 }
 
 .input-group {
@@ -135,29 +183,38 @@ input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 5px !important;
+  font-size: 0.9rem;
   margin-bottom: 1rem;
 }
 
 .login-button {
+  transition: all 0.3s;
   width: 100%;
   padding: 0.75rem;
-  background-color: #666;
+  background-color: #133e87;
   color: white;
-  border: none;
+  border: 1px solid #133e87;
   border-radius: 5px;
   cursor: pointer;
   margin: 1rem 0;
 }
 
+.login-button:hover {
+  background-color: white;
+  border-color: #133e87;
+  color: #133e87;
+}
+
 .signup-link {
   text-align: center;
   margin: 1rem 0;
+  color: #666;
 }
 
 .signup-link a {
-  color: #666;
-  text-decoration: underline;
+  color: #414141;
+  text-decoration: underline !important;
   cursor: pointer;
 }
 
@@ -180,9 +237,32 @@ input {
   cursor: pointer;
 }
 
+.social-button:hover {
+  background: #f1f1f1;
+  transform: scale(1.02);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
 .social-button img {
   width: 20px;
   height: 20px;
+}
+
+.btn-outline-primary {
+  color: #133e87;
+  border-color: #133e87;
+}
+
+.btn-outline-primary:hover {
+  background-color: #133e87;
+  border-color: #133e87;
+  color: white;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
 }
 
 @media (max-width: 768px) {

@@ -43,6 +43,7 @@ public class YoutubeServiceImpl implements YoutubeService {
 			search.setRegionCode(youtubeProperties.getRegionCode());
 			search.setRelevanceLanguage(youtubeProperties.getRelevanceLanguage());
 			search.setOrder(youtubeProperties.getOrder());
+			search.setVideoDuration(youtubeProperties.getVideoDuration());
 
 			// 2. 검색 실행
 			SearchListResponse searchResponse = search.execute();

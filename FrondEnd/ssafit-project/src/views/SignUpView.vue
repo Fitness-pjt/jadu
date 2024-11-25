@@ -1,4 +1,3 @@
-<!-- src/views/SignUpPage.vue -->
 <template>
   <div class="signup-container">
     <!-- 로고 -->
@@ -10,7 +9,7 @@
 
     <!-- 회원가입 폼 -->
     <div class="signup-form">
-      <h2>Sign Up</h2>
+      <h2>SIGN UP</h2>
 
       <!-- 입력 필드들 -->
       <div class="input-wrapper">
@@ -269,18 +268,22 @@ const moveToLogin = () => {
 }
 
 h2 {
-  text-align: center;
-  margin-bottom: 2rem;
+  text-align: center; /* 수평 가운데 정렬 */
+  margin-bottom: 1.5rem; /* 아래 간격 추가 */
+  font-size: 1.8rem; /* 글씨 크기 조절 */
+  font-weight: bold; /* 강조 */
 }
 
 .input-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .input-group {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .input-label {
@@ -290,6 +293,8 @@ h2 {
 
 .input-with-button {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
 }
 
@@ -297,12 +302,12 @@ input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 5px !important;
   font-size: 0.9rem;
 }
 
 .check-button {
-  padding: 0 1rem;
+  padding: 0.75rem;
   background-color: #e9ecef;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -311,14 +316,21 @@ input {
 }
 
 .signup-button {
+  transition: all 0.3s;
   width: 100%;
   padding: 0.75rem;
-  background-color: #666;
+  background-color: #133e87;
   color: white;
-  border: none;
+  border: 1px solid #133e87;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 2rem;
+  margin: 1rem 0;
+}
+
+.signup-button:hover {
+  background-color: white;
+  border-color: #133e87;
+  color: #133e87;
 }
 
 .login-link {
@@ -328,23 +340,29 @@ input {
 }
 
 .login-link a {
-  color: #666;
-  text-decoration: underline;
+  color: #414141;
+  text-decoration: underline !important;
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
-  .signup-form {
-    margin: 1rem;
-    padding: 1rem;
-  }
+.feedback-message {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
 
-  .input-with-button {
-    flex-direction: column;
-  }
+.is-valid {
+  border-color: #28a745;
+}
 
-  .check-button {
-    padding: 0.5rem;
-  }
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.text-success {
+  color: #28a745;
+}
+
+.text-danger {
+  color: #dc3545;
 }
 </style>
