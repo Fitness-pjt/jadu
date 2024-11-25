@@ -63,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div class="my-4">
       <!-- 답변 -->
       <AnswerCreate />
       <AnswerList />

@@ -1,29 +1,22 @@
 <template>
-  <div class="answer-form-container p-4 bg-light rounded shadow-sm">
-    <div class="answer-header d-flex align-items-center mb-3">
-      <!-- User Avatar -->
-      <img :src="profileImg" alt="User Avatar" class="user-avatar me-3" />
-      <h4 class="answer-form-title mb-0">답변 작성하기</h4>
-    </div>
-    <fieldset class="answer-fieldset border-0 p-0">
-      <div class="answer-form-group mb-3">
+  <div class="anser-create-section">
+    <div class="create-form">
+      <div class="create-header">
+        <img :src="profileImg" alt="User Avatar" class="user-avatar" />
         <textarea
-          id="content"
-          rows="4"
           v-model="answer.content"
-          class="answer-form-textarea form-control"
-          placeholder="답변을 작성해주세요..."
+          class="create-textarea"
+          placeholder="답변을 작성하세요..."
+          rows="3"
         ></textarea>
       </div>
-      <div class="answer-form-actions d-flex">
-        <button
-          @click="createAnswer"
-          class="answer-form-submit-button btn btn-primary"
-        >
-          <i class="bi bi-check-circle me-2"></i>등록
+      <div class="create-actions">
+        <button @click="createAnswer" class="submit-btn">
+          <i class="bi bi-send"></i>
+          등록하기
         </button>
       </div>
-    </fieldset>
+    </div>
   </div>
 </template>
 
@@ -79,47 +72,82 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.answer-form-container {
-  max-width: 600px;
-  margin: 20px auto;
+.answer-create-section {
+  max-width: 1000px;
+  margin: 2rem 0;
+  margin-left: 0;
 }
 
-.answer-header {
-  font-size: 18px;
+.create-form {
+  background: white;
+  border-radius: 12px;
+  padding-bottom: 1.5rem;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
+}
+
+.create-header {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .user-avatar {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.answer-form-title {
-  font-weight: bold;
-}
-
-.answer-form-textarea {
+.create-textarea {
+  flex: 1;
+  width: 80%;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 1.1rem;
   resize: none;
+  min-height: 100px;
 }
 
-.answer-form-actions button {
-  font-size: 14px;
-  padding: 8px 16px;
+.create-textarea:focus {
+  outline: none;
+  border-color: #c6e7ff;
 }
 
-.answer-form-submit-button {
-  background-color: #007bff;
+.create-textarea::placeholder {
+  color: #666;
 }
 
-.answer-form-cancel-button {
-  background-color: #f44336;
+.create-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
 }
 
-.answer-form-submit-button:hover {
-  background-color: #0056b3;
-}
+@media (max-width: 768px) {
+  .review-create-section {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
 
-.answer-form-cancel-button:hover {
-  background-color: #d32f2f;
+  .create-header {
+    gap: 1rem;
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .create-textarea {
+    font-size: 1rem;
+    min-height: 80px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
