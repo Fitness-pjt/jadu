@@ -19,7 +19,7 @@
       </div>
 
       <!-- 서비스 섹션 -->
-      <div class="footer-section">
+      <div class="footer-section service-section">
         <h3 class="section-title">서비스</h3>
         <ul class="footer-links">
           <li><a href="#" class="no-indent">맞춤 운동 프로그램</a></li>
@@ -59,20 +59,20 @@
       </div>
 
       <!-- 연락처 섹션 -->
-      <div class="footer-section">
+      <div class="footer-section contact-section">
         <h3 class="section-title">Contact</h3>
         <ul class="contact-info">
           <li class="no-indent">
-            <i class="bi bi-geo-alt"></i>
+            <i class="bi bi-geo-alt icon-color"></i>
             <span>Gangnam-gu, Seoul</span>
           </li>
           <li class="no-indent">
             <i class="bi bi-telephone"></i>
-            <span>1544-9001</span>
+            <span>02-3429-5100 </span>
           </li>
           <li class="no-indent">
             <i class="bi bi-envelope"></i>
-            <span>attnnsky@gmail.com</span>
+            <span>ssafy@ssafy.com</span>
           </li>
         </ul>
       </div>
@@ -81,7 +81,8 @@
     <!-- 카피라이트 -->
     <div class="copyright">
       <p>
-        Developed by <span class="highlight">NCTA</span> | © 2024 JADU. All rights reserved.
+        Developed by <span class="highlight">NCTA</span> | © 2024 JADU. All
+        rights reserved.
       </p>
     </div>
   </footer>
@@ -91,16 +92,16 @@
 .footer {
   background: linear-gradient(to right, #f8f9fa, #f1f3f5);
   border-top: 1px solid #e9ecef;
-  padding: 4rem 0 2rem;
+  padding: 2rem 0;
 }
 
 .footer-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .footer-section {
@@ -114,7 +115,7 @@
 .brand-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #1a365d;
+  color: #133e87;
   margin: 0 0 1rem 0;
 }
 
@@ -127,13 +128,16 @@
   margin: 0 0 1.25rem 0;
 }
 
-.footer-links, .team-members, .contact-info {
+.footer-links,
+.team-members,
+.contact-info {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.footer-links li, .contact-info li {
+.footer-links li,
+.contact-info li {
   margin-bottom: 0.75rem;
 }
 
@@ -161,7 +165,7 @@
 }
 
 .contact-info i {
-  color: #3182ce;
+  color: #133e87;
   width: 1rem;
 }
 
@@ -185,12 +189,12 @@ a {
 }
 
 a:hover {
-  color: #3182ce;
+  color: #133e87;
+  font-weight: 600;
 }
 
 .copyright {
   text-align: center;
-  margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid #e2e8f0;
   color: #718096;
@@ -206,13 +210,18 @@ a:hover {
   .footer-container {
     grid-template-columns: 1fr;
   }
-  
+
   .brand-section {
     max-width: 100%;
   }
-  
+
   .footer {
-    padding: 3rem 1rem 1.5rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .service-section,
+  .contact-section {
+    display: none;
   }
 }
 </style>
