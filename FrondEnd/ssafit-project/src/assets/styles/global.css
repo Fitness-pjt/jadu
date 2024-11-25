@@ -1,0 +1,71 @@
+.btn-navy {
+  transition: all 0.3s;
+  /* width: 50%; */
+  padding: 0.75rem;
+  background-color: #133e87;
+  color: white;
+  border: 1px solid #133e87;
+  border-radius: 5px;
+  cursor: pointer;
+  /* margin: 1rem 0; */
+}
+
+.btn-navy:hover {
+  background-color: white;
+  border-color: #133e87;
+  color: #133e87;
+}
+
+.btn-gray {
+  transition: all 0.3s;
+  /* width: 50%; */
+  padding: 0.75rem;
+  background-color: #bebebe;
+  color: white;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+  cursor: pointer;
+  /* margin: 1rem 0; */
+}
+
+.btn-gray:hover {
+  background-color: white;
+  border-color: #133e87;
+  color: #133e87;
+}
+
+.btn-point-orange {
+  transition: all 0.3s;
+  /* width: 50%; */
+  padding: 0.75rem;
+  background-color: #ffddae;
+  color: black;
+  border: 1px solid #ffddae;
+  border-radius: 5px;
+  cursor: pointer;
+  /* margin: 1rem 0; */
+}
+
+.btn-point-orange:hover {
+  background-color: #ffc069;
+  border-color: #ffc069;
+  color: black;
+}
+
+.btn-point-blue {
+  transition: all 0.3s;
+  /* width: 50%; */
+  padding: 0.75rem;
+  background-color: #c6e7ff;
+  color: black;
+  border: 1px solid #c6e7ff;
+  border-radius: 5px;
+  cursor: pointer;
+  /* margin: 1rem 0; */
+}
+
+.btn-point-blue:hover {
+  background-color: #94d2ff;
+  border-color: #94d2ff;
+  color: black;
+}

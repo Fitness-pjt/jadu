@@ -9,47 +9,47 @@ import VCalendar from "v-calendar";
 import "v-calendar/style.css";
 
 // Bootstrap 사용
-import 'bootstrap'
+import "bootstrap";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import 'bootstrap-icons/font/bootstrap-icons.css'
-import 'animate.css'
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "animate.css";
 
-import Toast from 'vue-toastification'
-import 'vue-toastification/dist/index.css'
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
+import "./assets/styles/global.css";
 
-
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { 
-  faDumbbell, 
-  faPencilAlt, 
-  faRobot, 
-  faArrowRight, 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import {
+  faDumbbell,
+  faPencilAlt,
+  faRobot,
+  faArrowRight,
   faMagic,
   faFolderPlus,
   faRunning,
   faExclamationCircle,
   faFolderOpen,
   faPlus,
-  faSearch 
-} from '@fortawesome/free-solid-svg-icons'
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
 library.add(
-    faDumbbell, 
-    faPencilAlt, 
-    faRobot, 
-    faArrowRight, 
-    faMagic,
-    faFolderPlus,
-    faRunning,
-    faExclamationCircle,
-    faFolderOpen,
-    faPlus,
-    faSearch
-  )
+  faDumbbell,
+  faPencilAlt,
+  faRobot,
+  faArrowRight,
+  faMagic,
+  faFolderPlus,
+  faRunning,
+  faExclamationCircle,
+  faFolderOpen,
+  faPlus,
+  faSearch
+);
 const app = createApp(App);
 
 app.use(createPinia());

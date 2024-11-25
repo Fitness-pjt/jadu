@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5" style="width: 500px">
-    <h2 class="text-center mb-4">회원 정보 수정</h2>
+    <!-- <h2 class="text-center mb-4">회원 정보 수정</h2> -->
 
     <!-- 프로필 이미지 섹션 -->
     <div class="d-flex flex-column align-items-center mb-4">
@@ -90,7 +90,8 @@
         />
       </div>
 
-      <div class="mb-3 d-flex align-items-center justify-content-between">
+      <!-- 투두 공개 여부 -->
+      <div class="mb-3 mt-4 d-flex align-items-center justify-content-between">
         <label class="form-label">To Do 공개 여부</label>
         <div class="form-check form-switch">
           <input
@@ -106,13 +107,11 @@
       </div>
 
       <div class="d-flex gap-2 mt-4">
-        <button type="submit" class="btn btn-primary flex-grow-1">
-          수정하기
-        </button>
+        <button type="submit" class="btn btn-navy flex-grow-1">수정하기</button>
         <button
           type="button"
           @click="cancelUpdateProfile"
-          class="btn btn-secondary flex-grow-1"
+          class="btn btn-gray flex-grow-1"
         >
           취소
         </button>
@@ -231,11 +230,10 @@ const handleSubmit = async () => {
       status: formData.value.status,
     });
     alert("회원정보가 수정되었습니다.");
-    router.push("/profile");
+    router.push("/mypage");
   } catch (error) {
     alert("회원정보 수정에 실패했습니다.");
   }
-  window.location.href = "/mypage";
 };
 
 // 취소하기 버튼

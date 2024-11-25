@@ -4,6 +4,9 @@ import UpdateProfile from "@/components/mypage/UpdateProfile.vue";
 import ProgramDetail from "@/components/program/ProgramDetail.vue";
 import ProgramEdit from "@/components/program/ProgramEdit.vue";
 
+import ProgramCreate from "@/components/program/ProgramCreate.vue";
+import ProgramVideoList from "@/components/program/ProgramVideoList.vue";
+import AnswerList from "@/components/question/AnswerList.vue";
 import QuestionCreate from "@/components/question/QuestionCreate.vue";
 import QuestionDetail from "@/components/question/QuestionDetail.vue";
 import QuestionList from "@/components/question/QuestionList.vue";
@@ -16,19 +19,15 @@ import UserInfoUpdate from "@/components/user/UserInfoUpdate.vue";
 import { useLoginStore } from "@/stores/login";
 import LoginView from "@/views/LoginView.vue";
 import MyPageView from "@/views/MyPageView.vue";
+import ProgramView from "@/views/ProgramView.vue";
 import QuestionView from "@/views/QuestionView.vue";
 import ReviewView from "@/views/ReviewView.vue";
 import SignUpView from "@/views/SignUpView.vue";
 import TodoView from "@/views/TodoView.vue";
-import UserInfoView from "@/views/UserInfoView.vue";
 import UserProfileView from "@/views/UserProfileView.vue";
+import VideoListView from "@/views/VideoListView.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import VideoListView from "@/views/VideoListView.vue";
-import ProgramVideoList from "@/components/program/ProgramVideoList.vue";
-import AnswerList from "@/components/question/AnswerList.vue";
-import ProgramView from "@/views/ProgramView.vue";
-import ProgramCreate from "@/components/program/ProgramCreate.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,42 +83,40 @@ const router = createRouter({
       path: "/profile/:userId",
       name: "profile",
       component: UserProfileView,
+      // meta: { requiresAuth: true },
     },
     {
       path: "/program",
       name: "program",
       component: ProgramView,
       children: [
-        // 기존 경로들...
-    
         // 일반 프로그램 생성
-     
         {
           path: "manage",
           name: "programManage",
           component: ProgramView,
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true },
         },
         {
           path: "edit/:programId",
           name: "programEdit",
           component: ProgramEdit,
-          meta: { requiresAuth: true }
-        }
-    
-      ]    
+          meta: { requiresAuth: true },
+        },
+      ],
+      meta: { requiresAuth: true },
     },
     {
       path: "/program/create",
       name: "programCreate",
       component: ProgramCreate,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
       path: "/program/createAi",
       name: "createAIProgram",
       component: UserInfoCreate,
-      meta: { requiresAuth: true }, // 인증 필요
+      meta: { requiresAuth: true }, // 로그인 인증 필요
     },
     {
       path: "/login/oauth2/code/google",
@@ -162,11 +159,13 @@ const router = createRouter({
               path: "create",
               name: "questionCreate",
               component: QuestionCreate,
+              meta: { requiresAuth: true },
             },
             {
               path: "update/:questionId",
               name: "questionUpdate",
               component: QuestionUpdate,
+              meta: { requiresAuth: true },
             },
           ],
         },
@@ -184,6 +183,7 @@ const router = createRouter({
               path: "create",
               name: "reviewCreate",
               component: ReviewCreate,
+              meta: { requiresAuth: true },
             },
           ],
         },
@@ -207,6 +207,13 @@ const router = createRouter({
       component: ProgramEdit,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    // if (to.name === "question" || to.name === "review" || to.name === "video") {
+    //   return { top: 1000 };
+    // }
+    // 기본적으로 페이지 상단으로 이동
+    return { top: 0 };
+  },
 });
 
 // 네비게이션 가드 추가
@@ -215,9 +222,13 @@ router.beforeEach((to, from, next) => {
   const token = sessionStorage.getItem("access-token");
 
   if (to.meta.requiresAuth && !token) {
-    // 인증 필요하고 토큰이 없으면
-    // alert("로그인이 필요합니다.");
-    next("/login"); // 로그인 페이지로 리다이렉트
+    // 인증 필요하고 토큰이 없으면(
+    const confirm = window.confirm(
+      "로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?"
+    );
+    if (confirm) {
+      next("/login"); // 로그인 페이지로 리다이렉트
+    }
   } else {
     next(); // 페이지 이동 허용
   }
