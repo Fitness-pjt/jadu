@@ -1,7 +1,33 @@
 <template>
   <div class="container">
+    <!-- 질문 첫 화면 -->
+    <!-- 개인정보 수집 동의 및 안내 -->
+    <div
+      v-if="!hasAgreed"
+      class="d-flex flex-column justify-content-center align-items-center my-5 py-5"
+    >
+      <h2 class="text-center mb-4 fw-bold text-navy">
+        개인정보 수집 및 AI 프로그램 안내
+      </h2>
+      <p class="text-center mb-4">
+        본 서비스는 입력하신 정보를 바탕으로 AI를 통해 개인 맞춤형 운동
+        프로그램을 제공합니다. <br />
+        입력된 정보는 오직 프로그램 생성 목적으로만 사용되며, 서비스 종료 시
+        삭제됩니다. <br />
+        아래 "동의하고 시작하기" 버튼을 눌러 진행해주세요.
+      </p>
+      <div class="d-flex justify-content-center">
+        <button @click="agreeToConsent" class="btn btn-navy btn-lg shadow me-3">
+          동의하고 시작하기
+        </button>
+        <button @click="cancelConsent" class="btn btn-gray btn-lg shadow">
+          취소
+        </button>
+      </div>
+    </div>
+
     <!-- 질문 화면 -->
-    <div v-if="isQuestionPage">
+    <div v-else-if="isQuestionPage">
       <UserInfoItem
         :question="questions[currentQuestionIndex]"
         :userInput="answers[currentQuestionIndex]"
@@ -69,6 +95,16 @@ watch(
   },
   { deep: true }
 );
+
+// 초기 동의 화면 생성
+const hasAgreed = ref(false);
+const agreeToConsent = () => {
+  hasAgreed.value = true;
+};
+
+const cancelConsent = () => {
+  router.back();
+};
 
 // 답변 유효성 검사
 const validateAnswer = (answer) => {
