@@ -109,12 +109,12 @@ onMounted(() => {
 .nickname {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #1877f2; /* Facebook 스타일 텍스트 컬러 */
+  color: #133e87; /* Facebook 스타일 텍스트 컬러 */
   transition: color 0.2s;
 }
 
 .nickname:hover {
-  color: #1877f2; /* Facebook 브랜드 컬러 */
+  color: #133e87; /* Facebook 브랜드 컬러 */
   cursor: pointer;
 }
 

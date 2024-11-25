@@ -201,6 +201,7 @@ const getRoute = (userId) => {
 .btn-outline-logout:hover {
   background-color: #ff6b6b;
   color: white;
+  border-radius: 40px;
 }
 
 @media (max-width: 991px) {
