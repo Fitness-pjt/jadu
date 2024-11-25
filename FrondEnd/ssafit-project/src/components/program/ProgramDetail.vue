@@ -100,7 +100,7 @@
         </div>
       </div>
       <!-- 탭 네비게이션 -->
-      <ul class="nav nav-tabs py-4">
+      <ul class="nav nav-tabs pt-4">
         <li class="nav-item">
           <RouterLink
             class="nav-link"

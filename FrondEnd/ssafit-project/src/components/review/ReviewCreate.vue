@@ -123,28 +123,6 @@ onMounted(() => {
   padding-top: 0.5rem;
 }
 
-.submit-btn {
-  background: #c6e7ff;
-  color: #2c3e50;
-  border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.submit-btn i {
-  font-size: 1.1rem;
-}
-
-.submit-btn:hover {
-  opacity: 0.9;
-}
-
 @media (max-width: 768px) {
   .review-create-section {
     padding: 1rem;
