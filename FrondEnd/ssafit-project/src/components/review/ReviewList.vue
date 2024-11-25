@@ -1,67 +1,62 @@
 <template>
-  <div>
-    <h2 class="review-list-title">리뷰 리스트</h2>
+  <div class="review-section">
     <!-- 리뷰 리스트 -->
+    <div class="review-create-section">
+      <ReviewCreate />
+    </div>
     <div v-if="reviewList.length !== 0" class="review-list">
-      <div
-        v-for="review in reviewList"
-        :key="review.reviewId"
-        class="card review-card mb-3"
-      >
-        <!-- 하나의 Review -->
-        <div class="card-body d-flex justify-content-between">
-          <!-- 작성자 -->
-          <div class="user-avatar me-3">
-            <UserNameTag :user-id="review.userId" />
+      <div v-for="review in reviewList" :key="review.reviewId" class="review-item">
+        <!-- 유저 프로필 -->
+        <div class="review-avatar">
+        </div>
+        
+        <div class="review-main">
+          <div class="review-header">
+            <div class="user-info">
+              <UserNameTag :user-id="review.userId" />
+              <span class="review-date">{{ formattedDateTime(review.createdAt) }}</span>
+            </div>
           </div>
-          <!-- 내용 -->
-          <div class="review-content-container">
-            <p
-              v-if="!editingStates[review.reviewId]"
-              class="mb-1 review-content"
-            >
+ 
+          <!-- 리뷰 내용 -->
+          <div class="review-body">
+            <p v-if="!editingStates[review.reviewId]" class="review-content">
               {{ review.content }}
             </p>
-            <textarea
-              v-if="editingStates[review.reviewId]"
-              v-model="review.content"
-              class="form-control mb-1 review-content-input"
-              rows="3"
-            ></textarea>
-            <small class="text-muted review-date">{{
-              formattedDateTime(review.createdAt)
-            }}</small>
+            <div v-if="editingStates[review.reviewId]" class="edit-container">
+              <textarea
+                v-model="review.content"
+                class="edit-textarea"
+                rows="3"
+              ></textarea>
+              <div class="edit-actions">
+                <button @click="toggleEditReview(review)" class="cancel-btn">취소</button>
+                <button @click="saveUpdateReview(review)" class="save-btn">저장</button>
+              </div>
+            </div>
           </div>
-          <div v-if="review.userId === loginUserId" class="review-actions">
-            <button
-              v-if="!editingStates[review.reviewId]"
-              @click="toggleEditReview(review)"
-              class="action-button"
-            >
-              <i class="bi bi-pencil"></i>
+ 
+          <!-- 액션 버튼 -->
+          <div v-if="review.userId === loginUserId && !editingStates[review.reviewId]" 
+               class="review-actions">
+            <button @click="toggleEditReview(review)" class="action-btn">
+              수정
             </button>
-            <button
-              v-if="editingStates[review.reviewId]"
-              @click="saveUpdateReview(review)"
-              class="action-button"
-            >
-              <i class="bi bi-save"></i>
-            </button>
-            <button @click="deleteReview(review)" class="action-button">
-              <i class="bi bi-trash"></i>
+            <button @click="deleteReview(review)" class="action-btn">
+              삭제
             </button>
           </div>
         </div>
       </div>
     </div>
-    <h3 v-else class="text-muted">등록된 리뷰가 없습니다.</h3>
-
-    <!-- 리뷰 등록 -->
-    <div class="review-create-container mt-4">
-      <ReviewCreate />
+ 
+    <div v-else class="empty-state">
+      첫 번째 리뷰를 작성해보세요.
     </div>
+ 
+    
   </div>
-</template>
+ </template>
 
 <script setup>
 import { useProgramStore } from "@/stores/program";
@@ -119,61 +114,163 @@ onMounted(() => {
   reviewStore.getReviewList(programId);
 });
 </script>
-
 <style scoped>
-.review-list-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #e1e1e1;
+.review-section {
+  max-width: 1000px; /* 800px에서 증가 */
+  margin: 0 auto;
+  padding: 2rem;
+  margin-left: 0; /* 왼쪽 정렬을 위해 추가 */
 }
 
-.review-card {
-  background-color: #fff;
-  border: 1px solid #e1e1e1;
-  border-radius: 8px;
-  padding: 12px;
+.review-list {
   display: flex;
-  align-items: flex-start;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 2rem; /* 1.5rem에서 증가 */
 }
 
-.review-content-container {
+.review-item {
+  display: flex;
+  gap: 1.5rem; /* 1rem에서 증가 */
+}
+
+.review-avatar {
+  flex-shrink: 0;
+  width: 48px; /* 40px에서 증가 */
+  height: 48px;
+}
+
+.avatar-circle {
+  width: 48px; /* 40px에서 증가 */
+  height: 48px;
+  border-radius: 50%;
+  background-color: #eee;
+}
+
+.review-main {
   flex: 1;
+  min-width: 0;
 }
 
-.review-content {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 8px;
+.review-header {
+  margin-bottom: 0.5rem; /* 0.25rem에서 증가 */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* 0.5rem에서 증가 */
 }
 
 .review-date {
-  font-size: 12px;
-  color: #777;
+  font-size: 0.9rem; /* 0.8rem에서 증가 */
+  color: #666;
+}
+
+.review-content {
+  font-size: 1.1rem; /* 0.95rem에서 증가 */
+  line-height: 1.6; /* 1.4에서 증가 */
+  color: #2c3e50;
+  margin: 0.75rem 0; /* 0.5rem에서 증가 */
+  white-space: pre-wrap;
 }
 
 .review-actions {
+  margin-top: 0.75rem; /* 0.5rem에서 증가 */
   display: flex;
-  align-items: center;
+  gap: 1rem; /* 0.75rem에서 증가 */
 }
 
-.action-button {
+.action-btn {
   background: none;
   border: none;
-  color: #888;
+  color: #666;
+  font-size: 0.95rem; /* 0.85rem에서 증가 */
+  font-weight: 500;
+  padding: 0;
   cursor: pointer;
-  font-size: 18px;
-  margin-left: 10px;
-  transition: color 0.3s;
 }
 
-.action-button:hover {
-  color: #333;
+.action-btn:hover {
+  color: #2c3e50;
 }
 
-.review-create-container {
+/* 수정 모드 스타일 */
+.edit-container {
+  width: 100%;
+}
+
+.edit-textarea {
+  width: 100%;
+  padding: 1rem; /* 0.75rem에서 증가 */
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 1.1rem; /* 0.95rem에서 증가 */
+  margin-bottom: 0.75rem; /* 0.5rem에서 증가 */
+  resize: none;
+}
+
+.edit-textarea:focus {
+  outline: none;
+  border-color: #C6E7FF;
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem; /* 0.5rem에서 증가 */
+}
+
+.cancel-btn, .save-btn {
+  padding: 0.75rem 1.25rem; /* 크기 증가 */
+  border-radius: 20px; /* 18px에서 증가 */
+  font-size: 0.95rem; /* 0.85rem에서 증가 */
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: none;
+  border: none;
+  color: #666;
+}
+
+.save-btn {
+  background: #C6E7FF;
+  border: none;
+  color: #2c3e50;
+}
+
+.cancel-btn:hover {
+  background: #f8f9fa;
+}
+
+.save-btn:hover {
+  opacity: 0.9;
+}
+
+.empty-state {
   text-align: center;
+  padding: 3rem; /* 2rem에서 증가 */
+  color: #666;
+  font-size: 1.1rem; /* 크기 증가 */
+}
+
+@media (max-width: 768px) {
+  .review-section {
+    padding: 1rem;
+  }
+
+  .review-item {
+    gap: 1rem;
+  }
+
+  .avatar-circle {
+    width: 40px; /* 모바일에서도 약간 크게 */
+    height: 40px;
+  }
+
+  .review-content {
+    font-size: 1rem;
+  }
 }
 </style>

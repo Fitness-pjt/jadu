@@ -1,55 +1,76 @@
 <template>
   <div class="container mt-4">
-    <div class="card shadow-sm">
+    <div class="question-form-card">
       <div class="card-body">
-        <h4 class="card-title text-center mb-4">질문 작성</h4>
+        <h4 class="form-title">질문 작성</h4>
         <form>
           <!-- 작성자 -->
-          <div class="mb-3">
+          <div class="form-group">
             <label for="writer" class="form-label">작성자:</label>
             <input
               type="text"
               id="writer"
-              class="form-control"
+              class="form-input"
               v-model="question.writer"
               readonly
             />
           </div>
+
           <!-- 제목 -->
-          <div class="mb-3">
+          <div class="form-group">
             <label for="title" class="form-label">제목:</label>
             <input
               type="text"
               id="title"
-              class="form-control"
+              class="form-input"
               v-model="question.title"
               placeholder="질문의 제목을 입력하세요."
             />
           </div>
+
           <!-- 파일 업로드 -->
-          <label>
-            파일 업로드
-            <input type="file" accept="image/*" @change="uploadFile" />
-          </label>
+          <div class="form-group">
+            <div class="file-upload">
+              <label class="file-label">
+                <i class="bi bi-image me-2"></i>
+                이미지 첨부
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  @change="uploadFile" 
+                  class="file-input"
+                />
+              </label>
+              <span v-if="question.questionFileName" class="file-name">
+                {{ question.questionFileName }}
+              </span>
+            </div>
+          </div>
+
           <!-- 내용 -->
-          <div class="mb-3">
+          <div class="form-group">
             <label for="content" class="form-label">내용:</label>
             <textarea
               id="content"
-              class="form-control"
-              rows="6"
+              class="form-textarea"
+              rows="8"
               v-model="question.content"
               placeholder="질문의 내용을 입력하세요."
             ></textarea>
           </div>
-          <!-- 등록 버튼 -->
-          <div class="d-grid">
+
+          <!-- 버튼 그룹 -->
+          <div class="button-group">
+            <button type="button" class="cancel-btn" @click="$router.go(-1)">
+              취소
+            </button>
             <button
               type="button"
-              class="btn btn-primary"
+              class="submit-btn"
               @click="createQuestion"
             >
-              등록
+              <i class="bi bi-send"></i>
+              등록하기
             </button>
           </div>
         </form>
@@ -57,7 +78,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { useQuestionStore } from "@/stores/question";
 import { useRoute } from "vue-router";
@@ -151,67 +171,142 @@ const createQuestion = async () => {
 </script>
 
 <style scoped>
-.question-form-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.question-form-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.question-form-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
-.question-fieldset {
-  border: none;
-  padding: 20px;
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
-.question-form-group {
-  margin-bottom: 16px;
-}
-
-.question-form-label {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
+.form-label {
   display: block;
+  font-weight: 500;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
 }
 
-.question-form-input,
-.question-form-textarea {
+.form-input,
+.form-textarea {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
 }
 
-.question-form-input:focus,
-.question-form-textarea:focus {
-  border-color: #007bff;
+.form-textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.form-input:focus,
+.form-textarea:focus {
   outline: none;
+  border-color: #C6E7FF;
+  box-shadow: 0 0 0 2px rgba(198, 231, 255, 0.2);
 }
 
-.question-form-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 4px;
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  color: #666;
   cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease;
 }
 
-.question-form-button:hover {
-  background-color: #0056b3;
+.file-label:hover {
+  background: #eee;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-name {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 0.75rem 1.25rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cancel-btn {
+  background: none;
+  border: 1px solid #eee;
+  color: #666;
+}
+
+.submit-btn {
+  background: #C6E7FF;
+  border: none;
+  color: #2c3e50;
+}
+
+.cancel-btn:hover {
+  background: #f8f9fa;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .question-form-card {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column-reverse;
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
