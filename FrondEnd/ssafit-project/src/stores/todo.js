@@ -51,6 +51,8 @@ export const useTodoStore = defineStore("todo", () => {
 
         // 새로운 투두 항목을 todoList에 추가
         getTodoList(userId, todo.date);
+        // console.log("response", response);
+
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {

@@ -1,27 +1,30 @@
 <template>
   <div class="todo-page">
-    <h1 class="todo-title">✨ My Todo List ✨</h1>
     <div class="todo-container">
-      <div class="calendar-section">
-        <TodoVCalendar />
-      </div>
-      <div class="content-section">
-        <!-- 프로그램 투두 리스트 -->
-        <ProgramTodoListItem :userId="userId" />
+      <!-- Left Section: Calendar + Program Todos -->
+      <div class="left-section">
+        <div class="calendar-section">
+          <TodoVCalendar />
+        </div>
         
-        <!-- 일반 투두 섹션 -->
+        <div class="program-todo-section">
+          <ProgramTodoListItem :userId="userId" />
+        </div>
+      </div>
+
+      <!-- Right Section: Create Todo + Regular Todos -->
+      <div class="content-section">
+        <div v-if="userId == loginUserId" class="create-section">
+          <TodoCreate />
+        </div>
+
         <div class="regular-todo-section">
-          <h3 class="section-title">📝 Todo List</h3>
-          <div v-if="userId == loginUserId" class="todo-create">
-            <TodoCreate />
-          </div>
           <TodoList :userId="userId" />
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
 import TodoCreate from "@/components/todo/TodoCreate.vue";
 import TodoList from "@/components/todo/TodoList.vue";
@@ -39,36 +42,33 @@ const props = defineProps({
   userId: Number,
 });
 
-// 컴포넌트 마운트 시 초기 투두 목록을 불러옴
 const selectedDate = computed(() => todoStore.selectedDate);
 
 onMounted(() => {
-  const today = new Date().toLocaleDateString(); // 한국 날짜 기준으로 날짜 불러오기 => 2024.11.20 형식으로 날짜 들어옴
-  // 2024-11-20 형식으로 날짜 바꿔주기 : DB와 통신하기 위함
+  const today = new Date().toLocaleDateString();
   const formattedDate = today
     .split(".")
     .map((item) => item.trim())
     .join("-")
     .slice(0, 10);
-  todoStore.setSelectedDate(formattedDate); // 기본 날짜 설정
-
+  todoStore.setSelectedDate(formattedDate);
   todoStore.getTodoList(props.userId, selectedDate.value);
 });
 </script>
-
 <style scoped>
+:root {
+  --primary-blue: #C6E7FF;
+  --secondary-blue: #D4F6FF;
+  --neutral: #FBFBFB;
+  --accent: #FFDDAE;
+}
+
 .todo-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-}
-
-.todo-title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #42b983;
-  margin-bottom: 2rem;
+  background-color: var(--neutral);
+  min-height: 100vh;
 }
 
 .todo-container {
@@ -77,35 +77,140 @@ onMounted(() => {
   min-height: 600px;
 }
 
-.calendar-section {
-  min-width: 300px;
-  background: white;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* Left Section */
+.left-section {
+  flex: 0 0 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
+.calendar-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-width: 500px;
+}
+
+.program-todo-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-width: 500px;
+}
+
+/* VCalendar 크기 조정을 위한 스타일 */
+:deep(.vc-container) {
+  width: 100%;
+  font-family: inherit;
+  --day-content-height: 40px;
+  --day-content-width: 40px;
+}
+
+:deep(.vc-weeks) {
+  padding: 0 12px;
+}
+
+:deep(.vc-day) {
+  height: 50px;
+  min-width: 50px;
+}
+
+:deep(.vc-day-content) {
+  font-size: 1.1rem !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Right Section */
 .content-section {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.create-section {
   background: white;
   border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.todo-create {
+.regular-todo-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-grow: 1;
+}
+
+.section-sub-title {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 500;
   margin-bottom: 1.5rem;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .todo-container {
     flex-direction: column;
   }
 
-  .calendar-section {
+  .left-section {
+    width: 100%;
+    flex: none;
+  }
+
+  .calendar-section,
+  .program-todo-section {
     min-width: 100%;
+  }
+
+  .content-section {
+    width: 100%;
+  }
+
+  /* 반응형에서의 캘린더 크기 조정 */
+  :deep(.vc-day) {
+    height: 45px;
+    min-width: 45px;
+  }
+
+  :deep(.vc-day-content) {
+    font-size: 1rem !important;
+    width: 35px !important;
+    height: 35px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .todo-page {
+    padding: 1rem;
+  }
+
+  .calendar-section,
+  .program-todo-section,
+  .create-section,
+  .regular-todo-section {
+    padding: 1rem;
+  }
+
+  /* 모바일에서의 캘린더 크기 조정 */
+  :deep(.vc-day) {
+    height: 40px;
+    min-width: 40px;
+  }
+
+  :deep(.vc-day-content) {
+    font-size: 0.9rem !important;
+    width: 30px !important;
+    height: 30px !important;
   }
 }
 </style>
