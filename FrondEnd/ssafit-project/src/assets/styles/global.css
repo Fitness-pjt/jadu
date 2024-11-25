@@ -10,9 +10,9 @@
 }
 
 .btn-navy:hover {
-  background-color: white;
-  border-color: #133e87;
-  color: #133e87;
+  background-color: #0d2e5f;
+  border-color: #0d2e5f;
+  color: white;
 }
 
 .btn--outline-navy {

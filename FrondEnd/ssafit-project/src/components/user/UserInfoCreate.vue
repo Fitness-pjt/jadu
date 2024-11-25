@@ -12,13 +12,31 @@
 
     <!-- 생성하기 화면 -->
     <div
-      v-else
-      class="d-flex flex-column justify-content-center align-items-center mt-5"
+      v-else-if="!isLoading"
+      class="d-flex flex-column justify-content-center align-items-center my-5 py-5"
     >
-      <h2 class="text-center mb-4">본인 맞춤형 프로그램을 생성하시겠습니까?</h2>
-      <button @click="createAIProgram" class="btn btn-primary btn-lg">
+      <h2 class="text-center mb-4 fw-bold text-navy">
+        나만의 맞춤형 프로그램을 생성해 보세요!
+      </h2>
+      <p class="text-center mb-4 text-muted" style="max-width: 500px">
+        AI가 당신의 데이터를 바탕으로 완벽한 프로그램을 설계합니다. <br />
+        지금 생성 버튼을 클릭하여 당신만의 프로그램을 만나보세요!
+      </p>
+      <button @click="createAIProgram" class="btn btn-navy btn-lg shadow">
         생성하기
       </button>
+    </div>
+
+    <!-- 로딩 중 화면 -->
+    <div
+      v-else
+      class="d-flex flex-column justify-content-center align-items-center my-5 py-5"
+    >
+      <div class="loader mb-4"></div>
+      <p class="mt-4 text-center">
+        AI가 당신의 입력 데이터를 분석 중입니다. <br />
+        잠시만 기다려주세요!
+      </p>
     </div>
   </div>
 </template>
@@ -131,21 +149,31 @@ const createProgram = () => {
 // };
 
 const router = useRouter();
-
+const isLoading = ref(false);
 // AI program 추천 중
 const createAIProgram = async () => {
-  alert("프로그램 생성 중입니다.");
-  console.log("userInfoList AI임? :>> ", userInfoList.value);
+  // alert("프로그램 생성 중입니다.");
+  // console.log("userInfoList AI임? :>> ", userInfoList.value);
 
-  // userInfoStore.createAIProgram 호출 후 프로그램 ID를 받음
-  const programIdResponse = await userInfoStore.createAIProgram(
-    userInfoList.value
-  );
+  // 로딩 상태 변수 선언
+  isLoading.value = true; // 로딩 시작
 
-  if (programIdResponse) {
-    console.log("useUserInfoStore.programId", programIdResponse);
-    // programId가 존재하면 라우터 처리
-    router.push(`/program/${programIdResponse}`);
+  try {
+    // userInfoStore.createAIProgram 호출 후 프로그램 ID를 받음
+    const programIdResponse = await userInfoStore.createAIProgram(
+      userInfoList.value
+    );
+    // 프로그램 Id가 존재할 경우, 라우터 처리
+    if (programIdResponse) {
+      // console.log("useUserInfoStore.programId", programIdResponse);
+      // programId가 존재하면 라우터 처리
+      router.push(`/program/${programIdResponse}`);
+    }
+  } catch (error) {
+    // console.error("프로그램 생성 중 오류 발생 : ", error)
+  } finally {
+    // 로딩 종료
+    isLoading.value = false;
   }
 };
 
@@ -165,8 +193,55 @@ h2 {
   color: #333;
 }
 
+.text-navy {
+  color: #133e87; /* 강조색상 */
+}
+
+.fw-bold {
+  font-weight: bold; /* 굵은 글씨 */
+}
+
 .btn {
-  width: 200px;
-  padding: 10px;
+  padding: 12px 24px; /* 버튼 크기 증가 */
+  font-size: 1.2rem; /* 텍스트 크기 증가 */
+}
+
+.btn:hover {
+  background-color: #0d2e5f; /* 버튼 호버 색상 변경 */
+  color: white;
+  transition: background-color 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.text-muted {
+  color: #6c757d; /* 부드러운 회색 */
+  line-height: 1.6; /* 텍스트 간격 증가 */
+}
+
+/* 로딩 스피너 */
+.loader {
+  width: 80px;
+  --b: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 1px;
+  background: conic-gradient(#0000 10%, #133e87) content-box;
+  -webkit-mask: repeating-conic-gradient(
+      #0000 0deg,
+      #000 1deg 20deg,
+      #0000 21deg 36deg
+    ),
+    radial-gradient(
+      farthest-side,
+      #0000 calc(100% - var(--b) - 1px),
+      #000 calc(100% - var(--b))
+    );
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+  animation: l4 1s infinite steps(10);
+}
+@keyframes l4 {
+  to {
+    transform: rotate(1turn);
+  }
 }
 </style>

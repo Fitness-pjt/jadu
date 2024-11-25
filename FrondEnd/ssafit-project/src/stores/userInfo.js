@@ -85,7 +85,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
           withCredentials: true,
         }
       );
-      console.log("API 응답 데이터 프로그램 ID: ", response.data); // 응답 데이터 구조 확인
+      // console.log("API 응답 데이터 프로그램 ID: ", response.data); // 응답 데이터 구조 확인
       return response.data; // programId를 반환
     } catch (err) {
       handleError(error);

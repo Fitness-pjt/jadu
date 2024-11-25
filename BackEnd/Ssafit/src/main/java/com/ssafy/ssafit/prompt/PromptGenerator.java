@@ -52,7 +52,9 @@ public class PromptGenerator {
 		prompt.append("1. 한글로 작성\n");
 		prompt.append("2. 운동 난이도와 부위 정보 포함\n");
 		prompt.append("3. 유튜브 검색에 최적화된 형태\n");
-		prompt.append("4. 사용자 경험 수준에 맞는 난이도\n\n");
+		prompt.append("4. 사용자 경험 수준에 맞는 난이도\n");
+		prompt.append("5. 키워드에는 반드시 성별에 대한 정보가 들어가야합니다. 남성에게는 남성에게 맞는 키워드를, 여성에게는 여성에게 맞는 키워드를 만들어주세요.\n\n");
+		
 
 		prompt.append("응답 예시:\n");
 		prompt.append(
