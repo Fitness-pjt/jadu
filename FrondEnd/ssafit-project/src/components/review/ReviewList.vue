@@ -1,84 +1,69 @@
 <template>
-  <div class="d-flex col justify-content-center">
-    <div class="review-section">
-      <!-- 리뷰 리스트 -->
-      <div class="review-create-section">
-        <ReviewCreate />
-      </div>
-      <div v-if="reviewList.length !== 0" class="review-list">
-        <div
-          v-for="review in reviewList"
-          :key="review.reviewId"
-          class="review-item"
-        >
-          <!-- 유저 프로필 -->
-          <div class="review-avatar"></div>
-
-          <div class="review-main">
-            <div class="review-header">
-              <div class="user-info">
-                <UserNameTag :user-id="review.userId" />
-                <span class="review-date">{{
-                  formattedDateTime(review.createdAt)
-                }}</span>
-              </div>
-            </div>
-            <div class="review-body">
-              <!-- 리뷰 내용 -->
-              <div>
-                <p
-                  v-if="!editingStates[review.reviewId]"
-                  class="review-content"
-                >
-                  {{ review.content }}
-                </p>
-                <div
-                  v-if="editingStates[review.reviewId]"
-                  class="edit-container"
-                >
-                  <textarea
-                    v-model="review.content"
-                    class="edit-textarea"
-                    rows="3"
-                  ></textarea>
-                  <div class="edit-actions">
-                    <button
-                      @click="toggleEditReview(review)"
-                      class="cancel-btn"
-                    >
-                      취소
-                    </button>
-                    <button @click="saveUpdateReview(review)" class="save-btn">
-                      저장
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 액션 버튼 -->
-              <div
-                v-if="
-                  review.userId === loginUserId &&
-                  !editingStates[review.reviewId]
-                "
-                class="review-actions"
-              >
-                <button @click="toggleEditReview(review)" class="action-btn">
-                  수정
-                </button>
-                <button @click="deleteReview(review)" class="action-btn">
-                  삭제
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-else class="empty-state">첫 번째 리뷰를 작성해보세요.</div>
+  <div class="container my-5">
+    <!-- 뒤로가기 버튼 -->
+    <div class="d-flex align-items-center mb-4">
+      <button
+        class="btn btn-link text-decoration-none d-flex align-items-center gap-1"
+        @click="goBack"
+      >
+        <i class="bi bi-arrow-left"></i>
+        <span>뒤로가기</span>
+      </button>
     </div>
+
+    <!-- 페이지 타이틀 -->
+    <h2 class="text-center mb-4">질문 수정</h2>
+
+    <!-- 폼 시작 -->
+    <form
+      class="p-4 border rounded bg-light shadow-sm"
+      @submit.prevent="updateQuestion"
+    >
+      <!-- 제목 입력 -->
+      <div class="mb-3">
+        <label for="title" class="form-label fw-bold">제목</label>
+        <input
+          type="text"
+          id="title"
+          class="form-control"
+          placeholder="수정할 제목을 입력하세요"
+          v-model="questionStore.singleQuestion.title"
+        />
+      </div>
+
+      <!-- 내용 입력 -->
+      <div class="mb-4">
+        <label for="content" class="form-label fw-bold">내용</label>
+        <textarea
+          id="content"
+          class="form-control"
+          rows="5"
+          placeholder="수정할 내용을 입력하세요"
+          v-model="questionStore.singleQuestion.content"
+        ></textarea>
+      </div>
+
+      <!-- 액션 버튼 -->
+      <div class="d-flex justify-content-center gap-3">
+        <button
+          type="submit"
+          class="btn btn-primary d-flex align-items-center gap-1"
+        >
+          <i class="bi bi-check-circle"></i>
+          수정 완료
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary d-flex align-items-center gap-1"
+          @click="cancelEdit"
+        >
+          <i class="bi bi-x-circle"></i>
+          취소
+        </button>
+      </div>
+    </form>
   </div>
 </template>
-
 <script setup>
 import { useProgramStore } from "@/stores/program";
 import { useReviewStore } from "@/stores/review";

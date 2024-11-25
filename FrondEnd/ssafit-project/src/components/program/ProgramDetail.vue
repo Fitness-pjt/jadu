@@ -339,7 +339,7 @@ const attributes = [
     key: "selected",
     highlight: {
       color: "blue",
-      fillMode: "outline",
+      fillMode: "solid",
     },
     dates: null, // 처음에는 null, 이후 선택된 날짜로 동적 업데이트
   },
