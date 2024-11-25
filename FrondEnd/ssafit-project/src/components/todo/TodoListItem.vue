@@ -1,41 +1,64 @@
 <template>
-  <li :key="todo.todoId" class="todo-item">
-    <div class="todo-main">
-      <label class="todo-label" @click.stop>
-        <input
-          type="checkbox"
-          :checked="todo.status"
-          @change="toggleTodo(todo)"
-          class="todo-checkbox"
-          :disabled="loginStore.loginUserId !== todo.userId"
-        />
-        <span class="todo-content" v-if="!editingStates[todo.todoId]">
-          {{ todo.content }}
-        </span>
-        <input
-          v-else
-          type="text"
-          v-model="todo.content"
-          @blur="saveUpdateTodo(todo)"
-          @keyup.enter.prevent="saveUpdateTodo(todo)"
-        />
-      </label>
-    </div>
-    <div v-if="todo.status" class="likes-container">
-      <button @click="updateFavorite(todo)" class="favorite-btn">
-       <div class="heart-with-count">
-        <span class="heart-icon">{{ isFavorite ? "❤️" : "🤍" }}</span>
-        <span class="like-count-overlay">{{ likeCount }}</span>
+  <li class="todo-item card mb-3" :class="{ 'completed': todo.status }">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <!-- Todo Main Content -->
+      <div class="d-flex align-items-center flex-grow-1">
+        <div class="form-check me-3">
+          <input 
+            type="checkbox" 
+            class="form-check-input"
+            :checked="todo.status" 
+            @change="toggleTodo(todo)"
+            :disabled="loginStore.loginUserId !== todo.userId"
+          >
+        </div>
+
+        <div class="todo-content">
+          <span v-if="!editingStates[todo.todoId]" class="todo-text">
+            {{ todo.content }}
+          </span>
+          <input
+            v-else
+            type="text"
+            class="form-control"
+            v-model="todo.content"
+            @blur="saveUpdateTodo(todo)"
+            @keyup.enter.prevent="saveUpdateTodo(todo)"
+          />
+        </div>
       </div>
-      </button>
-    </div>
-    <div class="todo-actions" v-if="userId === loginUserId">
-      <button class="action-btn edit-btn" @click="onClickUpdateTodo(todo)">
-        <i class="bi bi-pencil"></i>
-      </button>
-      <button class="action-btn delete-btn" @click="onClickDeleteTodo(todo)">
-        <i class="bi bi-trash"></i>
-      </button>
+
+      <!-- Action Buttons -->
+      <div class="d-flex align-items-center">
+        <!-- Like Button -->
+        <div v-if="todo.status" class="me-3">
+          <button 
+            @click="updateFavorite(todo)" 
+            class="btn btn-outline-danger btn-sm border-0"
+          >
+            <div class="heart-with-count">
+              <span class="heart-icon">{{ isFavorite ? "❤️" : "🤍" }}</span>
+              <span class="like-count-overlay">{{ likeCount }}</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Edit/Delete Buttons -->
+        <div v-if="userId === loginUserId" class="btn-group">
+          <button 
+            @click="onClickUpdateTodo(todo)" 
+            class="btn btn-outline-primary btn-sm"
+          >
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button 
+            @click="onClickDeleteTodo(todo)" 
+            class="btn btn-outline-danger btn-sm"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </li>
 </template>
@@ -148,128 +171,27 @@ onMounted(fetchInitialStatus);
 
 <style scoped>
 .todo-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem 1rem;
-  margin-bottom: 0.5rem;
-  border-radius: 10px;
-  background-color: #e9f5ef;
-  border: 1px solid #42b983;
-  box-shadow: 2px 2px 5px rgba(66, 185, 131, 0.2);
-  transition: transform 0.2s ease-in-out, background-color 0.3s ease;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .todo-item:hover {
-  background-color: #dff0e9;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
 }
 
-.todo-main {
-  flex: 1;
-}
-
-.todo-label {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.todo-checkbox {
-  width: 1.2rem;
-  height: 1.2rem;
-  cursor: pointer;
-  accent-color: #42b983;
+.todo-item.completed {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .todo-content {
-  color: #333;
+  flex: 1;
+}
+
+.todo-text {
   font-size: 1rem;
+  color: #2c3e50;
 }
 
-.todo-label input[type="text"] {
-  border: none;
-  border-bottom: 2px solid #42b983;
-  background: transparent;
-  outline: none;
-  color: #333;
-  font-size: 1rem;
-  padding: 0.2rem 0;
-  transition: border-color 0.3s ease;
-}
-
-.todo-label input[type="text"]:focus {
-  border-bottom: 2px solid #357abd;
-}
-
-.todo-label input[type="text"]::placeholder {
-  color: #aaa;
-  font-style: italic;
-}
-
-.todo-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.action-btn {
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.edit-btn {
-  background-color: #4a90e2;
-  color: white;
-}
-
-.edit-btn:hover {
-  background-color: #357abd;
-}
-
-.delete-btn {
-  background-color: #e25c5c;
-  color: white;
-}
-
-.delete-btn:hover {
-  background-color: #c54646;
-}
-
-.favorite-btn {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: color 0.3s ease;
-}
-
-.favorite-btn:hover {
-  color: #42b983;
-}
-
-.likes-container {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.like-count {
-  font-size: 0.9rem;
-  color: #666;
-  min-width: 1.5rem;
-  text-align: center;
-}
-
-
-.bi {
-  font-size: 1.1rem;
-  margin-right: 0.3rem;
-}
 .heart-with-count {
   position: relative;
   display: inline-block;
@@ -296,21 +218,26 @@ onMounted(fetchInitialStatus);
   pointer-events: none;
 }
 
-.favorite-btn {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.2s ease;
+/* 프로젝트 메인 컬러 적용 */
+.btn-outline-primary {
+  --bs-btn-color: #C6E7FF;
+  --bs-btn-border-color: #C6E7FF;
+  --bs-btn-hover-bg: #C6E7FF;
+  --bs-btn-hover-border-color: #C6E7FF;
 }
 
-.favorite-btn:hover {
-  transform: scale(1.1);
+.form-check-input:checked {
+  background-color: #D4F6FF;
+  border-color: #D4F6FF;
 }
 
-.likes-container {
-  display: flex;
-  align-items: center;
-  margin: 0 0.5rem;
+@media (max-width: 576px) {
+  .btn-group {
+    flex-direction: column;
+  }
+  
+  .todo-content {
+    font-size: 0.9rem;
+  }
 }
 </style>

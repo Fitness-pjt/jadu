@@ -1,8 +1,10 @@
 <template>
   <div>
     <p>{{ userStore.userNickname }}의 Profile Page</p>
-    <TodoView :userId="userId" />
+    <div v-if="userStore.userStatus">
+    <TodoView :userId="userId" /></div>
   </div>
+  <!-- <div v-else>비공개 계정입니다.</div> -->
 </template>
 
 <script setup>

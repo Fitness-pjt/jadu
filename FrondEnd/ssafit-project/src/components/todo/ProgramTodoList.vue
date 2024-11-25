@@ -3,7 +3,10 @@
     <div v-if="programTodos.length > 0">
       <!-- 진행중인 프로그램 섹션 -->
       <div class="program-category">
-        <h4 class="section-title">🏋️‍♂️ 진행중인 프로그램</h4>
+        <h4 class="section-title">
+          <span class="title-icon">🏋️‍♂️</span>
+          JADU 프로그램
+        </h4>
         <ul class="program-todos">
           <TransitionGroup name="todo-list" tag="div">
             <ProgramTodoListItem
@@ -21,8 +24,11 @@
       </div>
 
       <!-- 완료된 프로그램 섹션 -->
-      <div class="program-category">
-        <h4 class="section-title">✅ 완료된 프로그램</h4>
+      <div class="program-category completed">
+        <h4 class="section-title">
+          <span class="title-icon">✅</span>
+          완료된 프로그램
+        </h4>
         <ul class="program-todos">
           <TransitionGroup name="todo-list" tag="div">
             <ProgramTodoListItem
@@ -42,7 +48,6 @@
     <p v-else class="empty-message">등록된 프로그램이 없습니다.</p>
   </div>
 </template>
-
 <script setup>
 import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
@@ -95,19 +100,38 @@ const completedTodos = computed(() => {
 
 <style scoped>
 .program-category {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #C6E7FF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.program-category:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.program-category.completed {
+  border-color: #D4F6FF;
+  background: #FBFBFB;
 }
 
 .section-title {
-  color: #2c3e50;
-  margin-bottom: 1rem;
+  color: #133e87;
+  margin-bottom: 1.5rem;
   font-size: 1.25rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #FFDDAE;
+}
+
+.title-icon {
+  margin-right: 0.5rem;
+  font-size: 1.3rem;
 }
 
 .program-todos {
@@ -121,6 +145,9 @@ const completedTodos = computed(() => {
   color: #666;
   padding: 1rem;
   font-style: italic;
+  background: #FBFBFB;
+  border-radius: 8px;
+  margin: 0.5rem 0;
 }
 
 .todo-list-enter-active,
@@ -137,10 +164,16 @@ const completedTodos = computed(() => {
 /* 반응형 디자인을 위한 미디어 쿼리 */
 @media (max-width: 768px) {
   .program-category {
-    padding: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
   }
 
   .section-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .title-icon {
     font-size: 1.1rem;
   }
 }

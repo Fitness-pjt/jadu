@@ -1,11 +1,17 @@
 <template>
-  <div>
-    <h3 class="date-header">📅 {{ selectedDate }}</h3>
+  <div class="todo-list">
+    <h3 class="date-header mb-4">
+      <i class="bi bi-calendar3"></i>
+      {{ selectedDate }}
+    </h3>
+    
     <div v-if="todoStore.todoList.length > 0">
-      <ul class="todo-items">
-        <!-- 진행 중인 투두 -->
-        <h4>진행 중</h4>
-        <ul class="todo-items">
+      <!-- 진행 중인 투두 -->
+      <div class="todo-section mb-4">
+        <h4 class="section-title">
+          <i class="bi bi-hourglass-split me-2"></i>진행 중
+        </h4>
+        <ul class="todo-items list-unstyled">
           <TodoListItem
             v-for="todo in isNotDoneTodoList"
             :key="todo.todoId"
@@ -14,10 +20,14 @@
             :loginUserId="loginUserId"
           />
         </ul>
+      </div>
 
-        <!-- 완료된 투두 -->
-        <h4>완료된 투두</h4>
-        <ul class="todo-items">
+      <!-- 완료된 투두 -->
+      <div class="todo-section">
+        <h4 class="section-title">
+          <i class="bi bi-check2-circle me-2"></i>완료됨
+        </h4>
+        <ul class="todo-items list-unstyled">
           <TodoListItem
             v-for="todo in isDoneTodoList"
             :key="todo.todoId"
@@ -26,9 +36,13 @@
             :loginUserId="loginUserId"
           />
         </ul>
-      </ul>
+      </div>
     </div>
-    <p v-else>작성된 투두가 없습니다.</p>
+    
+    <div v-else class="no-todos text-center py-4">
+      <i class="bi bi-clipboard-x display-4 text-muted"></i>
+      <p class="text-muted mt-2">작성된 투두가 없습니다.</p>
+    </div>
   </div>
 </template>
 
@@ -89,20 +103,53 @@ const isNotDoneTodoList = computed(() => {
 </script>
 
 <style scoped>
-.date-group {
-  margin-bottom: 2rem;
+.todo-list {
+  background-color: #FBFBFB;
+  border-radius: 12px;
+  padding: 1.5rem;
 }
 
 .date-header {
-  color: #42b983;
+  color: #2c3e50;
   font-size: 1.2rem;
-  margin-bottom: 1rem;
-  padding-left: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #FFDDAE;
 }
 
-.todo-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.section-title {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.todo-section {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.todo-section + .todo-section {
+  margin-top: 1.5rem;
+}
+
+.no-todos {
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .todo-list {
+    padding: 1rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .todo-section {
+    padding: 1rem;
+  }
 }
 </style>

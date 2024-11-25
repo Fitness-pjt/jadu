@@ -1,82 +1,74 @@
 <template>
   <div class="container mt-4">
-    <h1 class="text-center mb-4">운동 정보 디테일 페이지</h1>
-    <!-- 등록된 운동 정보가 없을 때 -->
-    <div
-      v-if="displayData.age == undefined"
-      class="empty-state text-center mt-5"
-    >
-      <h2 class="text-muted mb-4">운동 정보가 없습니다.</h2>
-      <p class="text-muted mb-4">
-        현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤
-        프로그램을 추천받아 보세요.
-      </p>
-      <RouterLink :to="{ name: 'createAIProgram' }"
-        ><button @click="navigateToForm" class="btn btn-primary btn-lg">
-          운동 정보 등록하기
-        </button></RouterLink
-      >
+    <div v-if="displayData.age == undefined" class="empty-state">
+      <h2>운동 정보가 없습니다.</h2>
+      <p>현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤 프로그램을 추천받아 보세요.</p>
+      <RouterLink :to="{ name: 'createAIProgram' }">
+        <button class="btn-primary">운동 정보 등록하기</button>
+      </RouterLink>
     </div>
-    <div v-else>
-      <!-- 기본 정보 섹션 -->
-      <section class="info-section mb-4">
-        <h2 class="h4 text-primary">기본 정보</h2>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <strong>성별:</strong> {{ displayData.gender }}
-          </li>
-          <li class="list-group-item">
-            <strong>연령대:</strong> {{ displayData.age }}
-          </li>
-          <li class="list-group-item">
-            <strong>체형:</strong> {{ displayData.shape }}
-          </li>
-        </ul>
-      </section>
+    
+    <div v-else class="info-card">
+      <h2>내 운동 정보</h2>
+      
+      <div class="info-grid">
+        <!-- 왼쪽 컬럼 -->
+        <div class="info-column">
+          <div class="info-item">
+            <span class="label">성별</span>
+            <span class="value">{{ displayData.gender }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">연령대</span>
+            <span class="value">{{ displayData.age }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">체형</span>
+            <span class="value">{{ displayData.shape }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">운동 목표</span>
+            <span class="value">{{ displayData.goal }}</span>
+          </div>
+        </div>
+        
+        <!-- 오른쪽 컬럼 -->
+        <div class="info-column">
+          <div class="info-item">
+            <span class="label">운동 경험</span>
+            <span class="value">{{ formattedData(displayData.experience) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">운동 장소</span>
+            <span class="value">{{ displayData.location }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">운동 빈도</span>
+            <span class="value">{{ displayData.frequency }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">운동 기간</span>
+            <span class="value">{{ displayData.duration }}</span>
+          </div>
+        </div>
+      </div>
 
-      <!-- 운동 목표 섹션 -->
-      <section class="info-section mb-4">
-        <h2 class="h4 text-primary">운동 목표</h2>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <strong>운동 목표:</strong> {{ displayData.goal }}
-          </li>
-          <li class="list-group-item">
-            <strong>운동 경험:</strong>
-            {{ formattedData(displayData.experience) }}
-          </li>
-        </ul>
-      </section>
+      <div class="keyword-section">
+        <span class="label">관심 부위</span>
+        <div class="keyword-chips">
+          <span v-for="(keyword, index) in displayData.keyword" 
+                :key="index" 
+                class="keyword-chip">
+            {{ keyword }}
+          </span>
+        </div>
+      </div>
 
-      <!-- 운동 환경 섹션 -->
-      <section class="info-section mb-4">
-        <h2 class="h4 text-primary">운동 환경</h2>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <strong>운동 장소:</strong> {{ displayData.location }}
-          </li>
-          <li class="list-group-item">
-            <strong>운동 키워드:</strong>
-            <span v-for="(keyword, index) in displayData.keyword" :key="index">
-              {{ keyword
-              }}<span v-if="index < displayData.keyword.length - 1">, </span>
-            </span>
-          </li>
-          <li class="list-group-item">
-            <strong>운동 빈도:</strong> {{ displayData.frequency }}
-          </li>
-          <li class="list-group-item">
-            <strong>운동 기간:</strong> {{ displayData.duration }}
-          </li>
-        </ul>
-      </section>
-
-      <!-- 수정 버튼 -->
-      <div class="text-center">
-        <button class="btn btn-primary" @click="goToUpdateUserInfo">
+      <div class="button-group">
+        <button class="btn-primary" @click="goToUpdateUserInfo">
           운동 정보 수정하기
         </button>
-        <button class="btn btn-primary" @click="goToCreateNewProgram">
+        <button class="btn-primary" @click="goToCreateNewProgram">
           새로운 맞춤 프로그램 만들기
         </button>
       </div>
@@ -130,31 +122,137 @@ const goToCreateNewProgram = () => {
 </script>
 
 <style scoped>
-/* 기본적인 레이아웃 및 간격 설정은 부트스트랩 클래스로 해결 */
 .container {
   max-width: 800px;
+  padding: 2rem;
 }
 
-h1 {
-  font-size: 2.5rem;
+.info-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.info-section h2 {
-  font-size: 1.25rem;
+.info-card h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
-.text-primary {
-  color: #007bff;
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-/* 버튼 스타일을 부트스트랩으로 적용 */
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.label {
+  color: #666;
+  font-weight: 500;
+}
+
+.value {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.keyword-section {
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+  margin: 1rem 0;
+}
+
+.keyword-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.keyword-chip {
+  background: #C6E7FF;
+  color: #2c3e50;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
 .btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #C6E7FF;
+  border: none;
+  color: #2c3e50;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #004085;
+  opacity: 0.9;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state h2 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
 }
 </style>

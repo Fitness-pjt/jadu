@@ -50,7 +50,7 @@ export const useTodoStore = defineStore("todo", () => {
         // console.log("투두 추가하기", res.data);
 
         // 새로운 투두 항목을 todoList에 추가
-        // const response = getTodoList(userId, todo.date);
+        getTodoList(userId, todo.date);
         // console.log("response", response);
 
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
