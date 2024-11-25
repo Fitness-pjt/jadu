@@ -50,9 +50,7 @@ export const useTodoStore = defineStore("todo", () => {
         // console.log("투두 추가하기", res.data);
 
         // 새로운 투두 항목을 todoList에 추가
-        // const response = getTodoList(userId, todo.date);
-        // console.log("response", response);
-
+        getTodoList(userId, todo.date);
         todoList.value.push(res.data); // 기존 배열에 새 항 추가
       })
       .catch((error) => {
@@ -300,27 +298,27 @@ export const useTodoStore = defineStore("todo", () => {
       handleError(err);
       return { inProgress: false };
     }
-};
+  };
 
-const todoLikeCounts = ref(new Map()); // 좋아요 개수를 저장할 Map 추가
-const getTodoLikeCount = async (todoId, userId) => {
-  const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/likeTodo/count`;
-  try {
-    const response = await axios.get(REST_API_URL, {
-      headers: {
-        "access-token": sessionStorage.getItem("access-token"),
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
-    // response.data가 직접 숫자값
-    todoLikeCounts.value.set(todoId, response.data);
-    return response.data;
-  } catch (err) {
-    handleError(err);
-    return 0;
-  }
-};
+  const todoLikeCounts = ref(new Map()); // 좋아요 개수를 저장할 Map 추가
+  const getTodoLikeCount = async (todoId, userId) => {
+    const REST_API_URL = getRestApiUrl(userId) + `/${todoId}/likeTodo/count`;
+    try {
+      const response = await axios.get(REST_API_URL, {
+        headers: {
+          "access-token": sessionStorage.getItem("access-token"),
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      // response.data가 직접 숫자값
+      todoLikeCounts.value.set(todoId, response.data);
+      return response.data;
+    } catch (err) {
+      handleError(err);
+      return 0;
+    }
+  };
 
   // 투두 몇 개 있는지 조회하기
   const getTodoCount = () => {};
@@ -343,6 +341,5 @@ const getTodoLikeCount = async (todoId, userId) => {
     todoLikes,
     todoLikeCounts,
     getTodoLikeCount,
-
   };
 });
