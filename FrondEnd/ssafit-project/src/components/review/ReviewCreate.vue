@@ -18,7 +18,7 @@
       </div>
     </div>
   </div>
- </template>
+</template>
 <script setup>
 import { useReviewStore } from "@/stores/review";
 import { useRoute, useRouter } from "vue-router";
@@ -71,103 +71,103 @@ onMounted(() => {
 
 <style scoped>
 .review-create-section {
- max-width: 1000px;
- margin: 2rem 0;
- margin-left: 0;
+  max-width: 1000px;
+  margin: 2rem 0;
+  margin-left: 0;
 }
 
 .create-form {
- background: white;
- border-radius: 12px;
- padding: 1.5rem;
- box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: 12px;
+  padding-bottom: 1.5rem;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
 }
 
 .create-header {
- display: flex;
- gap: 1.5rem;
- margin-bottom: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .user-avatar {
- width: 48px;
- height: 48px;
- border-radius: 50%;
- flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .create-textarea {
- flex: 1;
- width: 100%;
- padding: 1rem;
- border: 1px solid #eee;
- border-radius: 8px;
- font-size: 1.1rem;
- resize: none;
- min-height: 100px;
+  flex: 1;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  resize: none;
+  min-height: 100px;
 }
 
 .create-textarea:focus {
- outline: none;
- border-color: #C6E7FF;
+  outline: none;
+  border-color: #c6e7ff;
 }
 
 .create-textarea::placeholder {
- color: #666;
+  color: #666;
 }
 
 .create-actions {
- display: flex;
- justify-content: flex-end;
- margin-top: 1rem;
- padding-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
 }
 
 .submit-btn {
- background: #C6E7FF;
- color: #2c3e50;
- border: none;
- padding: 0.75rem 1.25rem;
- border-radius: 20px;
- font-size: 0.95rem;
- font-weight: 500;
- cursor: pointer;
- display: flex;
- align-items: center;
- gap: 0.5rem;
+  background: #c6e7ff;
+  color: #2c3e50;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .submit-btn i {
- font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 .submit-btn:hover {
- opacity: 0.9;
+  opacity: 0.9;
 }
 
 @media (max-width: 768px) {
- .review-create-section {
-   padding: 1rem;
-   margin: 1rem 0;
- }
+  .review-create-section {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
 
- .create-header {
-   gap: 1rem;
- }
+  .create-header {
+    gap: 1rem;
+  }
 
- .user-avatar {
-   width: 40px;
-   height: 40px;
- }
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+  }
 
- .create-textarea {
-   font-size: 1rem;
-   min-height: 80px;
- }
+  .create-textarea {
+    font-size: 1rem;
+    min-height: 80px;
+  }
 
- .submit-btn {
-   width: 100%;
-   justify-content: center;
- }
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>

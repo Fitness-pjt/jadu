@@ -1,62 +1,84 @@
 <template>
-  <div class="review-section">
-    <!-- 리뷰 리스트 -->
-    <div class="review-create-section">
-      <ReviewCreate />
-    </div>
-    <div v-if="reviewList.length !== 0" class="review-list">
-      <div v-for="review in reviewList" :key="review.reviewId" class="review-item">
-        <!-- 유저 프로필 -->
-        <div class="review-avatar">
-        </div>
-        
-        <div class="review-main">
-          <div class="review-header">
-            <div class="user-info">
-              <UserNameTag :user-id="review.userId" />
-              <span class="review-date">{{ formattedDateTime(review.createdAt) }}</span>
+  <div class="d-flex col justify-content-center">
+    <div class="review-section">
+      <!-- 리뷰 리스트 -->
+      <div class="review-create-section">
+        <ReviewCreate />
+      </div>
+      <div v-if="reviewList.length !== 0" class="review-list">
+        <div
+          v-for="review in reviewList"
+          :key="review.reviewId"
+          class="review-item"
+        >
+          <!-- 유저 프로필 -->
+          <div class="review-avatar"></div>
+
+          <div class="review-main">
+            <div class="review-header">
+              <div class="user-info">
+                <UserNameTag :user-id="review.userId" />
+                <span class="review-date">{{
+                  formattedDateTime(review.createdAt)
+                }}</span>
+              </div>
             </div>
-          </div>
- 
-          <!-- 리뷰 내용 -->
-          <div class="review-body">
-            <p v-if="!editingStates[review.reviewId]" class="review-content">
-              {{ review.content }}
-            </p>
-            <div v-if="editingStates[review.reviewId]" class="edit-container">
-              <textarea
-                v-model="review.content"
-                class="edit-textarea"
-                rows="3"
-              ></textarea>
-              <div class="edit-actions">
-                <button @click="toggleEditReview(review)" class="cancel-btn">취소</button>
-                <button @click="saveUpdateReview(review)" class="save-btn">저장</button>
+            <div class="review-body">
+              <!-- 리뷰 내용 -->
+              <div>
+                <p
+                  v-if="!editingStates[review.reviewId]"
+                  class="review-content"
+                >
+                  {{ review.content }}
+                </p>
+                <div
+                  v-if="editingStates[review.reviewId]"
+                  class="edit-container"
+                >
+                  <textarea
+                    v-model="review.content"
+                    class="edit-textarea"
+                    rows="3"
+                  ></textarea>
+                  <div class="edit-actions">
+                    <button
+                      @click="toggleEditReview(review)"
+                      class="cancel-btn"
+                    >
+                      취소
+                    </button>
+                    <button @click="saveUpdateReview(review)" class="save-btn">
+                      저장
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 액션 버튼 -->
+              <div
+                v-if="
+                  review.userId === loginUserId &&
+                  !editingStates[review.reviewId]
+                "
+                class="review-actions"
+              >
+                <button @click="toggleEditReview(review)" class="action-btn">
+                  수정
+                </button>
+                <button @click="deleteReview(review)" class="action-btn">
+                  삭제
+                </button>
               </div>
             </div>
           </div>
- 
-          <!-- 액션 버튼 -->
-          <div v-if="review.userId === loginUserId && !editingStates[review.reviewId]" 
-               class="review-actions">
-            <button @click="toggleEditReview(review)" class="action-btn">
-              수정
-            </button>
-            <button @click="deleteReview(review)" class="action-btn">
-              삭제
-            </button>
-          </div>
         </div>
       </div>
+
+      <div v-else class="empty-state">첫 번째 리뷰를 작성해보세요.</div>
     </div>
- 
-    <div v-else class="empty-state">
-      첫 번째 리뷰를 작성해보세요.
-    </div>
- 
-    
   </div>
- </template>
+</template>
 
 <script setup>
 import { useProgramStore } from "@/stores/program";
@@ -116,9 +138,8 @@ onMounted(() => {
 </script>
 <style scoped>
 .review-section {
-  max-width: 1000px; /* 800px에서 증가 */
-  margin: 0 auto;
-  padding: 2rem;
+  width: 1000px; /* 800px에서 증가 */
+  padding-bottom: 2rem;
   margin-left: 0; /* 왼쪽 정렬을 위해 추가 */
 }
 
@@ -178,6 +199,8 @@ onMounted(() => {
   margin-top: 0.75rem; /* 0.5rem에서 증가 */
   display: flex;
   gap: 1rem; /* 0.75rem에서 증가 */
+
+  justify-content: flex-end;
 }
 
 .action-btn {
@@ -192,6 +215,12 @@ onMounted(() => {
 
 .action-btn:hover {
   color: #2c3e50;
+  font-weight: 600;
+}
+
+.review-body {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /* 수정 모드 스타일 */
@@ -211,7 +240,7 @@ onMounted(() => {
 
 .edit-textarea:focus {
   outline: none;
-  border-color: #C6E7FF;
+  border-color: #c6e7ff;
 }
 
 .edit-actions {
@@ -220,9 +249,10 @@ onMounted(() => {
   gap: 0.75rem; /* 0.5rem에서 증가 */
 }
 
-.cancel-btn, .save-btn {
+.cancel-btn,
+.save-btn {
   padding: 0.75rem 1.25rem; /* 크기 증가 */
-  border-radius: 20px; /* 18px에서 증가 */
+  border-radius: 10px; /* 18px에서 증가 */
   font-size: 0.95rem; /* 0.85rem에서 증가 */
   font-weight: 500;
   cursor: pointer;
@@ -235,7 +265,7 @@ onMounted(() => {
 }
 
 .save-btn {
-  background: #C6E7FF;
+  background: #c6e7ff;
   border: none;
   color: #2c3e50;
 }
