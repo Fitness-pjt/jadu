@@ -86,6 +86,18 @@ const getLevelText = (level) => {
   border-radius: 1rem !important;
   border: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 내용 간격 균일하게 유지 */
+  height: 100%; /* 모든 카드가 같은 높이 유지 */
+}
+
+.card-body {
+  flex: 1; /* 본문 높이를 유연하게 조정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card:hover {
@@ -103,7 +115,7 @@ const getLevelText = (level) => {
   /* 썸네일 크기 조정 */
   .thumbnail-container {
     width: 100%;
-    height: 150px; /* 썸네일 높이를 줄여서 작은 화면에 맞게 조정 */
+    height: auto; /* 썸네일 높이를 줄여서 작은 화면에 맞게 조정 */
     overflow: hidden;
   }
 
@@ -127,7 +139,7 @@ const getLevelText = (level) => {
 
   /* 썸네일 크기 추가 축소 */
   .thumbnail-container {
-    height: 120px; /* 썸네일 크기 더 축소 */
+    height: auto; /* 썸네일 크기 더 축소 */
   }
 
   .card-text {
@@ -180,26 +192,5 @@ const getLevelText = (level) => {
 .card-title {
   padding-bottom: 0.5rem;
   font-weight: 600;
-}
-
-/* color */
-.bg-week {
-  background-color: #f1f2f4;
-  color: #737d91;
-}
-
-.bg-red {
-  background-color: #ff6d6d;
-  color: #ffecec;
-}
-
-.bg-orange {
-  background-color: #ffc456;
-  color: #fff0e1;
-}
-
-.bg-green {
-  background-color: #1bca94;
-  color: #d1f6ec;
 }
 </style>
