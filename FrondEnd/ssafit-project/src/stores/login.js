@@ -12,23 +12,28 @@ export const useLoginStore = defineStore("login", () => {
 
   // 로그인
   const login = (loginUser) => {
-    axios.post(REST_API_URL, loginUser).then((res) => {
-      // console.log("res.data :>> ", res.data);
+    axios
+      .post(REST_API_URL, loginUser)
+      .then((res) => {
+        // console.log("res.data :>> ", res.data);
 
-      // sessionStorage에 access-token 넣기
-      sessionStorage.setItem("access-token", res.data.accessToken);
+        // sessionStorage에 access-token 넣기
+        sessionStorage.setItem("access-token", res.data.accessToken);
 
-      const token = res.data.accessToken.split(".");
+        const token = res.data.accessToken.split(".");
 
-      const payload = JSON.parse(Base64.decode(token[1]));
+        const payload = JSON.parse(Base64.decode(token[1]));
 
-      // console.log('payload :>> ', payload);
-      loginUserNickname.value = payload["userNickname"];
-      // console.log("loginUserNickname.value", loginUserNickname.value);
-      loginUserId.value = payload["userId"];
+        // console.log('payload :>> ', payload);
+        loginUserNickname.value = payload["userNickname"];
+        // console.log("loginUserNickname.value", loginUserNickname.value);
+        loginUserId.value = payload["userId"];
 
-      router.replace({ name: "home" });
-    });
+        router.replace({ name: "home" });
+      })
+      .catch((error) => {
+        alert("로그인에 실패하였습니다. 아이디, 비밀번호를 다시 확인해주세요.");
+      });
   };
 
   const kakaoLogin = (code) => {

@@ -10,10 +10,10 @@
               맞춤형 운동 추천
             </h1>
             <p
-              class="lead text-secondary mb-4 animate__animated animate__fadeInUp animate__delay-1s"
+              class="lead text-secondary mb-4 animate__animated animate__fadeInUp animate__delay-1s fs-6 fs-md-5"
             >
               AI가 분석하여 제공하는<br />
-              당신만의 완벽한 운동 루틴
+              당신만의 완벽한 운동 프로그램 제공
             </p>
             <div
               class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-2s"
@@ -23,14 +23,14 @@
                 class="text-decoration-none"
               >
                 <button
-                  class="btn btn-primary btn-lg d-flex align-items-center gap-2 shadow-lg"
+                  class="btn btn-primary btn-lg d-flex align-items-center gap-2 shadow-lg responsive-btn"
                 >
-                  맞춤 추천 받기
+                  AI 맞춤 추천 받기
                   <i class="bi bi-arrow-right"></i>
                 </button>
               </RouterLink>
               <button
-                class="btn btn-outline-primary btn-lg d-flex align-items-center gap-2"
+                class="btn btn-outline-primary btn-lg d-flex align-items-center gap-2 responsive-btn"
               >
                 <i class="bi bi-play-circle"></i>
                 둘러보기
@@ -108,6 +108,11 @@
 
 .text-primary {
   color: #133e87 !important; /* 진한 파란색으로 변경 */
+}
+
+/* 반응형 버튼 스타일 */
+.responsive-btn {
+  min-width: 160px; /* 버튼 최소 크기 */
 }
 
 .btn-primary {
@@ -206,7 +211,7 @@
 }
 
 /* 반응형 스타일 */
-@media (max-width: 991.98px) {
+@media (max-width: 992px) {
   .visual-content {
     height: 400px;
     margin-top: 3rem;
@@ -217,7 +222,7 @@
   }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
   .banner-text {
     text-align: center;
   }
@@ -231,7 +236,7 @@
   }
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 576px) {
   .btn-lg {
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -244,6 +249,15 @@
 
   .floating-card {
     transform: scale(0.7);
+  }
+
+  .responsive-btn {
+    font-size: 0.8rem; /* 작은 화면에서 폰트 크기 줄이기 */
+    padding: 0.75rem 1rem;
+  }
+
+  .gap-3 {
+    gap: 1rem !important; /* 버튼 간격 축소 */
   }
 }
 </style>
