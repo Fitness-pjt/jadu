@@ -7,7 +7,8 @@
           :to="{ name: 'home' }"
           class="text-decoration-none logo-text"
         >
-          <i class="bi bi-heart-pulse-fill me-2"></i>SSAFIT
+          <img src="@/assets/image/logo.png" style="width: 50px" />
+          JADU
         </RouterLink>
       </h1>
 
@@ -62,7 +63,7 @@
           </RouterLink>
           <RouterLink
             :to="{ name: 'signup' }"
-            class="btn btn-primary rounded-pill px-4"
+            class="btn btn-outline-primary rounded-pill px-4"
             @click="closeMenu"
           >
             <i class="bi bi-person-plus me-1"></i>회원가입
@@ -72,13 +73,13 @@
           <div class="welcome">
             <RouterLink
               :to="getRoute(loginStore.loginUserId)"
-              class="btn btn-light"
+              class="btn btn-name-tag"
               @click="closeMenu"
             >
               <UserNameTag :user-id="loginStore.loginUserId" />
             </RouterLink>
           </div>
-          <button @click="logout" class="btn btn-outline-danger">
+          <button @click="logout" class="btn btn-outline-logout">
             <i class="bi bi-box-arrow-right me-1"></i>로그아웃
           </button>
         </div>
@@ -136,9 +137,11 @@ const getRoute = (userId) => {
 
 .nav-link:hover,
 .nav-link.router-link-active {
-  background-color: #d4f6ff;
+  /* background-color: #d4f6ff; */
   color: #133e87;
-  border-color: #c6e7ff;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  /* border-color: #c6e7ff; */
 }
 
 .navbar-toggler {
@@ -173,23 +176,29 @@ const getRoute = (userId) => {
   color: #133e87;
 }
 
-.btn-light {
+.btn {
+  border: none;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.btn-name-tag {
   background-color: #fbfbfb;
   /* border-color: #c6e7ff; */
   color: #133e87;
 }
 
-.btn-light:hover {
-  background-color: #d4f6ff;
+.btn-name-tag:hover {
+  /* background-color: #d4f6ff; */
   color: #133e87;
 }
 
-.btn-outline-danger {
+.btn-outline-logout {
   color: #ff6b6b;
   /* border-color: #ff6b6b; */
 }
 
-.btn-outline-danger:hover {
+.btn-outline-logout:hover {
   background-color: #ff6b6b;
   color: white;
 }

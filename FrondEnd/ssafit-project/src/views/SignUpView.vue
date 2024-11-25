@@ -3,7 +3,9 @@
   <div class="signup-container">
     <!-- 로고 -->
     <div class="logo">
-      <RouterLink :to="{ name: 'home' }">LOGO</RouterLink>
+      <RouterLink :to="{ name: 'home' }"
+        ><img src="@/assets/image/logo.png" style="width: 100px"
+      /></RouterLink>
     </div>
 
     <!-- 회원가입 폼 -->
