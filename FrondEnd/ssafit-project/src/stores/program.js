@@ -2,6 +2,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
+import { handleError } from "@/utils/handleError";
 
 // 백엔드 서버 URL 설정
 const BASE_URL = "http://localhost:8080/program";
@@ -36,23 +37,7 @@ export const useProgramStore = defineStore("program", () => {
       console.log("프로그램 생성 후 반환데이터:", response.data); // 응답 데이터 로깅
       return response.data;
     } catch (err) {
-      console.error("Error details:", err.response || err); // 상세 에러 로깅
-      error.value =
-        err.response?.data?.message || "프로그램 생성 중 오류가 발생했습니다.";
-
-      // 토큰 만료 시, 로그인 화면으로 이동
-      if (error.response && error.response.status === 401) {
-        // 토큰이 만료되었으므로 access-token을 삭제
-        sessionStorage.removeItem("access-token");
-        sessionStorage.removeItem("refresh-token");
-
-        alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-        // 로그인 페이지로 리다이렉트
-        router.replace("/login");
-      }
-
-      throw error.value;
+      handleError(err);
     } finally {
       isLoading.value = false;
     }
@@ -74,19 +59,7 @@ export const useProgramStore = defineStore("program", () => {
       programs.value = response.data;
       return response.data;
     } catch (err) {
-      console.error("Error fetching programs:", err.response);
-      // 토큰 만료 시, 로그인 화면으로 이동
-      if (err.response && err.response.status === 401) {
-        // 토큰이 만료되었으므로 access-token을 삭제
-        sessionStorage.removeItem("access-token");
-        sessionStorage.removeItem("refresh-token");
-
-        alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-        // 로그인 페이지로 리다이렉트
-        router.replace("/login");
-      }
-      // throw error.value;
+      handleError(err);
     } finally {
       isLoading.value = false;
     }
@@ -110,19 +83,7 @@ export const useProgramStore = defineStore("program", () => {
       // console.log("currentProgram.value :>> ", currentProgram.value);
       return response.data;
     } catch (err) {
-      console.error("Error fetching program:", err);
-
-      // 토큰 만료 시, 로그인 화면으로 이동
-      if (err.response && err.response.status === 401) {
-        // 토큰이 만료되었으므로 access-token을 삭제
-        sessionStorage.removeItem("access-token");
-        sessionStorage.removeItem("refresh-token");
-
-        alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-        // 로그인 페이지로 리다이렉트
-        router.replace("/login");
-      }
+      handleError(err);
     } finally {
       isLoading.value = false;
     }

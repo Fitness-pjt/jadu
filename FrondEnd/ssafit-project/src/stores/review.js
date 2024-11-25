@@ -1,4 +1,5 @@
 import router from "@/router";
+import { handleError } from "@/utils/handleError";
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
@@ -28,17 +29,7 @@ export const useReviewStore = defineStore("review", () => {
       reviewList.getReviewList(programId);
       reviewList.value.unshift(response.data); // 최신 리뷰를 맨 위에 추가
     } catch (error) {
-      // 토큰 만료 시, 로그인 화면으로 이동
-      if (error.response && error.response.status === 401) {
-        // 토큰이 만료되었으므로 access-token을 삭제
-        sessionStorage.removeItem("access-token");
-        sessionStorage.removeItem("refresh-token");
-
-        alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-        // 로그인 페이지로 리다이렉트
-        router.replace("/login");
-      }
+      handleError(error);
     }
   };
 
@@ -73,17 +64,7 @@ export const useReviewStore = defineStore("review", () => {
         router.replace({ name: "review", params: { programId: programId } });
       })
       .catch((error) => {
-        // 토큰 만료 시, 로그인 화면으로 이동
-        if (error.response && error.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
+        handleError(error);
       });
   };
 

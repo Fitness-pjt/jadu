@@ -2,6 +2,7 @@ import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
+import { handleError } from "@/utils/handleError";
 
 const REST_API_URL = "http://localhost:8080/user/info";
 export const useUserInfoStore = defineStore("userInfo", () => {
@@ -26,15 +27,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         }
       })
       .catch((err) => {
-        console.error("API 요청 오류: ", err);
-        if (err.response && err.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
+        handleError(err);
       });
   };
 
@@ -59,15 +52,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
         userInfoList.value = res.data;
       })
       .catch((err) => {
-        // console.log("err.response :>> ", err.response);
-        if (err.response && err.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
+        handleError(err);
       });
   };
 
@@ -103,13 +88,7 @@ export const useUserInfoStore = defineStore("userInfo", () => {
       console.log("API 응답 데이터 프로그램 ID: ", response.data); // 응답 데이터 구조 확인
       return response.data; // programId를 반환
     } catch (err) {
-      console.error("API 요청 오류: ", err);
-      if (err.response && err.response.status === 401) {
-        sessionStorage.removeItem("access-token");
-        sessionStorage.removeItem("refresh-token");
-        alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-        router.replace("/login");
-      }
+      handleError(error);
     }
   };
 
