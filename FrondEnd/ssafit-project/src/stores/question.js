@@ -31,17 +31,7 @@ export const useQuestionStore = defineStore("question", () => {
         // router.replace({ name: "question" });
       })
       .catch((error) => {
-        // 토큰 만료 시, 로그인 화면으로 이동
-        if (error.response && error.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
+        handleError(error);
       });
   };
 
@@ -80,17 +70,7 @@ export const useQuestionStore = defineStore("question", () => {
         router.replace({ name: "question", params: { programId: programId } });
       })
       .catch((error) => {
-        // 토큰 만료 시, 로그인 화면으로 이동
-        if (error.response && error.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
+        handleError(error);
       });
   };
 
@@ -112,17 +92,7 @@ export const useQuestionStore = defineStore("question", () => {
         // console.log("res.data", res.data);
       })
       .catch((error) => {
-        // 토큰 만료 시, 로그인 화면으로 이동
-        if (error.response && error.response.status === 401) {
-          // 토큰이 만료되었으므로 access-token을 삭제
-          sessionStorage.removeItem("access-token");
-          sessionStorage.removeItem("refresh-token");
-
-          alert("로그인이 만료되었습니다. 로그인 페이지로 이동합니다.");
-
-          // 로그인 페이지로 리다이렉트
-          router.replace("/login");
-        }
+        handleError(error);
       });
   };
 

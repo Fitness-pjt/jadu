@@ -1,16 +1,19 @@
 <template>
   <div class="container mt-4">
     <div v-if="displayData.age == undefined" class="empty-state">
-      <h2>운동 정보가 없습니다.</h2>
-      <p>현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤 프로그램을 추천받아 보세요.</p>
+      <h2>등록된 운동 정보가 없습니다.</h2>
+      <p style="color: #666">
+        현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤
+        프로그램을 추천받아 보세요.
+      </p>
       <RouterLink :to="{ name: 'createAIProgram' }">
-        <button class="btn-primary">운동 정보 등록하기</button>
+        <button class="btn-navy">운동 정보 등록하기</button>
       </RouterLink>
     </div>
-    
+
     <div v-else class="info-card">
-      <h2>내 운동 정보</h2>
-      
+      <h2>나의 운동 정보</h2>
+
       <div class="info-grid">
         <!-- 왼쪽 컬럼 -->
         <div class="info-column">
@@ -31,12 +34,14 @@
             <span class="value">{{ displayData.goal }}</span>
           </div>
         </div>
-        
+
         <!-- 오른쪽 컬럼 -->
         <div class="info-column">
           <div class="info-item">
             <span class="label">운동 경험</span>
-            <span class="value">{{ formattedData(displayData.experience) }}</span>
+            <span class="value">{{
+              formattedData(displayData.experience)
+            }}</span>
           </div>
           <div class="info-item">
             <span class="label">운동 장소</span>
@@ -56,19 +61,23 @@
       <div class="keyword-section">
         <span class="label">관심 부위</span>
         <div class="keyword-chips">
-          <span v-for="(keyword, index) in displayData.keyword" 
-                :key="index" 
-                class="keyword-chip">
+          <span
+            v-for="(keyword, index) in displayData.keyword"
+            :key="index"
+            class="keyword-chip"
+          >
             {{ keyword }}
           </span>
         </div>
       </div>
 
       <div class="button-group">
-        <button class="btn-primary" @click="goToUpdateUserInfo">
+        <button class="btn-point-blue" @click="goToUpdateUserInfo">
+          <font-awesome-icon icon="fa-solid fa-pencil-alt" class="" />
           운동 정보 수정하기
         </button>
-        <button class="btn-primary" @click="goToCreateNewProgram">
+        <button class="btn-point-orange" @click="goToCreateNewProgram">
+          <font-awesome-icon icon="fa-solid fa-robot" class="" />
           새로운 맞춤 프로그램 만들기
         </button>
       </div>
@@ -81,6 +90,7 @@ import router from "@/router";
 import { useUserInfoStore } from "@/stores/userInfo";
 import { formatExerciseInfo } from "@/utils/formatDisplayAnswer";
 import { computed, onMounted, watch } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const userInfoStore = useUserInfoStore();
 const exerciseInfo = computed(() => userInfoStore.exerciseInfo);
@@ -131,7 +141,7 @@ const goToCreateNewProgram = () => {
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
 }
 
 .info-card h2 {
@@ -187,7 +197,7 @@ const goToCreateNewProgram = () => {
 }
 
 .keyword-chip {
-  background: #C6E7FF;
+  background: #c6e7ff;
   color: #2c3e50;
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
@@ -205,7 +215,7 @@ const goToCreateNewProgram = () => {
 }
 
 .btn-primary {
-  background-color: #C6E7FF;
+  background-color: #c6e7ff;
   border: none;
   color: #2c3e50;
   font-weight: 500;
@@ -223,13 +233,13 @@ const goToCreateNewProgram = () => {
   padding: 3rem 2rem;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
 }
 
 .empty-state h2 {
   color: #2c3e50;
   font-size: 1.3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .empty-state p {

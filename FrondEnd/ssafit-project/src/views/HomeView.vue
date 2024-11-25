@@ -6,15 +6,13 @@
 </template>
 
 <script setup>
-import UserNameTag from "@/components/common/UserNameTag.vue";
 import ProgramBanner from "@/components/program/ProgramBanner.vue";
-import { useLoginStore } from "@/stores/login";
 import ProgramList from "@/components/program/ProgramList.vue";
+import { useLoginStore } from "@/stores/login";
 
-import { onMounted } from "vue";
 import { useProgramStore } from "@/stores/program";
+import { onMounted } from "vue";
 
-const loginStore = useLoginStore();
 const programStore = useProgramStore();
 
 onMounted(async () => {
@@ -24,12 +22,6 @@ onMounted(async () => {
     console.error("Failed to load programs:", error);
   }
 });
-
-const getRoute = (userId) => {
-  return loginStore.loginUserId === userId
-    ? { name: "mypage", params: { userId } }
-    : { name: "profile", params: { userId } };
-};
 </script>
 
 <style scoped>

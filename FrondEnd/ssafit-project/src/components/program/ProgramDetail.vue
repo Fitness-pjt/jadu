@@ -15,44 +15,59 @@
     <!-- 프로그램 상세 정보 -->
     <div v-else-if="program" class="program-detail">
       <!-- 헤더 섹션 -->
-      <div class="row mb-4">
-        <div class="col-md-4">
+      <div class="row d-flex justify-content-center align-items-start">
+        <div
+          class="col-md-4 d-flex justify-content-center align-items-center"
+          style="margin-top: 20px"
+        >
           <img
             :src="program.programImgPath"
             :alt="program.title"
-            class="img-fluid rounded"
+            class="img-fluid rounded responsive-img"
+            style="height: 100%; object-fit: cover"
           />
         </div>
-        <div class="col-md-8">
-          <h1 class="mb-3">{{ program.title }}</h1>
-          <div class="mb-3">
+        <div class="col-md-8 px-4">
+          <div
+            class="mb-3 mt-3 d-flex col align-items-center justify-content-between"
+          >
+            <h3 class="fw-bold">{{ program.title }}</h3>
             <RouterLink
               :to="getRoute(program.userId)"
-              class="btn btn-light"
+              class="btn"
               @click="closeMenu"
             >
               <UserNameTag :user-id="program.userId" />
             </RouterLink>
           </div>
-          <div class="program-meta mb-3">
-            <span class="badge bg-primary me-2">{{ program.level }}</span>
-            <span class="badge bg-secondary me-2"
+          <div class="program-meta">
+            <span
+              class="badge me-2"
+              :class="{
+                'bg-green': program.level === 'BEGINNER',
+                'bg-orange': program.level === 'INTERMEDIATE',
+                'bg-red': program.level === 'ADVANCED',
+              }"
+              >{{ program.level }}</span
+            >
+            <span class="badge bg-week me-2"
               >{{ program.durationWeeks }}주 프로그램</span
             >
-            <span class="badge bg-info">영상 {{ program.videoCnt }}개</span>
+            <span class="badge bg-week"
+              ><i class="bi bi-camera-video me-1"></i>영상
+              {{ program.videoCnt }}개</span
+            >
           </div>
-          <p class="lead">{{ program.description }}</p>
+          <p class="py-4">
+            {{ program.description }}
+          </p>
         </div>
       </div>
 
       <!-- 버튼 그룹 -->
-      <div class="d-flex gap-2 mb-4">
+      <div class="d-flex gap-2 my-4">
         <!-- 시작하기/진행중 표시 버튼 -->
-        <button
-          v-if="!isInProgress"
-          @click="openDatePicker"
-          class="btn btn-primary"
-        >
+        <button v-if="!isInProgress" @click="openDatePicker" class="btn-navy">
           프로그램 시작하기
         </button>
         <div
@@ -63,13 +78,15 @@
         </div>
 
         <button
-          class="btn"
-          :class="isLiked ? 'btn-primary' : 'btn-outline-primary'"
           @click="toggleLike"
           :disabled="isLoading"
+          class="btn like-btn"
+          :class="{ liked: isLiked, 'disabled-btn': isLoading }"
         >
-          <i :class="isLiked ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
-          좋아요 {{ likeCount > 0 ? `(${likeCount})` : "" }}
+          <i
+            :class="isLiked ? 'bi bi-heart-fill text-danger' : 'bi bi-heart'"
+          ></i>
+          좋아요 <span v-if="likeCount > 0">{{ likeCount }}</span>
         </button>
 
         <!-- 작성자용 버튼 -->
@@ -83,7 +100,7 @@
         </div>
       </div>
       <!-- 탭 네비게이션 -->
-      <ul class="nav nav-tabs mb-3">
+      <ul class="nav nav-tabs py-4">
         <li class="nav-item">
           <RouterLink
             class="nav-link"
@@ -91,7 +108,7 @@
             @click="activeTab = 'videos'"
             :to="{ name: 'video' }"
           >
-            운동 영상
+            운동 영상 보기
           </RouterLink>
         </li>
         <li class="nav-item">
@@ -101,7 +118,7 @@
             @click="activeTab = 'reviews'"
             :to="{ name: 'review' }"
           >
-            리뷰
+            리뷰 보러가기
           </RouterLink>
         </li>
         <li class="nav-item">
@@ -111,7 +128,7 @@
             :class="{ active: activeTab === 'qna' }"
             @click="activeTab = 'qna'"
           >
-            Q&A
+            질문 게시판
           </RouterLink>
         </li>
       </ul>
@@ -181,16 +198,14 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useProgramStore } from "@/stores/program";
 import { useLoginStore } from "@/stores/login";
-import { useVideoStore } from "@/stores/video";
-import ProgramVideoList from "./ProgramVideoList.vue";
-import ReviewList from "../review/ReviewList.vue";
-import QuestionList from "../question/QuestionList.vue";
+import { useProgramStore } from "@/stores/program";
 import { useTodoStore } from "@/stores/todo";
+import { useVideoStore } from "@/stores/video";
+import { computed, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import UserNameTag from "../common/UserNameTag.vue";
+import ProgramVideoList from "./ProgramVideoList.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -330,13 +345,14 @@ const confirmStartDate = async () => {
       throw new Error("날짜 형식이 올바르지 않습니다.");
     }
 
-    console.log("Formatted date:", formattedDate);
+    // console.log("Formatted date:", formattedDate);
 
     await todoStore.startProgram(route.params.programId, userId, formattedDate);
     closeDatePicker();
+    router.push({ name: "mypage" });
   } catch (err) {
-    console.error(err);
-    alert(err.message);
+    console.error(err.message);
+    // alert(err.message);
   }
 };
 const attributes = [
@@ -404,8 +420,41 @@ onMounted(async () => {
   font-size: 1.1rem;
 }
 
+/* 기본 이미지 크기 (모든 화면 크기에서 기본 크기 적용) */
+.responsive-img {
+  width: 100%;
+  height: auto;
+}
+
+/* 화면 크기가 768px 이상일 때 */
+@media (min-width: 768px) {
+  .responsive-img {
+    width: 60%;
+  }
+}
+
+/* 화면 크기가 1024px 이상일 때 */
+@media (min-width: 1024px) {
+  .responsive-img {
+    width: 80%;
+  }
+}
+
+/* 화면 크기가 1200px 이상일 때 */
+@media (min-width: 1200px) {
+  .responsive-img {
+    width: 100%;
+  }
+}
+
 .nav-link {
   cursor: pointer;
+  color: #133e87;
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  color: #133e87;
 }
 
 .tab-content {
@@ -419,6 +468,7 @@ onMounted(async () => {
 
 .btn {
   transition: all 0.2s ease-in-out;
+  border: none;
 }
 
 .btn:hover {
@@ -426,7 +476,7 @@ onMounted(async () => {
 }
 
 .border-primary {
-  box-shadow: 0 0 0 2px #0d6efd;
+  box-shadow: 0 0 0 2px #133e87;
 }
 
 .btn-primary .bi-heart-fill {

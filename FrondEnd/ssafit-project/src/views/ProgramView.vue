@@ -323,7 +323,7 @@ const ongoingPrograms = computed(() => {
 }
 
 .program-body {
-  width: 960px;
+  width: 1280px;
 }
 
 .animated-bg {

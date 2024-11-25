@@ -1,16 +1,28 @@
 <template>
   <div class="container mt-4">
     <div class="navigation-buttons">
-      <RouterLink :to="{ name: 'mypage' }" class="nav-btn">
-        <i class="bi bi-house-door-fill"></i> MyPage
+      <RouterLink
+        :to="{ name: 'mypage' }"
+        class="nav-btn"
+        exact-active-class="active"
+      >
+        <i class="bi bi-house-door-fill"></i> 마이 투두리스트
       </RouterLink>
 
-      <RouterLink :to="{ name: 'updateProfile' }" class="nav-btn">
-        <i class="bi bi-pencil-fill"></i> 프로필 수정하기
+      <RouterLink
+        :to="{ name: 'updateProfile' }"
+        class="nav-btn"
+        exact-active-class="active"
+      >
+        <i class="bi bi-pencil-fill"></i> 프로필 정보 수정
       </RouterLink>
 
-      <RouterLink :to="{ name: 'detailUserInfo' }" class="nav-btn">
-        <i class="bi bi-eye-fill"></i> 운동 정보 보기
+      <RouterLink
+        :to="{ name: 'detailUserInfo' }"
+        class="nav-btn"
+        exact-active-class="active"
+      >
+        <i class="bi bi-eye-fill"></i> 나의 운동 정보
       </RouterLink>
     </div>
 
@@ -20,10 +32,8 @@
 
 <script setup>
 import { useLoginStore } from "@/stores/login";
-import TodoView from "./TodoView.vue";
 
 const loginStore = useLoginStore();
-let loginUserId = loginStore.loginUserId;
 </script>
 
 <style scoped>
@@ -38,7 +48,6 @@ let loginUserId = loginStore.loginUserId;
   gap: 1rem;
   margin-bottom: 2rem;
   padding: 1rem 0;
-  border-bottom: 1px solid #eee;
 }
 
 .nav-btn {
@@ -49,19 +58,14 @@ let loginUserId = loginStore.loginUserId;
   text-decoration: none;
   color: #2c3e50;
   background-color: #fff;
-  border: 1px solid #C6E7FF;
-  transition: all 0.3s ease;
   font-weight: 500;
 }
 
 .nav-btn:hover {
-  background-color: #C6E7FF;
   color: #133e87;
-  transform: translateY(-1px);
 }
 
-.nav-btn.router-link-active {
-  background-color: #C6E7FF;
+.nav-btn.active {
   color: #133e87;
   font-weight: 600;
 }
@@ -71,7 +75,6 @@ let loginUserId = loginStore.loginUserId;
   font-size: 1.1rem;
 }
 
-/* 반응형 디자인 */
 @media (max-width: 768px) {
   .container {
     padding: 0 1rem;
