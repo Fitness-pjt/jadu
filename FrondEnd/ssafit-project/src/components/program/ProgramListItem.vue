@@ -18,20 +18,17 @@
     <div class="card-body">
       <!-- 헤더: 제목 및 작성자 -->
       <div
-        class="card-subtitle mb-4 text-muted small d-flex justify-content-between align-items-center"
+        class="card-subtitle mb-1 text-muted small d-flex justify-content-between align-items-center"
       >
         <UserNameTag :user-id="program.userId" />
         <span>{{ formattedDate(program.createdAt) }}</span>
       </div>
       <h5 class="card-title">{{ program.title }}</h5>
 
-      <!-- 설명 -->
-      <p class="card-text mb-3">
-        {{ program.description || "프로그램 설명이 없습니다." }}
-      </p>
+     
 
       <!-- 프로그램 정보 -->
-      <div class="mb-3 d-flex justify-content-between align-items-center">
+      <div class="mb-3 mt-1 d-flex justify-content-between align-items-center">
         <div>
           <!-- 난이도 -->
           <span
@@ -82,22 +79,18 @@ const getLevelText = (level) => {
 
 <style scoped>
 .card {
+  height: 400px; /* 카드 전체 높이 고정 */
   transition: transform 0.2s ease-in-out;
   border-radius: 1rem !important;
   border: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* 내용 간격 균일하게 유지 */
-  height: 100%; /* 모든 카드가 같은 높이 유지 */
 }
 
 .card-body {
-  flex: 1; /* 본문 높이를 유연하게 조정 */
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  height: 200px; /* 카드 본문 높이 고정 */
 }
 
 .card:hover {
@@ -108,22 +101,31 @@ const getLevelText = (level) => {
 /* 화면 크기가 768px 이하일 때 카드 크기 축소 */
 @media (max-width: 768px) {
   .card {
-    /* width: 90%; 카드 너비를 90%로 설정 */
-    margin: 0.5rem; /* 여백을 줄여서 카드 크기 축소 */
+    height: 350px;
   }
-
+  
+ 
+  .card-body {
+    height: 200px;
+  }
   /* 썸네일 크기 조정 */
-  .thumbnail-container {
-    width: 100%;
-    height: auto; /* 썸네일 높이를 줄여서 작은 화면에 맞게 조정 */
-    overflow: hidden;
-  }
+  
+.thumbnail-container {
+  height: 150px; /* 썸네일 높이 고정 */
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
 
-  .thumbnail-image {
-    width: 100%;
-    height: 100%; /* 썸네일 이미지 높이 조정 */
-    object-fit: cover;
-  }
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
   .card-text {
     -webkit-line-clamp: 1; /* 텍스트가 1줄만 보이도록 수정 */
@@ -178,19 +180,24 @@ const getLevelText = (level) => {
   background-color: #e9ecef;
 }
 
-.card-text {
-  /* height: 60px; */
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.5; /* 필요에 따라 라인 높이 설정 */
-  max-height: 3rem; /* 두 줄의 높이에 맞는 최대 높이 설정 (line-height * 2) */
-}
 
+.card-text {
+  flex: 1;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 설명 2줄로 제한 */
+  -webkit-box-orient: vertical;
+  line-height: 1.5;
+}
 .card-title {
-  padding-bottom: 0.5rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  height: 2.8rem; /* 제목 높이 제한 (2줄) */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 </style>
