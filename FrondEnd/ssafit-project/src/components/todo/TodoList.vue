@@ -1,10 +1,10 @@
 <template>
   <div class="todo-list">
-    <h3 class="date-header mb-4">
+    <h4 class="date-header mb-4 gap-2">
       <i class="bi bi-calendar3"></i>
       {{ selectedDate }}
-    </h3>
-    
+    </h4>
+
     <div v-if="todoStore.todoList.length > 0">
       <!-- 진행 중인 투두 -->
       <div class="todo-section mb-4">
@@ -38,7 +38,7 @@
         </ul>
       </div>
     </div>
-    
+
     <div v-else class="no-todos text-center py-4">
       <i class="bi bi-clipboard-x display-4 text-muted"></i>
       <p class="text-muted mt-2">작성된 투두가 없습니다.</p>
@@ -104,16 +104,24 @@ const isNotDoneTodoList = computed(() => {
 
 <style scoped>
 .todo-list {
-  background-color: #FBFBFB;
-  border-radius: 12px;
+  margin-bottom: 1.5rem;
   padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #c6e7ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .date-header {
-  color: #2c3e50;
-  font-size: 1.2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #FFDDAE;
+  color: #133e87;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #ffddae;
 }
 
 .section-title {
@@ -124,10 +132,13 @@ const isNotDoneTodoList = computed(() => {
 }
 
 .todo-section {
-  background: white;
-  border-radius: 8px;
+  margin-bottom: 1.5rem;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #c6e7ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .todo-section + .todo-section {

@@ -96,7 +96,7 @@
     </div>
   </div>
 </template>
-
+<script setup></script>
 <style scoped>
 /* 기본 스타일 */
 .banner-wrapper {
@@ -112,7 +112,7 @@
 
 /* 반응형 버튼 스타일 */
 .responsive-btn {
-  min-width: 160px; /* 버튼 최소 크기 */
+  min-width: 120px; /* 버튼 최소 크기 */
 }
 
 .btn-primary {

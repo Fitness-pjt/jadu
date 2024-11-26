@@ -20,6 +20,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 import "./assets/styles/global.css";
+// import * as css from "file.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";

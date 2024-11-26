@@ -1,10 +1,12 @@
 <template>
   <div class="d-flex col justify-content-center">
     <div class="review-section">
-      <!-- 리뷰 리스트 -->
+      <!-- 리뷰 작성 -->
       <div class="review-create-section">
         <ReviewCreate />
       </div>
+
+      <!-- 리뷰 리스트 -->
       <div v-if="reviewList.length !== 0" class="review-list">
         <div
           v-for="review in reviewList"
@@ -74,12 +76,10 @@
           </div>
         </div>
       </div>
-
-      <div v-else class="empty-state">첫 번째 리뷰를 작성해보세요.</div>
+      <div v-else class="empty-state">첫 번째 리뷰를 달아주세요.</div>
     </div>
   </div>
 </template>
-
 <script setup>
 import { useProgramStore } from "@/stores/program";
 import { useReviewStore } from "@/stores/review";
@@ -138,30 +138,30 @@ onMounted(() => {
 </script>
 <style scoped>
 .review-section {
-  width: 1000px; /* 800px에서 증가 */
+  width: 1000px;
   padding-bottom: 2rem;
-  margin-left: 0; /* 왼쪽 정렬을 위해 추가 */
+  margin-left: 0;
 }
 
 .review-list {
   display: flex;
   flex-direction: column;
-  gap: 2rem; /* 1.5rem에서 증가 */
+  gap: 2rem;
 }
 
 .review-item {
   display: flex;
-  gap: 1.5rem; /* 1rem에서 증가 */
+  gap: 1.5rem;
 }
 
 .review-avatar {
   flex-shrink: 0;
-  width: 48px; /* 40px에서 증가 */
+  width: 48px;
   height: 48px;
 }
 
 .avatar-circle {
-  width: 48px; /* 40px에서 증가 */
+  width: 48px;
   height: 48px;
   border-radius: 50%;
   background-color: #eee;
@@ -173,32 +173,32 @@ onMounted(() => {
 }
 
 .review-header {
-  margin-bottom: 0.5rem; /* 0.25rem에서 증가 */
+  margin-bottom: 0.5rem;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem; /* 0.5rem에서 증가 */
+  gap: 0.75rem;
 }
 
 .review-date {
-  font-size: 0.9rem; /* 0.8rem에서 증가 */
+  font-size: 0.9rem;
   color: #666;
 }
 
 .review-content {
-  font-size: 1.1rem; /* 0.95rem에서 증가 */
-  line-height: 1.6; /* 1.4에서 증가 */
+  font-size: 1.1rem;
+  line-height: 1.6;
   color: #2c3e50;
-  margin: 0.75rem 0; /* 0.5rem에서 증가 */
+  margin: 0.75rem 0;
   white-space: pre-wrap;
 }
 
 .review-actions {
-  margin-top: 0.75rem; /* 0.5rem에서 증가 */
+  margin-top: 0.75rem;
   display: flex;
-  gap: 1rem; /* 0.75rem에서 증가 */
+  gap: 1rem;
 
   justify-content: flex-end;
 }
@@ -207,7 +207,7 @@ onMounted(() => {
   background: none;
   border: none;
   color: #666;
-  font-size: 0.95rem; /* 0.85rem에서 증가 */
+  font-size: 0.95rem;
   font-weight: 500;
   padding: 0;
   cursor: pointer;
@@ -219,8 +219,9 @@ onMounted(() => {
 }
 
 .review-body {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  width: 100%;
+  padding-left: 4rem;
+  padding-right: 4rem;
 }
 
 /* 수정 모드 스타일 */
@@ -230,11 +231,11 @@ onMounted(() => {
 
 .edit-textarea {
   width: 100%;
-  padding: 1rem; /* 0.75rem에서 증가 */
+  padding: 1rem;
   border: 1px solid #eee;
   border-radius: 8px;
-  font-size: 1.1rem; /* 0.95rem에서 증가 */
-  margin-bottom: 0.75rem; /* 0.5rem에서 증가 */
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
   resize: none;
 }
 
@@ -246,14 +247,14 @@ onMounted(() => {
 .edit-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem; /* 0.5rem에서 증가 */
+  gap: 0.75rem;
 }
 
 .cancel-btn,
 .save-btn {
-  padding: 0.75rem 1.25rem; /* 크기 증가 */
-  border-radius: 10px; /* 18px에서 증가 */
-  font-size: 0.95rem; /* 0.85rem에서 증가 */
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
 }
@@ -280,9 +281,9 @@ onMounted(() => {
 
 .empty-state {
   text-align: center;
-  padding: 3rem; /* 2rem에서 증가 */
+  padding: 2rem;
   color: #666;
-  font-size: 1.1rem; /* 크기 증가 */
+  font-size: 1.2rem;
 }
 
 @media (max-width: 768px) {
@@ -295,7 +296,7 @@ onMounted(() => {
   }
 
   .avatar-circle {
-    width: 40px; /* 모바일에서도 약간 크게 */
+    width: 40px;
     height: 40px;
   }
 

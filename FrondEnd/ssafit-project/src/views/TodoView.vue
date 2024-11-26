@@ -6,14 +6,13 @@
         <div class="calendar-section">
           <TodoVCalendar />
         </div>
-        
-        <div class="program-todo-section">
-          <ProgramTodoListItem :userId="userId" />
-        </div>
       </div>
 
       <!-- Right Section: Create Todo + Regular Todos -->
       <div class="content-section">
+        <div class="program-todo-section">
+          <ProgramTodoListItem :userId="userId" />
+        </div>
         <div v-if="userId == loginUserId" class="create-section">
           <TodoCreate />
         </div>
@@ -32,7 +31,7 @@ import TodoVCalendar from "@/components/todo/TodoVCalendar.vue";
 import { useLoginStore } from "@/stores/login";
 import { useTodoStore } from "@/stores/todo";
 import { computed, onMounted, ref } from "vue";
-import ProgramTodoListItem from '@/components/todo/ProgramTodoList.vue';
+import ProgramTodoListItem from "@/components/todo/ProgramTodoList.vue";
 
 const todoStore = useTodoStore();
 const loginStore = useLoginStore();
@@ -57,10 +56,10 @@ onMounted(() => {
 </script>
 <style scoped>
 :root {
-  --primary-blue: #C6E7FF;
-  --secondary-blue: #D4F6FF;
-  --neutral: #FBFBFB;
-  --accent: #FFDDAE;
+  --primary-blue: #c6e7ff;
+  --secondary-blue: #d4f6ff;
+  --neutral: #fbfbfb;
+  --accent: #ffddae;
 }
 
 .todo-page {
@@ -97,7 +96,7 @@ onMounted(() => {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
   min-width: 500px;
 }
 
@@ -129,22 +128,22 @@ onMounted(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+
   min-width: 0;
 }
 
 .create-section {
   background: white;
   border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
 }
 
 .regular-todo-section {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); */
   flex-grow: 1;
 }
 

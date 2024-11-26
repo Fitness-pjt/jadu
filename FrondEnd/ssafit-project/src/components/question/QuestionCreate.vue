@@ -2,7 +2,7 @@
   <div class="container mt-4">
     <div class="question-form-card">
       <div class="card-body">
-        <h4 class="form-title">질문 작성</h4>
+        <h3 class="form-title">질문 작성하기</h3>
         <form>
           <!-- 작성자 -->
           <div class="form-group">
@@ -34,10 +34,10 @@
               <label class="file-label">
                 <i class="bi bi-image me-2"></i>
                 이미지 첨부
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  @change="uploadFile" 
+                <input
+                  type="file"
+                  accept="image/*"
+                  @change="uploadFile"
                   class="file-input"
                 />
               </label>
@@ -64,11 +64,7 @@
             <button type="button" class="cancel-btn" @click="$router.go(-1)">
               취소
             </button>
-            <button
-              type="button"
-              class="submit-btn"
-              @click="createQuestion"
-            >
+            <button type="button" class="submit-btn" @click="createQuestion">
               <i class="bi bi-send"></i>
               등록하기
             </button>
@@ -103,8 +99,6 @@ watch(
     deep: true,
   }
 );
-
-// console.log("userNickname :>> ", userNickname.value);
 
 const question = ref({
   writer: userNickname,
@@ -175,7 +169,7 @@ const createQuestion = async () => {
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
   max-width: 800px;
   margin: 0 auto;
 }
@@ -217,7 +211,7 @@ const createQuestion = async () => {
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #C6E7FF;
+  border-color: #c6e7ff;
   box-shadow: 0 0 0 2px rgba(198, 231, 255, 0.2);
 }
 
@@ -237,6 +231,10 @@ const createQuestion = async () => {
   color: #666;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: 9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .file-label:hover {
@@ -264,7 +262,7 @@ const createQuestion = async () => {
 .cancel-btn,
 .submit-btn {
   padding: 0.75rem 1.25rem;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
@@ -280,7 +278,7 @@ const createQuestion = async () => {
 }
 
 .submit-btn {
-  background: #C6E7FF;
+  background: #c6e7ff;
   border: none;
   color: #2c3e50;
 }

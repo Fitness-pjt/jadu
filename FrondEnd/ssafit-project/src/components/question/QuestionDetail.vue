@@ -12,21 +12,19 @@
     </div>
 
     <!-- 카드 섹션 -->
-    <div class="card shadow">
+    <div class="">
       <div class="card-body">
         <!-- 상단 정보 (제목 및 유저 프로필) -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="card-title mb-0">질문 상세보기</h2>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="title">
+            {{ questionStore.singleQuestion.title }}
+          </p>
           <UserNameTag :user-id="questionStore.singleQuestion.userId" />
         </div>
 
         <!-- 질문 정보 -->
-        <div class="mb-4">
-          <p class="mb-2">
-            <strong>제목:</strong> {{ questionStore.singleQuestion.title }}
-          </p>
-          <p class="mb-2">
-            <strong>등록일:</strong>
+        <div class="d-flex justify-content-start align-items-center">
+          <p class="mb-2" style="color: #666">
             {{ formattedDate(questionStore.singleQuestion.createdAt) }}
           </p>
         </div>
@@ -37,33 +35,32 @@
         </div>
         <!-- 질문 내용 -->
         <div class="mb-4">
-          <h3 class="h5 mb-3">내용</h3>
-          <p class="border p-3 rounded bg-light">
+          <p class="p-3 rounded">
             {{ questionStore.singleQuestion.content }}
           </p>
         </div>
-
+        <hr />
         <!-- 버튼 액션 -->
         <div
           class="d-flex justify-content-end gap-2"
           v-if="loginUserId === questionStore.singleQuestion.userId"
         >
           <button
-            class="btn btn-danger d-flex align-items-center gap-1"
-            @click="deleteQuestion"
-          >
-            <i class="bi bi-trash"></i> 삭제
-          </button>
-          <button
-            class="btn btn-primary d-flex align-items-center gap-1"
+            class="btn btn-outline-navy d-flex align-items-center gap-1"
             @click="updateQuestion"
           >
             <i class="bi bi-pencil"></i> 수정
           </button>
+          <button
+            class="btn btn-outline-danger d-flex align-items-center gap-1"
+            @click="deleteQuestion"
+          >
+            <i class="bi bi-trash"></i> 삭제
+          </button>
         </div>
       </div>
     </div>
-    <div>
+    <div class="my-4">
       <!-- 답변 -->
       <AnswerCreate />
       <AnswerList />
@@ -130,5 +127,14 @@ const goBack = () => {
 /* 아이콘 크기 조정 */
 .bi {
   font-size: 1.2rem;
+}
+
+.title {
+  font-size: x-large;
+}
+
+.btn-outline-danger,
+.btn-outline-navy {
+  border: none;
 }
 </style>

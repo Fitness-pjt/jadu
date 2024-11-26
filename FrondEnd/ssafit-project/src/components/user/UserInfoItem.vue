@@ -4,21 +4,21 @@
       <!-- Progress Bar 추가 -->
       <div class="progress-wrapper">
         <div class="progress">
-          <div 
-            class="progress-bar" 
+          <div
+            class="progress-bar"
             :style="{ width: `${(question.index / 10) * 100}%` }"
           ></div>
         </div>
         <span class="progress-text">{{ question.index }} / 10</span>
       </div>
- 
+
       <p class="question-title" v-if="question.index < 11">
         <span>{{ question.index }}. </span> {{ question.question }}
       </p>
       <p class="question-title" v-if="question.index === 11">
         {{ question.question }}
       </p>
- 
+
       <!-- Text Input -->
       <div v-if="question.type === 'text'" class="input-wrapper">
         <input
@@ -28,7 +28,7 @@
           placeholder="답변을 입력하세요"
         />
       </div>
- 
+
       <!-- Radio Buttons -->
       <div v-if="question.type === 'radio'" class="options-wrapper">
         <div
@@ -48,7 +48,7 @@
           </label>
         </div>
       </div>
- 
+
       <!-- Range Slider -->
       <div v-if="question.type === 'range'" class="range-wrapper">
         <input
@@ -62,7 +62,7 @@
           현재 값: <span>{{ getRangeText(userInput) }}</span>
         </div>
       </div>
- 
+
       <!-- Checkbox -->
       <div v-if="question.type === 'checkbox'" class="options-wrapper">
         <div
@@ -83,15 +83,15 @@
           </label>
         </div>
       </div>
- 
+
       <!-- Buttons -->
       <div class="button-wrapper">
         <button @click="submitAnswer" class="next-button">다음</button>
       </div>
     </div>
   </div>
- </template>
- <script setup>
+</template>
+<script setup>
 import { ref, watchEffect } from "vue";
 
 const props = defineProps({
@@ -139,214 +139,213 @@ const getRangeText = (value) => {
 
 <style scoped>
 .question-card {
- background: white;
- border-radius: 15px;
- padding: 2rem;
- box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
- position: relative;
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
 }
 
 /* Progress Bar 스타일 */
 .progress-wrapper {
- margin-bottom: 2rem;
- display: flex;
- align-items: center;
- gap: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .progress {
- flex-grow: 1;
- height: 8px;
- background-color: #edf2f7;
- border-radius: 10px;
- overflow: hidden;
+  flex-grow: 1;
+  height: 8px;
+  background-color: #edf2f7;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .progress-bar {
- height: 100%;
- background: linear-gradient(to right, #C6E7FF, #D4F6FF);
- transition: width 0.3s ease;
+  height: 100%;
+  background: linear-gradient(to right, #c6e7ff, #d4f6ff);
+  transition: width 0.3s ease;
 }
 
 .progress-text {
- color: #133e87;
- font-weight: 600;
- font-size: 0.9rem;
+  color: #133e87;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .question-title {
- font-size: 1.25rem;
- font-weight: 600;
- margin-bottom: 2rem;
- padding-bottom: 1rem;
- color: #133e87;
- border-bottom: 2px solid #FFDDAE;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  color: #133e87;
+  border-bottom: 2px solid #ffddae;
 }
 
-.input-wrapper, .options-wrapper {
- margin-bottom: 2rem;
+.input-wrapper,
+.options-wrapper {
+  margin-bottom: 2rem;
 }
 
 .custom-input {
- border: 2px solid #eee;
- border-radius: 8px;
- padding: 0.75rem;
- transition: all 0.2s ease;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
 }
 
 .custom-input:focus {
- border-color: #C6E7FF;
- box-shadow: 0 0 0 0.25rem rgba(198, 231, 255, 0.25);
+  border-color: #c6e7ff;
+  box-shadow: 0 0 0 0.25rem rgba(198, 231, 255, 0.25);
 }
 
 /* 라디오 버튼 스타일 */
 .form-check {
- padding: 0.75rem 1rem;
- margin-bottom: 0.5rem;
- background: #FBFBFB;
- border-radius: 8px;
- border: 1px solid #eee;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background: #fbfbfb;
+  border-radius: 8px;
+  border: 1px solid #eee;
 }
 
 .form-check-input {
- width: 1.2rem;
- height: 1.2rem;
- margin-right: 0.75rem;
- cursor: pointer;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 0.75rem;
+  cursor: pointer;
 }
 
 .form-check-input:checked {
- background-color: #C6E7FF;
- border-color: #133e87;
+  background-color: #c6e7ff;
+  border-color: #133e87;
 }
 
 .form-check-label {
- color: #2c3e50;
- font-weight: 500;
- cursor: pointer;
- display: flex;
- align-items: center;
+  color: #2c3e50;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
-
-
 
 /* 체크박스 커스텀 스타일 */
 .custom-checkbox {
- position: relative;
+  position: relative;
 }
 
 .custom-checkbox input {
- position: absolute;
- opacity: 0;
- cursor: pointer;
- height: 0;
- width: 0;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
 
 .checkmark {
- position: relative;
- display: inline-block;
- height: 20px;
- width: 20px;
- background-color: #fff;
- border: 2px solid #C6E7FF;
- border-radius: 4px;
- margin-right: 10px;
+  position: relative;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border: 2px solid #c6e7ff;
+  border-radius: 4px;
+  margin-right: 10px;
 }
 
 .custom-checkbox input:checked ~ .checkmark {
- background-color: #C6E7FF;
- border-color: #133e87;
+  background-color: #c6e7ff;
+  border-color: #133e87;
 }
 
 .checkmark:after {
- content: "";
- position: absolute;
- display: none;
- left: 6px;
- top: 2px;
- width: 5px;
- height: 10px;
- border: solid #133e87;
- border-width: 0 2px 2px 0;
- transform: rotate(45deg);
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #133e87;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 .custom-checkbox input:checked ~ .checkmark:after {
- display: block;
+  display: block;
 }
 
 /* Range Slider 스타일 */
 .range-wrapper {
- padding: 1rem 0;
+  padding: 1rem 0;
 }
 
 .custom-range {
- height: 5px;
- border-radius: 5px;
- background: #D4F6FF;
+  height: 5px;
+  border-radius: 5px;
+  background: #d4f6ff;
 }
 
 .custom-range::-webkit-slider-thumb {
- width: 20px;
- height: 20px;
- background: #C6E7FF;
- border: 2px solid #133e87;
- border-radius: 50%;
- cursor: pointer;
- -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #c6e7ff;
+  border: 2px solid #133e87;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-appearance: none;
 }
 
 .range-value {
- text-align: center;
- margin-top: 1rem;
- color: #666;
+  text-align: center;
+  margin-top: 1rem;
+  color: #666;
 }
 
 .range-value span {
- color: #133e87;
- font-weight: 600;
+  color: #133e87;
+  font-weight: 600;
 }
 
 .button-wrapper {
- display: flex;
- justify-content: flex-end;
- margin-top: 2rem;
- padding-top: 1.5rem;
- border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
 }
 
 .next-button {
- padding: 0.75rem 2rem;
- background: #C6E7FF;
- color: #133e87;
- border: none;
- border-radius: 8px;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.2s ease;
+  padding: 0.75rem 2rem;
+  background: #c6e7ff;
+  color: #133e87;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .next-button:hover {
- background: #D4F6FF;
+  background: #d4f6ff;
 }
 
 @media (max-width: 768px) {
- .question-card {
-   margin: 1rem;
-   padding: 1.5rem;
- }
+  .question-card {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
 
- .question-title {
-   font-size: 1.1rem;
- }
+  .question-title {
+    font-size: 1.1rem;
+  }
 
- .progress-wrapper {
-   margin-bottom: 1.5rem;
- }
+  .progress-wrapper {
+    margin-bottom: 1.5rem;
+  }
 
- .next-button {
-   width: 100%;
- }
+  .next-button {
+    width: 100%;
+  }
 }
 </style>

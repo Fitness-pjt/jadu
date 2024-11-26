@@ -1,16 +1,16 @@
 <template>
-  <li class="todo-item card mb-3" :class="{ 'completed': todo.status }">
+  <li class="todo-item card mb-3" :class="{ completed: todo.status }">
     <div class="card-body d-flex justify-content-between align-items-center">
       <!-- Todo Main Content -->
       <div class="d-flex align-items-center flex-grow-1">
         <div class="form-check me-3">
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             class="form-check-input"
-            :checked="todo.status" 
+            :checked="todo.status"
             @change="toggleTodo(todo)"
             :disabled="loginStore.loginUserId !== todo.userId"
-          >
+          />
         </div>
 
         <div class="todo-content">
@@ -29,30 +29,28 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center" style="width: 150px !important">
         <!-- Like Button -->
-        <div v-if="todo.status" class="me-3">
-          <button 
-            @click="updateFavorite(todo)" 
+        <div v-if="todo.status" class="me-2">
+          <button
+            @click="updateFavorite(todo)"
             class="btn btn-outline-danger btn-sm border-0"
           >
-            <div class="heart-with-count">
-              <span class="heart-icon">{{ isFavorite ? "❤️" : "🤍" }}</span>
-              <span class="like-count-overlay">{{ likeCount }}</span>
-            </div>
+            <i :class="[isFavorite ? 'bi bi-heart-fill' : 'bi bi-heart']"></i>
+            <span class="ms-1">{{ likeCount }}</span>
           </button>
         </div>
 
         <!-- Edit/Delete Buttons -->
         <div v-if="userId === loginUserId" class="btn-group">
-          <button 
-            @click="onClickUpdateTodo(todo)" 
-            class="btn btn-outline-primary btn-sm"
+          <button
+            @click="onClickUpdateTodo(todo)"
+            class="btn btn-outline-secondary btn-sm"
           >
             <i class="bi bi-pencil"></i>
           </button>
-          <button 
-            @click="onClickDeleteTodo(todo)" 
+          <button
+            @click="onClickDeleteTodo(todo)"
             class="btn btn-outline-danger btn-sm"
           >
             <i class="bi bi-trash"></i>
@@ -85,8 +83,6 @@ const isFavorite = computed(() => {
 const likeCount = computed(() => {
   return todoStore.todoLikeCounts.get(props.todo.todoId) || 0;
 });
-
-
 
 // 초기 완료 상태 설정
 watch(
@@ -156,31 +152,31 @@ const fetchInitialStatus = async () => {
   try {
     await Promise.all([
       todoStore.getTodoLikesStatus(props.todo.todoId, props.loginUserId),
-      todoStore.getTodoLikeCount(props.todo.todoId, props.loginUserId)
+      todoStore.getTodoLikeCount(props.todo.todoId, props.loginUserId),
     ]);
   } catch (error) {
     console.error("Failed to fetch initial status:", error);
   }
 };
 
-
 // 초기 상태 설정 (마운트 시에 한 번만 호출)
 onMounted(fetchInitialStatus);
-
 </script>
 
 <style scoped>
 .todo-item {
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.125); */
+  border: none;
   transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  padding: auto;
 }
 
 .todo-item:hover {
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+  /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); */
 }
 
 .todo-item.completed {
-  background-color: rgba(0, 0, 0, 0.05);
+  /* background-color: rgba(0, 0, 0, 0.05); */
 }
 
 .todo-content {
@@ -210,32 +206,34 @@ onMounted(fetchInitialStatus);
   font-size: 0.7rem;
   font-weight: bold;
   color: #000;
-  text-shadow: 
-    -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
     1px 1px 0 #fff;
   pointer-events: none;
 }
 
 /* 프로젝트 메인 컬러 적용 */
 .btn-outline-primary {
-  --bs-btn-color: #C6E7FF;
-  --bs-btn-border-color: #C6E7FF;
-  --bs-btn-hover-bg: #C6E7FF;
-  --bs-btn-hover-border-color: #C6E7FF;
+  --bs-btn-color: #c6e7ff;
+  --bs-btn-border-color: #c6e7ff;
+  --bs-btn-hover-bg: #c6e7ff;
+  --bs-btn-hover-border-color: #c6e7ff;
 }
 
 .form-check-input:checked {
-  background-color: #D4F6FF;
-  border-color: #D4F6FF;
+  background-color: #133e87;
+  border-color: #133e87;
 }
 
+.btn-outline-secondary,
+.btn-outline-danger {
+  border: none;
+  background-color: transparent;
+}
 @media (max-width: 576px) {
   .btn-group {
     flex-direction: column;
   }
-  
+
   .todo-content {
     font-size: 0.9rem;
   }

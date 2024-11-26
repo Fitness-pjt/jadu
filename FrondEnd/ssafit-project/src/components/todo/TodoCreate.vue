@@ -1,6 +1,7 @@
 <template>
   <div class="card todo-create-card">
-    <div class="card-body p-3">
+    <div class="card-body">
+      <p></p>
       <form class="todo-form" @submit.prevent="addTodo">
         <div class="input-group">
           <input
@@ -10,12 +11,7 @@
             v-model="todo.content"
             :class="{ 'is-invalid': showError }"
           />
-          <button 
-            type="submit" 
-            class="btn custom-btn"
-          >
-            추가
-          </button>
+          <button type="submit" class="btn custom-btn">추가</button>
         </div>
         <div class="invalid-feedback" v-if="showError">
           할 일을 입력해주세요.
@@ -50,7 +46,7 @@ const addTodo = async () => {
     showError.value = true;
     return;
   }
-  
+
   showError.value = false;
 
   try {
@@ -61,10 +57,10 @@ const addTodo = async () => {
       },
       loginUserId
     );
-    
+
     todo.value.content = "";
   } catch (error) {
-    console.error('Failed to add todo:', error);
+    console.error("Failed to add todo:", error);
   }
 };
 </script>
@@ -72,7 +68,7 @@ const addTodo = async () => {
 <style scoped>
 .todo-create-card {
   border: none;
-  background-color: #FBFBFB;
+  /* background-color: #FBFBFB; */
   margin-bottom: 1rem;
 }
 
@@ -96,13 +92,13 @@ const addTodo = async () => {
 
 .custom-input:focus {
   box-shadow: none;
-  border-color: #C6E7FF;
+  border-color: #c6e7ff;
   background-color: white;
 }
 
 .custom-btn {
-  background-color: #C6E7FF;
-  border: 1px solid #C6E7FF;
+  background-color: #c6e7ff;
+  border: 1px solid #c6e7ff;
   color: #2c3e50;
   padding: 0.5rem 1.5rem;
   font-weight: 500;
@@ -112,8 +108,8 @@ const addTodo = async () => {
 }
 
 .custom-btn:hover {
-  background-color: #D4F6FF;
-  border-color: #D4F6FF;
+  background-color: #d4f6ff;
+  border-color: #d4f6ff;
 }
 
 .invalid-feedback {
@@ -130,7 +126,7 @@ const addTodo = async () => {
   .custom-input {
     font-size: 0.9rem;
   }
-  
+
   .custom-btn {
     padding: 0.5rem 1rem;
     min-width: 80px;

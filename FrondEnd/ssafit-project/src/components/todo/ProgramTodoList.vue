@@ -3,8 +3,8 @@
     <div v-if="programTodos.length > 0">
       <!-- 진행중인 프로그램 섹션 -->
       <div class="program-category">
-        <h4 class="section-title">
-          <span class="title-icon">🏋️‍♂️</span>
+        <h4 class="section-title d-flex gap-2">
+          <i class="bi bi-file-earmark-text"></i>
           JADU 프로그램
         </h4>
         <ul class="program-todos">
@@ -23,10 +23,10 @@
         </ul>
       </div>
 
-      <!-- 완료된 프로그램 섹션 -->
+      <!-- 완료 된 프로그램 섹션   -->
       <div class="program-category completed">
-        <h4 class="section-title">
-          <span class="title-icon">✅</span>
+        <h4 class="section-title d-flex gap-2">
+          <i class="bi bi-check-circle"></i>
           완료된 프로그램
         </h4>
         <ul class="program-todos">
@@ -104,7 +104,7 @@ const completedTodos = computed(() => {
   padding: 1.5rem;
   background: white;
   border-radius: 12px;
-  border: 1px solid #C6E7FF;
+  border: 1px solid #c6e7ff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
@@ -114,8 +114,8 @@ const completedTodos = computed(() => {
 }
 
 .program-category.completed {
-  border-color: #D4F6FF;
-  background: #FBFBFB;
+  border-color: #d4f6ff;
+  /* background: #fbfbfb; */
 }
 
 .section-title {
@@ -126,7 +126,7 @@ const completedTodos = computed(() => {
   display: flex;
   align-items: center;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #FFDDAE;
+  border-bottom: 2px solid #ffddae;
 }
 
 .title-icon {
@@ -145,7 +145,7 @@ const completedTodos = computed(() => {
   color: #666;
   padding: 1rem;
   font-style: italic;
-  background: #FBFBFB;
+  background: #fbfbfb;
   border-radius: 8px;
   margin: 0.5rem 0;
 }

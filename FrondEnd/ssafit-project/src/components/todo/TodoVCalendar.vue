@@ -1,13 +1,13 @@
 <template>
   <div class="calendar-container">
     <VCalendar
-    borderless
-    :attributes="attrs"
-    :color="selectedColor"
-    @dayclick="onDayClick"
-    class="custom-calendar"
-    trim
-  />
+      borderless
+      :attributes="attrs"
+      :color="selectedColor"
+      @dayclick="onDayClick"
+      class="custom-calendar"
+      trim
+    />
   </div>
 </template>
 
@@ -20,13 +20,21 @@ const todoStore = useTodoStore();
 const selectedColor = ref("blue");
 let attrs = ref([
   {
-    key: "workout",
+    key: "today",
     highlight: {
-      fillMode: 'solid',
-      color: '#ffaa2a',
-      contentClass: 'custom-content'
+      fillMode: "light",
+      color: "blue",
+      contentClass: "custom-content",
     },
     dates: new Date(),
+  },
+  {
+    key: "selected",
+    highlight: {
+      color: "blue",
+      fillMode: "light",
+    },
+    dates: null, // 처음에는 null, 이후 선택된 날짜로 동적 업데이트
   },
 ]);
 
@@ -40,9 +48,9 @@ const onDayClick = (day) => {
     {
       key: "selected",
       highlight: {
-        fillMode: 'solid',
-        color: '#ffaa2a',
-        contentClass: 'custom-content'
+        fillMode: "solid",
+        color: "#ffaa2a",
+        contentClass: "custom-content",
       },
       dates: selectedDate,
     },
@@ -61,7 +69,7 @@ const onDayClick = (day) => {
 .custom-calendar {
   --calendar-width: 100%;
   --calendar-height: 100%;
-  
+
   /* 날짜 셀 크기 조정 */
   :deep(.vc-weeks) {
     width: 100%;
@@ -83,9 +91,15 @@ const onDayClick = (day) => {
   }
 
   /* 헤더(요일) 스타일링 */
-  :deep(.vc-header) {
+  /* :deep(.vc-header) {
     padding: 10px 0;
     font-weight: bold;
+    height: auto;
+    margin-bottom: 10px;
+  } */
+
+  :deep(.vc-header) {
+    margin-bottom: 10px;
   }
 
   :deep(.vc-weeks) {
@@ -98,7 +112,7 @@ const onDayClick = (day) => {
     padding: 0;
 
     &::before {
-      content: '';
+      content: "";
       display: block;
       padding-top: 100%; /* 정사각형 비율 유지 */
     }

@@ -6,7 +6,7 @@
         <textarea
           v-model="review.content"
           class="create-textarea"
-          placeholder="댓글을 작성하세요..."
+          placeholder="리뷰를 작성하세요..."
           rows="3"
         ></textarea>
       </div>
@@ -98,7 +98,7 @@ onMounted(() => {
 
 .create-textarea {
   flex: 1;
-  width: 100%;
+  width: 80%;
   padding: 1rem;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -121,28 +121,6 @@ onMounted(() => {
   justify-content: flex-end;
   margin-top: 1rem;
   padding-top: 0.5rem;
-}
-
-.submit-btn {
-  background: #c6e7ff;
-  color: #2c3e50;
-  border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.submit-btn i {
-  font-size: 1.1rem;
-}
-
-.submit-btn:hover {
-  opacity: 0.9;
 }
 
 @media (max-width: 768px) {

@@ -1,3 +1,5 @@
+/* 컬러별 btn */
+
 .btn-navy {
   transition: all 0.3s;
   /* width: 50%; */
@@ -10,12 +12,12 @@
 }
 
 .btn-navy:hover {
-  background-color: white;
-  border-color: #133e87;
-  color: #133e87;
+  background-color: #0d2e5f;
+  border-color: #0d2e5f;
+  color: white;
 }
 
-.btn--outline-navy {
+.btn-outline-navy {
   transition: all 0.3s;
   /* width: 50%; */
   padding: 0.75rem;
@@ -26,7 +28,7 @@
   cursor: pointer;
 }
 
-.btn--outline-navy:hover {
+.btn-outline-navy:hover {
   background-color: #133e87;
   border-color: #133e87;
   color: white;
@@ -45,9 +47,9 @@
 }
 
 .btn-gray:hover {
-  background-color: white;
-  border-color: #133e87;
-  color: #133e87;
+  background-color: #999999;
+  border-color: #999999;
+  color: white;
 }
 
 .btn-point-orange {
@@ -110,4 +112,32 @@
 .bg-blue {
   background-color: #94d2ff;
   color: #737d91;
+}
+
+.bg-navy {
+  background-color: #133e87;
+  color: white;
+}
+
+/* 리뷰, 질문, 답변 게시판 버튼  */
+.submit-btn {
+  background: #c6e7ff;
+  color: #2c3e50;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.submit-btn i {
+  font-size: 1.1rem;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
 }
