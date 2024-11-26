@@ -16,7 +16,7 @@
       <div class="keyword-sections">
         <!-- 운동 목적 키워드 -->
         <div class="search-section purpose-section">
-          <div class="d-flex gap-4">
+          <div class="d-flex gap-4 mb-3">
             <h3 class="section-title">운동 목적</h3>
             <span>*운동 목적 또는 부위 중 하나를 선택하세요. </span>
           </div>
@@ -419,6 +419,238 @@ const search = () => {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* 기존 스타일 유지 후 미디어 쿼리 추가 */
+
+/* Large Desktop (1200px 이상) */
+@media (min-width: 1200px) {
+  .video-search {
+    max-width: 1000px;
+    padding: 2rem;
+  }
+
+  .content-wrapper {
+    padding: 2.5rem;
+  }
+
+  .keyword-container {
+    gap: 1rem;
+  }
+}
+
+/* Desktop & Tablet (992px ~ 1199px) */
+@media (max-width: 1199px) {
+  .video-search {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .content-wrapper {
+    padding: 2rem;
+  }
+
+  .preview-text {
+    font-size: 1.1rem;
+  }
+}
+
+/* Tablet (768px ~ 991px) */
+@media (max-width: 991px) {
+  .video-search {
+    padding: 1rem;
+  }
+
+  .main-title {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .content-wrapper {
+    padding: 1.5rem;
+  }
+
+  .keyword-container {
+    gap: 0.6rem;
+  }
+
+  .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .search-preview {
+    padding: 1.2rem;
+  }
+
+  .preview-text {
+    font-size: 1rem;
+  }
+
+  .search-input {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+  }
+}
+
+/* Mobile (576px ~ 767px) */
+@media (max-width: 767px) {
+  .video-search {
+    padding: 0.8rem;
+  }
+
+  .main-title {
+    font-size: 1.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .content-wrapper {
+    padding: 1rem;
+    border-radius: 15px;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .search-section {
+    padding: 0.8rem;
+  }
+
+  .keyword-container {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .search-preview {
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .preview-box {
+    padding: 0.8rem 1.5rem;
+    min-width: 150px;
+  }
+
+  .preview-text {
+    font-size: 0.9rem;
+  }
+
+  .direct-search-section {
+    margin: 1.5rem 0;
+  }
+
+  .toggle-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .search-input {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .search-button-container {
+    margin-top: 1.5rem;
+  }
+
+  .search-btn {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    min-width: 200px;
+  }
+}
+
+/* Small Mobile (375px 이하) */
+@media (max-width: 375px) {
+  .video-search {
+    padding: 0.5rem;
+  }
+
+  .main-title {
+    font-size: 1.2rem;
+  }
+
+  .content-wrapper {
+    padding: 0.8rem;
+    border-radius: 10px;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+
+  .search-section {
+    flex-direction: column;
+  }
+
+  .keyword-container {
+    gap: 0.4rem;
+  }
+
+  .btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .preview-box {
+    padding: 0.6rem 1rem;
+    min-width: 120px;
+  }
+
+  .toggle-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .search-input {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .search-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    min-width: 180px;
+  }
+}
+
+/* 키워드 그룹 반응형 조정 */
+@media (max-width: 576px) {
+  .search-section .d-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-section .d-flex span {
+    font-size: 0.8rem;
+  }
+}
+
+/* 애니메이션 최적화 */
+@media (prefers-reduced-motion: reduce) {
+  .search-preview,
+  .search-input-wrapper,
+  .btn,
+  .search-section {
+    animation: none;
+    transition: none;
   }
 }
 </style>

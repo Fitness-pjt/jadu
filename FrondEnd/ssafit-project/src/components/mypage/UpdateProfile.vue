@@ -246,5 +246,182 @@ const cancelUpdateProfile = (event) => {
   return;
 };
 </script>
+<style scoped>
+/* 기본 스타일 */
+.container {
+  transition: all 0.3s ease;
+}
 
-<style scoped></style>
+.profile-image {
+  transition: all 0.3s ease;
+  object-fit: cover;
+}
+
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #dee2e6;
+  padding: 0.75rem;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: #c6e7ff;
+  box-shadow: 0 0 0 0.2rem rgba(198, 231, 255, 0.25);
+  outline: none;
+}
+
+/* 폼 스위치 커스텀 스타일 */
+.form-switch .form-check-input {
+  width: 3em;
+}
+
+.form-check-input:checked {
+  background-color: #133e87;
+  border-color: #133e87;
+}
+
+/* 피드백 메시지 스타일 */
+.feedback-message {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Large Desktop (1200px 이상) */
+@media (min-width: 1200px) {
+  .container {
+    width: 500px;
+    padding: 2rem;
+  }
+
+  .profile-image {
+    width: 8rem;
+    height: 8rem;
+  }
+}
+
+/* Desktop & Tablet (992px ~ 1199px) */
+@media (max-width: 1199px) {
+  .container {
+    width: 450px;
+    padding: 1.8rem;
+  }
+
+  .profile-image {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
+/* Tablet (768px ~ 991px) */
+@media (max-width: 991px) {
+  .container {
+    width: 400px;
+    padding: 1.5rem;
+  }
+
+  .profile-image {
+    width: 6.5rem;
+    height: 6.5rem;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  .form-control {
+    padding: 0.6rem;
+  }
+
+  .btn {
+    padding: 0.6rem !important;
+  }
+}
+
+/* Mobile (576px ~ 767px) */
+@media (max-width: 767px) {
+  .container {
+    width: 90%;
+    max-width: 350px;
+    padding: 1.2rem;
+  }
+
+  .profile-image {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .mb-3 {
+    margin-bottom: 1rem !important;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .input-group .btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.5rem !important;
+    font-size: 0.9rem;
+  }
+
+  .feedback-message {
+    font-size: 0.8rem;
+  }
+
+  .d-flex.gap-2 {
+    gap: 0.5rem !important;
+  }
+}
+
+/* Small Mobile (375px 이하) */
+@media (max-width: 375px) {
+  .container {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .profile-image {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .form-label {
+    font-size: 0.8rem;
+  }
+
+  .form-control {
+    padding: 0.4rem;
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    padding: 0.4rem !important;
+    font-size: 0.85rem;
+  }
+
+  .d-flex.gap-2 {
+    gap: 0.3rem !important;
+  }
+}
+
+/* 접근성 개선 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+</style>

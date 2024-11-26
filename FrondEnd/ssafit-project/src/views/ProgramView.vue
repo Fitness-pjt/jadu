@@ -492,19 +492,135 @@ const ongoingPrograms = computed(() => {
 }
 
 /* Responsive Adjustments */
+@media (min-width: 1280px) {
+  .program-body {
+    width: 1280px;
+  }
+
+  .program-header {
+    width: 960px;
+  }
+}
+
+/* Desktop & Tablet (768px ~ 1279px) */
+@media (max-width: 1279px) {
+  .program-body {
+    width: 95%;
+    padding: 0 20px;
+  }
+
+  .program-header {
+    width: 90%;
+    height: auto;
+    padding: 20px;
+  }
+
+  .action-card {
+    min-height: 200px;
+  }
+}
+
+/* Tablet (768px ~ 991px) */
+@media (max-width: 991px) {
+  .program-body {
+    width: 100%;
+  }
+
+  .custom-tabs {
+    padding: 0 10px;
+  }
+
+  .tab-button {
+    padding: 0.8rem 1.5rem;
+    font-size: medium;
+  }
+
+  .action-card {
+    padding: 15px;
+  }
+}
+
+/* Mobile (768px 이하) */
 @media (max-width: 768px) {
+  .header-section {
+    padding: 2rem !important;
+  }
+
+  .program-header {
+    width: 100%;
+    padding: 10px;
+  }
+
   .custom-tabs {
     flex-direction: column;
     gap: 0.5rem;
+    padding: 0 5px;
   }
 
   .tab-button {
     width: 100%;
     text-align: center;
+    padding: 0.6rem;
+    font-size: medium;
+  }
+
+  .action-card {
+    margin-bottom: 1rem;
   }
 
   .programs-container {
     padding: 0.5rem;
+  }
+
+  .icon-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .empty-state {
+    padding: 2rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+}
+
+/* Small Mobile (480px 이하) */
+@media (max-width: 480px) {
+  .header-section {
+    padding: 1rem !important;
+  }
+
+  .program-header {
+    padding: 5px;
+  }
+
+  .custom-tabs {
+    gap: 0.3rem;
+  }
+
+  .tab-button {
+    padding: 0.5rem;
+    font-size: small;
+  }
+
+  .action-card {
+    padding: 10px;
+  }
+
+  .btn-lg {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .empty-state {
+    padding: 1rem;
+  }
+
+  .empty-icon {
+    font-size: 2.5rem;
   }
 }
 </style>

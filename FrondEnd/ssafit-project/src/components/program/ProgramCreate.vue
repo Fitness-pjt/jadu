@@ -331,16 +331,6 @@ const getLevelText = (level) => {
   color: #133e87; /* 강조할 텍스트에 빨간색 */
 }
 
-@media (max-width: 768px) {
-  .main-title {
-    font-size: 2rem; /* 작은 화면에서 글자 크기 줄이기 */
-  }
-
-  .subtitle {
-    font-size: 1rem; /* 작은 화면에서 본문 크기 줄이기 */
-  }
-}
-
 /* 진행 상태 확인 */
 .steps-container {
   display: flex;
@@ -528,22 +518,6 @@ const getLevelText = (level) => {
   opacity: 0.9;
 }
 
-@media (max-width: 768px) {
-  .info-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .button-group {
-    flex-direction: column;
-  }
-
-  .btn-point-blue,
-  .btn-point-orange {
-    width: 100%;
-  }
-}
-
 /* 버튼 스타일 적용 */
 .button-container {
   margin-top: 3rem;
@@ -617,39 +591,218 @@ const getLevelText = (level) => {
 }
 
 /* 모바일 반응형 스타일 유지 */
-@media (max-width: 768px) {
+/* 기본 스타일 유지 후 미디어 쿼리 추가/수정 */
+
+/* Large Desktop (1200px 이상) */
+@media (min-width: 1200px) {
   .program-create {
-    padding: 1rem;
+    max-width: 1000px;
+    padding: 2rem;
   }
 
   .content-wrapper {
+    padding: 2.5rem;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Desktop & Tablet (992px ~ 1199px) */
+@media (max-width: 1199px) {
+  .program-create {
+    max-width: 90%;
     padding: 1.5rem;
+  }
+
+  .header-content {
+    padding: 2rem 1rem;
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .content-wrapper {
+    padding: 2rem;
+  }
+}
+
+/* Tablet (768px ~ 991px) */
+@media (max-width: 991px) {
+  .program-create {
+    max-width: 95%;
+    padding: 1rem;
+  }
+
+  .main-title {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .steps-container {
+    padding: 0 1rem;
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+  .step-label {
+    font-size: 13px;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Mobile (576px ~ 767px) */
+@media (max-width: 767px) {
+  .program-create {
+    padding: 0.8rem;
+  }
+
+  .header-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .main-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.4;
   }
 
   .steps-container {
     flex-direction: column;
-    align-items: center;
+    gap: 1rem;
+  }
+
+  .step-line {
+    width: 2px;
+    height: 20px;
+  }
+
+  .content-wrapper {
     padding: 1rem;
   }
 
-  .step {
-    margin: 0.5rem 0;
-    width: 100%;
-    text-align: center;
-  }
-
-  .step::after {
-    display: none;
+  .form-control {
+    padding: 0.6rem 1rem;
   }
 
   .button-container {
     flex-direction: column;
-    gap: 0.5rem;
+    margin-top: 2rem;
+    gap: 0.8rem;
   }
 
-  .button-container button {
-    padding: 1rem 2rem; /* 모바일에서 터치 영역 증가 */
+  .btn {
+    width: 100%;
+    padding: 0.7rem 1.5rem;
     font-size: 1rem;
+  }
+
+  .info-item {
+    padding: 0.5rem;
+  }
+
+  .search-header,
+  .form-header,
+  .preview-header {
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+  }
+
+  .search-header h5,
+  .form-header h5,
+  .preview-header h5 {
+    font-size: 1.3rem;
+  }
+
+  .text-muted.small {
+    font-size: 0.9rem;
+  }
+}
+
+/* Small Mobile (375px 이하) */
+@media (max-width: 375px) {
+  .program-create {
+    padding: 0.5rem;
+  }
+
+  .header-content {
+    padding: 1rem 0.5rem;
+  }
+
+  .main-title {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  .step-circle {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .step-label {
+    font-size: 11px;
+  }
+
+  .content-wrapper {
+    padding: 0.8rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-control {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .preview-section {
+    padding: 0.5rem;
+  }
+}
+
+/* 애니메이션 최적화 */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .form-control,
+  .action-card {
+    transition: none;
+  }
+
+  .btn-primary:disabled::after {
+    animation: none;
   }
 }
 </style>

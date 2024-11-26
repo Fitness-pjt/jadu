@@ -20,13 +20,21 @@ const todoStore = useTodoStore();
 const selectedColor = ref("blue");
 let attrs = ref([
   {
-    key: "workout",
+    key: "today",
     highlight: {
-      fillMode: "solid",
-      color: "#ffaa2a",
+      fillMode: "light",
+      color: "blue",
       contentClass: "custom-content",
     },
     dates: new Date(),
+  },
+  {
+    key: "selected",
+    highlight: {
+      color: "blue",
+      fillMode: "light",
+    },
+    dates: null, // 처음에는 null, 이후 선택된 날짜로 동적 업데이트
   },
 ]);
 
@@ -83,9 +91,15 @@ const onDayClick = (day) => {
   }
 
   /* 헤더(요일) 스타일링 */
-  :deep(.vc-header) {
+  /* :deep(.vc-header) {
     padding: 10px 0;
     font-weight: bold;
+    height: auto;
+    margin-bottom: 10px;
+  } */
+
+  :deep(.vc-header) {
+    margin-bottom: 10px;
   }
 
   :deep(.vc-weeks) {

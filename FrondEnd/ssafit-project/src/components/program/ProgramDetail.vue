@@ -320,7 +320,8 @@ const confirmStartDate = async () => {
       selectedStartDate.value
     );
     closeDatePicker();
-    router.push({ name: "mypage" });
+    window.location.href = "/mypage";
+    // router.replace({ name: "mypage" });
   } catch (err) {
     console.error(err.message);
   }

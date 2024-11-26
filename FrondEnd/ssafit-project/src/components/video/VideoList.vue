@@ -3,9 +3,9 @@
 <template>
   <div class="video-list-container">
     <!-- 선택된 비디오 리스트 -->
-    <TransitionGroup 
-      name="list" 
-      tag="div" 
+    <TransitionGroup
+      name="list"
+      tag="div"
       class="selected-videos-container"
       v-if="store.selectedVideos.length > 0"
     >
@@ -13,9 +13,9 @@
         <h3>선택된 운동 영상</h3>
         <span class="video-count">{{ store.selectedVideos.length }}개</span>
       </div>
-      
-      <div 
-        v-for="(video, index) in store.selectedVideos" 
+
+      <div
+        v-for="(video, index) in store.selectedVideos"
         :key="video.id"
         class="selected-video-item"
       >
@@ -24,12 +24,19 @@
           <h4>{{ decodeHTMLEntities(video.snippet.title) }}</h4>
           <p>{{ video.snippet.channelTitle }}</p>
         </div>
-        <button 
+        <button
           class="remove-btn"
           @click="store.toggleVideoSelection(video)"
           aria-label="영상 제거"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -48,18 +55,26 @@
         :modules="[Navigation, Pagination]"
         class="video-swiper"
       >
-        <swiper-slide 
-          v-for="video in store.videoList" 
+        <swiper-slide
+          v-for="video in store.videoList"
           :key="video.id"
           class="video-slide"
         >
-          <div 
+          <div
             class="video-card"
             :class="{ selected: isSelected(video) }"
             @click="store.toggleVideoSelection(video)"
           >
             <div class="selection-indicator">
-              <svg v-if="isSelected(video)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                v-if="isSelected(video)"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </div>
@@ -72,14 +87,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
-import { useVideoStore } from '@/stores/video';
-import VideoListItem from './VideoListItem.vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { ref, computed, onMounted, watch } from "vue";
+import { useVideoStore } from "@/stores/video";
+import VideoListItem from "./VideoListItem.vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const props = defineProps({
   initialVideos: {
@@ -124,11 +139,11 @@ watch(
 );
 
 const isSelected = (video) => {
-  return store.selectedVideos.some(v => v.id === video.id);
+  return store.selectedVideos.some((v) => v.id === video.id);
 };
 
 const decodeHTMLEntities = (text) => {
-  const textArea = document.createElement('textarea');
+  const textArea = document.createElement("textarea");
   textArea.innerHTML = text;
   return textArea.value;
 };
@@ -139,10 +154,10 @@ defineExpose({
 </script>
 <style scoped>
 :root {
-  --primary-blue: #C6E7FF;
-  --secondary-blue: #D4F6FF;
-  --neutral: #FBFBFB;
-  --accent: #FFDDAE;
+  --primary-blue: #c6e7ff;
+  --secondary-blue: #d4f6ff;
+  --neutral: #fbfbfb;
+  --accent: #ffddae;
 }
 
 .video-list-container {
@@ -305,7 +320,6 @@ defineExpose({
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 그림자 추가 */
 }
 
-
 .video-card:hover {
   transform: translateY(-4px);
 }
@@ -373,10 +387,6 @@ defineExpose({
   .video-count {
     font-size: 0.8rem;
     padding: 0.4rem 0.8rem;
-  }
-
-  .selected-video-item {
-    padding: 0.8rem;
   }
 
   .video-number {
