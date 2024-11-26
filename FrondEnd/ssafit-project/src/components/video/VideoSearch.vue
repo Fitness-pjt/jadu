@@ -2,27 +2,24 @@
   <div class="video-search">
     <!-- 헤더 -->
     <div class="header-content text-center">
-      <h2 class="main-title">운동 영상 검색</h2>
+      <div class="main-title mb-3">
+        <i class="bi bi-search px-3"></i>운동 영상 검색
+      </div>
       <p class="subtitle">
-        원하는 운동 영상을 키워드로 검색하여 프로그램에 추가하세요
+        키워드를 입력해 원하는 운동 영상을 찾아 프로그램을 완성하세요!
       </p>
     </div>
 
     <!-- 메인 콘텐츠 -->
     <div class="content-wrapper">
-      <!-- 현재 선택된 검색어 표시 영역 -->
-      <div class="search-preview" v-if="getSearchKeyword && !showDirectSearch">
-        <h3 class="section-title">검색어</h3>
-        <div class="preview-box">
-          <span class="preview-text">{{ getSearchKeyword }}</span>
-        </div>
-      </div>
-
       <!-- 키워드 그룹 -->
       <div class="keyword-sections">
         <!-- 운동 목적 키워드 -->
         <div class="search-section purpose-section">
-          <h3 class="section-title">운동 목적</h3>
+          <div class="d-flex gap-4">
+            <h3 class="section-title">운동 목적</h3>
+            <span>*운동 목적 또는 부위 중 하나를 선택하세요. </span>
+          </div>
           <div class="keyword-container">
             <button
               v-for="kw in purposeKeywords"
@@ -54,7 +51,11 @@
 
         <!-- 난이도 선택 -->
         <div class="search-section level-section">
-          <h3 class="section-title">난이도</h3>
+          <div class="d-flex gap-4">
+            <h3 class="section-title">난이도</h3>
+            <span>*난이도 선택은 필수입니다. </span>
+          </div>
+
           <div class="keyword-container">
             <button
               v-for="kw in levelKeywords"
@@ -69,9 +70,17 @@
         </div>
       </div>
 
+      <!-- 현재 선택된 검색어 표시 영역 -->
+      <div class="search-preview" v-if="getSearchKeyword && !showDirectSearch">
+        <h4 class="section-title">선택한 검색어</h4>
+        <div class="preview-box">
+          <span class="preview-text">{{ getSearchKeyword }}</span>
+        </div>
+      </div>
+
       <!-- 직접 검색 -->
       <div class="direct-search-section">
-        <button class="btn toggle-btn" @click="toggleDirectSearch">
+        <button class="toggle-btn" @click="toggleDirectSearch">
           {{ showDirectSearch ? "키워드 선택으로 돌아가기" : "직접 검색하기" }}
         </button>
 
@@ -95,9 +104,10 @@
       <div class="search-button-container">
         <button
           @click="search"
-          class="btn search-btn"
+          class="btn search-btn btn-outline-navy"
           :disabled="!isSearchable"
         >
+          <i class="bi bi-search px-3"></i>
           운동 영상 검색하기
         </button>
       </div>
@@ -108,6 +118,7 @@
 <script setup>
 import { useVideoStore } from "@/stores/video";
 import { ref, computed } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const keyword = ref("");
 const selectedLevel = ref("");
@@ -197,10 +208,6 @@ const search = () => {
   padding: 2rem;
 }
 
-.header-content {
-  margin-bottom: 3rem;
-}
-
 .main-title {
   font-size: 2rem;
   font-weight: 600;
@@ -217,14 +224,17 @@ const search = () => {
   background: white;
   padding: 2.5rem;
   border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); */
 }
 
 .search-preview {
-  background: var(--accent);
+  background: #c6e7ff;
+  display: flex;
+  flex-direction: column;
+
   padding: 1.5rem;
   border-radius: 15px;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
   text-align: center;
   animation: fadeIn 0.5s ease;
 }
@@ -232,6 +242,7 @@ const search = () => {
 .preview-box {
   background: white;
   padding: 1rem 2rem;
+  /* border: 1px solid #333; */
   border-radius: 10px;
   display: inline-block;
   min-width: 200px;
@@ -247,7 +258,7 @@ const search = () => {
 .keyword-sections {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .section-title {
@@ -262,7 +273,8 @@ const search = () => {
 
 .search-section {
   background: white;
-  padding: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   border-radius: 15px;
   /* border: 1px solid #eee; */
   transition: all 0.3s ease;
@@ -284,44 +296,48 @@ const search = () => {
   padding: 0.3rem 0.8rem; /* 버튼 크기 작게 */
   font-size: 0.8rem;
   font-weight: 600;
-  border-radius: 30px;
+  /* border-radius: 30px; */
   border: 1.5px solid;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
-/* 목적별 버튼 스타일 */
-.purpose-btn {
-  border-color: #c6e7ff; /* primary-blue */
-  color: #7e7e7e;
-}
-
-.purpose-btn:hover,
-.purpose-btn.btn-active {
-  background: #c6e7ff;
-  color: #7e7e7e;
-}
-
 /* 부위별 버튼 스타일 */
 .body-btn {
-  border-color: #133e87; /* secondary-blue */
-  color: #133e87;
+  border: 2px solid #c6e7ff;
+  /* border-color: #c6e7ff;  */
+  color: #7e7e7e;
+  border-radius: 30px;
 }
 
 .body-btn:hover,
 .body-btn.btn-active {
-  background: #133e87;
-  color: white;
+  background: #c6e7ff;
+  color: #7e7e7e;
 }
 
 /* 난이도 버튼 스타일 */
 .level-btn {
-  border-color: #ffddae; /* accent */
-  color: #7e7e7e;
+  border: 1px solid #133e87; /* secondary-blue */
+  color: #133e87;
+  border-radius: 30px;
 }
 
 .level-btn:hover,
 .level-btn.btn-active {
+  background: #133e87;
+  color: white;
+}
+
+/* 목적별 버튼 스타일 */
+.purpose-btn {
+  border: 2px solid #ffddae; /* accent */
+  color: #7e7e7e;
+  border-radius: 30px;
+}
+
+.purpose-btn:hover,
+.purpose-btn.btn-active {
   background: #ffddae;
   color: #7e7e7e;
 }
@@ -332,12 +348,20 @@ const search = () => {
 }
 
 .toggle-btn {
-  background: var(--neutral);
   margin-bottom: 1rem;
+  padding: 0.6rem 1rem; /* 적당한 크기로 조정 */
+  font-size: 1rem;
+  font-weight: 600;
+  border: none; /* 기본 상태에서 border 제거 */
+  background: transparent; /* 배경색 제거 */
+  color: #333; /* 텍스트 색상 */
+  border-radius: 8px; /* 약간 둥글게 */
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .toggle-btn:hover {
-  background: var(--secondary-blue);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .search-input-wrapper {
@@ -358,31 +382,21 @@ const search = () => {
 
 .search-input:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: #ffddae;
   box-shadow: 0 0 0 4px rgba(255, 221, 174, 0.25);
 }
 
 .search-button-container {
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
   text-align: center;
 }
 
 .search-btn {
   padding: 1rem 3rem;
   font-size: 1.2rem;
-  background: var(--primary-blue);
+  /* background: var(--primary-blue); */
   min-width: 250px;
-}
-
-.search-btn:hover:not(:disabled) {
-  background: var(--accent);
-}
-
-.search-btn:disabled {
-  background: #e0e0e0;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  border-radius: 20px;
 }
 
 /* 애니메이션 */

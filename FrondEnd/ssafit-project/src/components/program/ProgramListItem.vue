@@ -25,8 +25,6 @@
       </div>
       <h5 class="card-title">{{ program.title }}</h5>
 
-     
-
       <!-- 프로그램 정보 -->
       <div class="mb-3 mt-1 d-flex justify-content-between align-items-center">
         <div>
@@ -103,29 +101,28 @@ const getLevelText = (level) => {
   .card {
     height: 350px;
   }
-  
- 
+
   .card-body {
     height: 200px;
   }
   /* 썸네일 크기 조정 */
-  
-.thumbnail-container {
-  height: 150px; /* 썸네일 높이 고정 */
-  border-top-left-radius: 1rem !important;
-  border-top-right-radius: 1rem !important;
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background-color: #f8f9fa;
-}
 
-.thumbnail-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
+  .thumbnail-container {
+    height: 150px; /* 썸네일 높이 고정 */
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #f8f9fa;
+  }
+
+  .thumbnail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
 
   .card-text {
     -webkit-line-clamp: 1; /* 텍스트가 1줄만 보이도록 수정 */
@@ -179,7 +176,6 @@ const getLevelText = (level) => {
   color: #6c757d;
   background-color: #e9ecef;
 }
-
 
 .card-text {
   flex: 1;

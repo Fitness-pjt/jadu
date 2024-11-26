@@ -19,14 +19,27 @@
 
         <div class="mb-3">
           <label class="form-label">프로그램 제목</label>
-          <input type="text" class="form-control" v-model="programData.title"
-            :placeholder="programStore.currentProgram?.title || '프로그램 제목을 입력하세요'">
+          <input
+            type="text"
+            class="form-control"
+            v-model="programData.title"
+            :placeholder="
+              programStore.currentProgram?.title || '프로그램 제목을 입력하세요'
+            "
+          />
         </div>
 
         <div class="mb-3">
           <label class="form-label">프로그램 설명</label>
-          <textarea class="form-control" v-model="programData.description" rows="3"
-            :placeholder="programStore.currentProgram?.description || '프로그램에 대한 설명을 입력하세요'"></textarea>
+          <textarea
+            class="form-control"
+            v-model="programData.description"
+            rows="3"
+            :placeholder="
+              programStore.currentProgram?.description ||
+              '프로그램에 대한 설명을 입력하세요'
+            "
+          ></textarea>
         </div>
 
         <div class="row">
@@ -34,29 +47,61 @@
             <label class="form-label">난이도</label>
             <select class="form-select" v-model="programData.level">
               <option value="">난이도 선택</option>
-              <option value="BEGINNER" :selected="programStore.currentProgram?.level === 'BEGINNER'">초급</option>
-              <option value="INTERMEDIATE" :selected="programStore.currentProgram?.level === 'INTERMEDIATE'">중급</option>
-              <option value="ADVANCED" :selected="programStore.currentProgram?.level === 'ADVANCED'">고급</option>
+              <option
+                value="BEGINNER"
+                :selected="programStore.currentProgram?.level === 'BEGINNER'"
+              >
+                초급
+              </option>
+              <option
+                value="INTERMEDIATE"
+                :selected="
+                  programStore.currentProgram?.level === 'INTERMEDIATE'
+                "
+              >
+                중급
+              </option>
+              <option
+                value="ADVANCED"
+                :selected="programStore.currentProgram?.level === 'ADVANCED'"
+              >
+                고급
+              </option>
             </select>
           </div>
 
           <div class="col-md-6 mb-3">
             <label class="form-label">운동 기간 (주)</label>
-            <input type="number" class="form-control" v-model="programData.durationWeeks"
-              :placeholder="programStore.currentProgram?.durationWeeks" min="1" max="52">
+            <input
+              type="number"
+              class="form-control"
+              v-model="programData.durationWeeks"
+              :placeholder="programStore.currentProgram?.durationWeeks"
+              min="1"
+              max="52"
+            />
           </div>
         </div>
 
         <!-- 현재 썸네일 이미지 표시 -->
-        <div class="mb-4">
+        <div class="mb-4 d-flex flex-colume">
           <label class="form-label">프로그램 썸네일</label>
           <div class="thumbnail-upload-container">
-            <img :src="programStore.currentProgram?.programImgPath" alt="프로그램 썸네일" class="img-thumbnail"
-              style="max-width: 200px">
+            <img
+              :src="programStore.currentProgram?.programImgPath"
+              alt="프로그램 썸네일"
+              class="img-thumbnail"
+              style="max-width: 200px"
+            />
             <div class="thumbnail-edit-overlay">
               <label class="btn btn-light">
                 썸네일 변경
-                <input type="file" accept="image/*" @change="handleThumbnailChange" class="d-none" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  @change="handleThumbnailChange"
+                  class="d-none"
+                />
               </label>
             </div>
           </div>
@@ -79,10 +124,14 @@
 
         <!-- 버튼 그룹 -->
         <div class="d-flex gap-2">
-          <button class="btn btn-primary" @click="updateProgram" :disabled="isSubmitting">
-            {{ isSubmitting ? '수정 중...' : '수정하기' }}
+          <button
+            class="btn btn-navy"
+            @click="updateProgram"
+            :disabled="isSubmitting"
+          >
+            {{ isSubmitting ? "수정 중..." : "수정하기" }}
           </button>
-          <button class="btn btn-outline-secondary" @click="goBack" :disabled="isSubmitting">
+          <button class="btn btn-gray" @click="goBack" :disabled="isSubmitting">
             취소
           </button>
         </div>
@@ -92,12 +141,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useProgramStore } from '@/stores/program';
-import { useVideoStore } from '@/stores/video';
-import VideoList from '@/components/video/VideoList.vue';
-import VideoSearch from '@/components/video/VideoSearch.vue';
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useProgramStore } from "@/stores/program";
+import { useVideoStore } from "@/stores/video";
+import VideoList from "@/components/video/VideoList.vue";
+import VideoSearch from "@/components/video/VideoSearch.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -110,12 +159,12 @@ const isSubmitting = ref(false);
 const programId = route.params.programId;
 
 const programData = ref({
-  title: '',
-  description: '',
-  level: '',
+  title: "",
+  description: "",
+  level: "",
   durationWeeks: null,
-  programImgPath: '',
-  videoCnt: null
+  programImgPath: "",
+  videoCnt: null,
 });
 
 // 프로그램 정보 가져오기
@@ -130,16 +179,18 @@ const fetchProgramData = async () => {
       level: programStore.currentProgram.level,
       durationWeeks: programStore.currentProgram.durationWeeks,
       programImgPath: programStore.currentProgram.programImgPath,
-      videoCnt: programStore.currentProgram.videoCnt
+      videoCnt: programStore.currentProgram.videoCnt,
     };
 
     // 비디오 정보 초기화
     if (programStore.currentProgram?.videoIds) {
-      const videos = await videoStore.getVideosByIds(programStore.currentProgram.videoIds);
+      const videos = await videoStore.getVideosByIds(
+        programStore.currentProgram.videoIds
+      );
       initialVideos.value = videos;
     }
   } catch (err) {
-    console.error('프로그램 정보 로딩 실패:', err);
+    console.error("프로그램 정보 로딩 실패:", err);
   }
 };
 
@@ -153,18 +204,20 @@ const updateProgram = async () => {
 
     const updatedProgram = {
       ...programData.value,
-      videoIds: currentVideos.map(video => video.id.videoId),
+      videoIds: currentVideos.map((video) => video.id.videoId),
       videoCnt: currentVideos.length,
-      programImgPath: currentVideos[0]?.snippet.thumbnails.medium.url || programData.value.programImgPath
+      programImgPath:
+        currentVideos[0]?.snippet.thumbnails.medium.url ||
+        programData.value.programImgPath,
     };
 
-    console.log('videoCnt :>> ', currentVideos.length);
+    console.log("videoCnt :>> ", currentVideos.length);
     await programStore.updateProgram(programId, updatedProgram);
-    alert('프로그램이 성공적으로 수정되었습니다.');
+    alert("프로그램이 성공적으로 수정되었습니다.");
     router.push(`/program/${programId}`);
   } catch (err) {
-    console.error('프로그램 수정 실패:', err);
-    alert(err.message || '프로그램 수정에 실패했습니다.');
+    console.error("프로그램 수정 실패:", err);
+    alert(err.message || "프로그램 수정에 실패했습니다.");
   } finally {
     isSubmitting.value = false;
   }
@@ -189,22 +242,25 @@ const handleThumbnailChange = async (event) => {
 
   try {
     isSubmitting.value = true;
-    const response = await programStore.updateProgramThumbnail(formData, programId);
+    const response = await programStore.updateProgramThumbnail(
+      formData,
+      programId
+    );
 
     // 프로그램 데이터 업데이트
     programData.value = {
       ...programData.value,
-      programImgPath: response.filePath
+      programImgPath: response.filePath,
     };
 
     // currentProgram 직접 업데이트
     programStore.currentProgram = {
       ...programStore.currentProgram,
-      programImgPath: response.filePath
+      programImgPath: response.filePath,
     };
 
     await programStore.getProgramById(programId); // 프로그램 정보 다시 불러오기
-    
+
     alert("썸네일이 성공적으로 변경되었습니다.");
   } catch (error) {
     console.error("썸네일 업로드 에러:", error);
@@ -228,7 +284,7 @@ onMounted(() => {
 .form-control:focus,
 .form-select:focus {
   border-color: #86b7fe;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 .img-thumbnail {

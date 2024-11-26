@@ -105,23 +105,36 @@
       </div>
 
       <!-- 스텝 3: 최종 확인 -->
-      <div v-if="step === 3" class="preview-section">
-        <div class="check-header">
+      <div v-if="step === 3" class="info-card preview-section">
+        <div class="preview-header">
           <h5 class="mb-3">최종 확인</h5>
           <p class="text-muted small">
-            마지막 단계입니다! 프로그램 생성 전 모든 정보를 확인해주세요.
+            프로그램 생성 전 모든 정보를 다시 한 번 확인해주세요. 😊<br />
+            <strong>수정할 사항이 있다면 이전 단계로 돌아가주세요.</strong>
           </p>
         </div>
 
-        <div class="preview-content">
-          <p>
-            <strong>선택된 영상:</strong>
-            {{ videoStore.selectedVideos.length }}개
-          </p>
-          <p><strong>프로그램 제목:</strong> {{ programData.title }}</p>
-          <p><strong>프로그램 설명:</strong> {{ programData.description }}</p>
-          <p><strong>난이도:</strong> {{ getLevelText(programData.level) }}</p>
-          <p><strong>기간:</strong> {{ programData.durationWeeks }}주</p>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">선택된 영상</span>
+            <span class="value">{{ videoStore.selectedVideos.length }}개</span>
+          </div>
+          <div class="info-item">
+            <span class="label">프로그램 제목</span>
+            <span class="value">{{ programData.title }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">프로그램 설명</span>
+            <span class="value">{{ programData.description }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">난이도</span>
+            <span class="value">{{ getLevelText(programData.level) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">기간</span>
+            <span class="value">{{ programData.durationWeeks }}주</span>
+          </div>
         </div>
       </div>
 
@@ -129,14 +142,14 @@
       <div class="button-container">
         <button
           v-if="step > 1"
-          class="btn btn-outline-secondary me-2"
+          class="btn btn-outline-ligh me-2"
           @click="step--"
         >
           이전
         </button>
         <button
           v-if="step < 3"
-          class="btn btn-primary"
+          class="btn btn-outline-ligh"
           @click="nextStep"
           :disabled="!isStepValid"
         >
@@ -144,7 +157,7 @@
         </button>
         <button
           v-if="step === 3"
-          class="btn btn-primary"
+          class="btn btn-point-orange"
           @click="submitProgram"
           :disabled="!isFormValid || programStore.isLoading"
         >
@@ -162,6 +175,7 @@ import { useProgramStore } from "@/stores/program";
 import VideoList from "../video/VideoList.vue";
 import VideoSearch from "../video/VideoSearch.vue";
 import { useRouter } from "vue-router";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const router = useRouter();
 const videoStore = useVideoStore();
@@ -378,6 +392,7 @@ const getLevelText = (level) => {
   background-color: #133e87;
 }
 
+/* 스텝 2 : 프로그램 정보 입력 */
 .content-wrapper {
   padding: 2.5rem; /* 2rem에서 3rem으로 패딩 증가 */
   border-radius: 20px; /* 10px에서 20px로 증가 */
@@ -408,6 +423,7 @@ const getLevelText = (level) => {
   border-color: #c6e7ff;
 }
 
+/* 스텝 3 : 미리보기*/
 .preview-section {
   padding: 2rem;
 }
@@ -418,6 +434,117 @@ const getLevelText = (level) => {
   border-radius: 15px;
   border: 1px solid var(--primary-blue);
 }
+
+.preview-section h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.preview-section p {
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.info-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.info-card h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.label {
+  color: #666;
+  font-weight: 500;
+}
+
+.value {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.btn-point-blue,
+.btn-point-orange {
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-point-blue {
+  background-color: #c6e7ff;
+  color: #2c3e50;
+}
+
+.btn-point-orange {
+  background-color: #ffcc80;
+  color: #2c3e50;
+}
+
+.btn-point-blue:hover,
+.btn-point-orange:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn-point-blue,
+  .btn-point-orange {
+    width: 100%;
+  }
+}
+
+/* 버튼 스타일 적용 */
 .button-container {
   margin-top: 3rem;
   display: flex;
@@ -435,31 +562,6 @@ const getLevelText = (level) => {
   color: #333;
   background: var(--primary-blue);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Primary 버튼 (다음, 생성하기, 이전 모두 동일하게) */
-.btn-primary,
-.btn-outline-secondary {
-  background: var(--primary-blue);
-  border: none;
-  color: #333;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.btn-primary:hover:not(:disabled),
-.btn-outline-secondary:hover {
-  background: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  color: #333; /* hover 시에도 검정색 유지 */
-}
-
-.btn-primary:disabled {
-  background: #e0e0e0;
-  color: #999;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }
 
 /* 로딩 상태의 버튼 */
@@ -486,7 +588,7 @@ const getLevelText = (level) => {
 
 .search-header,
 .form-header,
-.check-header {
+.preview-header {
   margin-bottom: 2rem;
   text-align: center;
   padding: 1rem 2rem; /* 상하 패딩 줄임 */
@@ -494,7 +596,7 @@ const getLevelText = (level) => {
 
 .search-header,
 .form-header,
-.check-header h5 {
+.preview-header h5 {
   color: #333;
   font-size: 1.8rem;
   margin-bottom: 1rem;
