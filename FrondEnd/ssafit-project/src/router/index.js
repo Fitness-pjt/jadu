@@ -240,7 +240,6 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.name === "programDetail")) {
     // URL에 `programId`가 없고 자식 라우터가 아닌 경우 `programDetail`로 리다이렉트
     if (!to.params.programId) {
-      console.log("to.query.programId", to.query.programId);
       const defaultProgramId = to.query.programId;
       next({
         name: "programDetail",

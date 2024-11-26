@@ -74,8 +74,6 @@ export const useReviewStore = defineStore("review", () => {
     // const reviewId = singleReview.value.id;
 
     axios.put(REST_API_URL, content).then((res) => {
-      console.log("res.data", res.data);
-
       // 라우터 이동
       router
         .replace({

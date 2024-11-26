@@ -90,9 +90,7 @@ const programId = computed(() => userInfoStore.programId);
 
 watch(
   () => userInfoList.value,
-  (newList, oldList) => {
-    // console.log("newList ,>> ", newList);
-  },
+  (newList, oldList) => {},
   { deep: true }
 );
 
@@ -174,7 +172,6 @@ const createProgram = () => {
   // console.log("rest api 호출 후 :>> ", userInfoList.value);
   // console.log("rest api 호출 후:>> ", userList);
   userInfoList.value = userList;
-  console.log("userInfoList에 userList 담은 후 :>> ", userInfoList.value);
 };
 
 // 이전으로 돌아가는 버튼

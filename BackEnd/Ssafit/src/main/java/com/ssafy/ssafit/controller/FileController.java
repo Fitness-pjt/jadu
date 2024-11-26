@@ -44,7 +44,6 @@ public class FileController {
 //			return new ResponseEntity<>("로그인이 필요한 서비스입니다.", HttpStatus.UNAUTHORIZED);
 //		}
 
-		System.out.println(file);
 
 		// SecurityContext에서 인증된 사용자 정보 가져오기
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -57,7 +56,6 @@ public class FileController {
 
 		fileDto.setFileCase(fileCase);
 		String filePath = fileService.upload(file, loginUser, fileDto); // 파일 DB에 저
-		System.out.println(filePath);
 
 		switch (fileCase) {
 

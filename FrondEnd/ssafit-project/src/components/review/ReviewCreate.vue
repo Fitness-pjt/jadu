@@ -35,8 +35,6 @@ const profileImg = computed(() => {
   return userStore.userProfileImg || defaultProfileImg;
 });
 
-console.log("profileImg", profileImg.value);
-
 const loginStore = useLoginStore();
 const loginUserId = computed(() => loginStore.loginUserId);
 

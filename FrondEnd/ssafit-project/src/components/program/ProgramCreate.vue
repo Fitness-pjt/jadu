@@ -238,7 +238,6 @@ const submitProgram = async () => {
       videoIds: videoIds,
     };
 
-    // console.log("submitData :>> ", submitData);
     await programStore.createProgram(submitData);
 
     alert("프로그램이 성공적으로 생성되었습니다!");

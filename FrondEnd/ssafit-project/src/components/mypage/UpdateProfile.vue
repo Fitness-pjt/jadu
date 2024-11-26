@@ -71,15 +71,6 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">새 비밀번호</label>
-        <input
-          v-model="formData.newPassword"
-          type="password"
-          class="form-control"
-        />
-      </div>
-
-      <div class="mb-3">
         <label class="form-label">이름</label>
         <input
           v-model="formData.name"
@@ -132,8 +123,6 @@ const loginStore = useLoginStore();
 
 const formData = ref({
   nickname: "",
-  currentPassword: "",
-  newPassword: "",
   name: "",
   status: true,
 });
@@ -169,7 +158,6 @@ const handleImageChange = async (event) => {
 
   try {
     const imagePath = await userStore.uploadProfileImage(formData);
-    console.log("imagePath :>> ", imagePath);
   } catch (error) {
     console.error("이미지 업로드 에러:", error);
     alert("이미지 업로드에 실패했습니다.");
@@ -181,10 +169,16 @@ const handleImageChange = async (event) => {
 
 const isNicknameChecked = ref(false);
 const isNicknameAvailable = ref(false);
+const isNicknameSize = ref(false);
 
 const checkNickname = async () => {
   if (!formData.value.nickname) {
     alert("닉네임을 입력해주세요.");
+    return;
+  }
+
+  if (formData.value.nickname.length > 20) {
+    alert("닉네임은 최대 20자까지 입력 가능합니다. ");
     return;
   }
 
@@ -225,12 +219,12 @@ const handleSubmit = async () => {
     await userStore.updateUser({
       userId: loginStore.loginUserId,
       nickname: formData.value.nickname,
-      newPassword: formData.value.newPassword,
       name: formData.value.name,
       status: formData.value.status,
     });
     alert("회원정보가 수정되었습니다.");
-    router.push("/mypage");
+    window.location.href = "/mypage";
+    // router.push("/mypage");
   } catch (error) {
     alert("회원정보 수정에 실패했습니다.");
   }

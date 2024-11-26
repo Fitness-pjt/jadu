@@ -102,9 +102,7 @@ const editingStates = ref({}); // 현재 수정 상태인지 아닌지 확인
 
 watch(
   () => reviewList.value,
-  (newList) => {
-    // console.log("Updated review list:", newList);
-  },
+  (newList) => {},
   { deep: true }
 );
 

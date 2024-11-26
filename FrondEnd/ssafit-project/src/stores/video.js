@@ -52,14 +52,13 @@ export const useVideoStore = defineStore("video", () => {
         });
       })
       .then((detailRes) => {
-        console.log("Video Details Response:", detailRes.data);
+        // console.log("Video Details Response:", detailRes.data);
 
         // 3. embeddable 비디오 필터링
         const embeddableVideos = detailRes.data.items.filter(
           (video) => video.status.embeddable
         );
 
-        console.log("embeddableVideos", embeddableVideos);
         // 4. 비디오 리스트 업데이트
         videoList.value = embeddableVideos;
       })

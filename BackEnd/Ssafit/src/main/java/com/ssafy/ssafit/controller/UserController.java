@@ -59,10 +59,8 @@ public class UserController {
 	@PutMapping("/{userId}")
 	@Operation(summary = "유저 정보 업데이트", description = "userId로 유저 정보를 수정합니다.")
 	public ResponseEntity<String> updateUser(@RequestBody User user, @PathVariable(name = "userId") int userId) {
-
 		user.setUserId(userId);
-		System.out.println(user.toString());
-		user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+//		user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
 		userService.update(user);
 
 		return new ResponseEntity<>("Update", HttpStatus.OK);
@@ -90,7 +88,7 @@ public class UserController {
 	@PostMapping("/info")
 	@Operation(summary = "운동정보 등록", description = "운동정보 등록")
 	public ResponseEntity<?> createUserInfo(@RequestBody UserInfo userInfo) {
-		System.out.println("유저 운동정보 등록 : " + userInfo);
+		// System.out.println("유저 운동정보 등록 : " + userInfo);
 
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -120,7 +118,7 @@ public class UserController {
 	@Operation(summary = "운동정보 수정", description = "운동정보 수정")
 	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo userInfo) {
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		 System.out.println("유저 운동정보 수정 : " + userInfo);
+		//  System.out.println("유저 운동정보 수정 : " + userInfo);
 
 
 		userInfo.setUserId(loginUser.getUserId());
