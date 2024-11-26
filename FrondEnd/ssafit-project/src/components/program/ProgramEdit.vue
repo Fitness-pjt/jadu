@@ -211,7 +211,6 @@ const updateProgram = async () => {
         programData.value.programImgPath,
     };
 
-    console.log("videoCnt :>> ", currentVideos.length);
     await programStore.updateProgram(programId, updatedProgram);
     alert("프로그램이 성공적으로 수정되었습니다.");
     router.push(`/program/${programId}`);

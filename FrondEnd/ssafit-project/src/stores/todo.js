@@ -291,7 +291,7 @@ export const useTodoStore = defineStore("todo", () => {
           "Content-Type": "application/json",
         },
       });
-      console.log("Progress check response:", response.data); // 디버깅용
+      // console.log("Progress check response:", response.data); // 디버깅용
       if (response.data === undefined) {
         return { inProgress: false };
       }

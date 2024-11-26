@@ -87,21 +87,21 @@ const programId = route.params.programId;
 
 const questionStore = useQuestionStore();
 const loginStore = useLoginStore();
+const loginUserId = computed(() => loginStore.loginUserId);
 
-const userNickname = computed(() => loginStore.loginUserNickname);
+const userStore = useUserStore();
+const userNickname = computed(() => userStore.userNickname);
 
 watch(
   () => loginStore.value,
-  (newList, oldList) => {
-    console.log("newList", newList);
-  },
+  (newList, oldList) => {},
   {
     deep: true,
   }
 );
 
 const question = ref({
-  writer: userNickname,
+  writer: null,
   title: "",
   content: "",
   questionFileName: "",
@@ -127,13 +127,10 @@ const uploadFile = async (event) => {
 
   try {
     const imagePath = await questionStore.uploadFile(formData);
-    console.log("imagePath", imagePath);
 
     // URL 앞부분을 제외하고 나머지 값만 추출
     const baseURL = "https://attnnskybucket.s3.ap-northeast-2.amazonaws.com/";
     const remainingPath = imagePath.replace(baseURL, "");
-
-    console.log(remainingPath);
 
     question.value.questionFileName = remainingPath;
   } catch (error) {
@@ -162,6 +159,14 @@ const createQuestion = async () => {
   alert("질문 등록이 완료되었습니다.");
   router.replace({ name: "question" });
 };
+
+onMounted(async () => {
+  // 로그인한 사용자의 프로필 정보 불러오기
+  await userStore.getUserListProfileInfo(loginUserId.value);
+
+  // userNickname을 writer에 설정
+  question.value.writer = userNickname.value;
+});
 </script>
 
 <style scoped>

@@ -86,7 +86,7 @@
           <i
             :class="isLiked ? 'bi bi-heart-fill text-danger' : 'bi bi-heart'"
           ></i>
-          좋아요 <span v-if="likeCount > 0">{{ likeCount }}</span>
+          <span v-if="likeCount > 0">{{ likeCount }}</span>
         </button>
 
         <!-- 작성자용 버튼 -->
@@ -289,7 +289,6 @@ const showDatePicker = ref(false);
 const selectedStartDate = ref(null);
 
 const onDateSelect = (date) => {
-  // console.log("date", date.id);
   selectedStartDate.value = date.id;
 };
 
@@ -369,7 +368,6 @@ const checkProgramStatus = async () => {
         loginStore.loginUserId
       );
       isInProgress.value = status.inProgress;
-      console.log("Program status:", status); // 디버깅용
     } catch (err) {
       console.error("프로그램 상태 체크 실패:", err);
     }

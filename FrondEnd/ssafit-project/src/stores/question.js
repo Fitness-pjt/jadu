@@ -14,7 +14,6 @@ export const useQuestionStore = defineStore("question", () => {
 
   // 질문 등록하기
   const createQuestion = (question, programId) => {
-    console.log("question 등록 request 에 담김", question);
     const REST_API_URL = getRestApiUrl(programId);
 
     axios
@@ -26,9 +25,7 @@ export const useQuestionStore = defineStore("question", () => {
         withCredentials: true,
       })
       .then((res) => {
-        // console.log("res.data", res.data);
         questionList.value.push(res.data);
-        // router.replace({ name: "question" });
       })
       .catch((error) => {
         handleError(error);
@@ -78,7 +75,6 @@ export const useQuestionStore = defineStore("question", () => {
   const updateQuestion = (programId) => {
     const REST_API_URL =
       getRestApiUrl(programId) + `/${singleQuestion.value.questionId}`;
-    console.log("singleQuestion", singleQuestion.value);
 
     axios
       .put(REST_API_URL, singleQuestion.value, {

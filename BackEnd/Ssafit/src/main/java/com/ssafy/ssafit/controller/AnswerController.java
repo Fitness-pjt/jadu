@@ -105,7 +105,6 @@ public class AnswerController {
 	public ResponseEntity<String> update(@PathVariable("programId") int programId,
 			@PathVariable("questionId") int questionId, @PathVariable("answerId") int answerId,
 			@RequestBody Answer answer) {
-		System.out.println(answer);
 
 		int writerUserId = answerService.readAnswer(answerId); // 글을 작성한 유저 아이디
 

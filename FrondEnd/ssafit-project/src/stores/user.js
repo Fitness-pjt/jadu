@@ -16,7 +16,7 @@ export const useUserStore = defineStore("user", () => {
         router.push({ name: "login" });
       })
       .catch((err) => {
-        console.log("err", err);
+        // console.log("err", err);
       });
   };
 
@@ -111,13 +111,22 @@ export const useUserStore = defineStore("user", () => {
 
   const updateUser = async (updateData) => {
     try {
-      const response = await axios.put(`${REST_API_URL}/${updateData.userId}`, {
-        userNickname: updateData.nickname,
-        userPassword: updateData.newPassword,
-        profileImgPath: updateData.profileImage,
-        userName: updateData.name,
-        userStatus: updateData.status,
-      });
+      const response = await axios.put(
+        `${REST_API_URL}/${updateData.userId}`,
+        {
+          userNickname: updateData.nickname,
+          profileImgPath: updateData.profileImage,
+          userName: updateData.name,
+          userStatus: updateData.status,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": sessionStorage.getItem("access-token"),
+          },
+          withCredentials: true,
+        }
+      );
 
       // 성공 시 store의 상태 업데이트
       userNickname.value = response.data.userNickname;

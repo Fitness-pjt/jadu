@@ -1,6 +1,20 @@
 <template>
   <div>
-    <p class="p-5">{{ userStore.userNickname }}님의 프로필 페이지</p>
+    <div
+      class="d-flex align-items-center gap-3 p-3 border rounded shadow-sm bg-light"
+    >
+      <img
+        :src="profileImg"
+        alt="프로필 이미지"
+        class="rounded-circle border border-secondary"
+        style="width: 50px; height: 50px; object-fit: cover"
+      />
+      <div>
+        <p class="mb-0 fs-md">{{ userStore.userNickname }}</p>
+        <p class="text-muted mb-0 fs-md">님의 프로필 페이지</p>
+      </div>
+    </div>
+
     <div v-if="userStore.userStatus">
       <TodoView :userId="userId" />
     </div>
@@ -19,14 +33,21 @@
 
 <script setup>
 import { useUserStore } from "@/stores/user";
-import { onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import TodoView from "./TodoView.vue";
 import { useRoute } from "vue-router";
 import UserNameTag from "@/components/common/UserNameTag.vue";
+import defaultImg from "@/assets/image/default_profile.png";
 
 const userStore = useUserStore();
 const route = useRoute();
 const userId = route.params.userId;
+const userProfileImg = computed(() => userStore.userProfileImg);
+
+const profileImg =
+  userProfileImg.value === null ? defaultImg : userProfileImg.value;
+
+watch(() => userProfileImg.value, { deep: true });
 
 onMounted(() => [userStore.getUserProfileInfo(userId)]);
 </script>

@@ -70,7 +70,6 @@ public class QuestionController {
 	@PostMapping("/question")
 	@Operation(summary = "질문 등록하기", description = "질문을 등록합니다.")
 	public ResponseEntity<?> writequestion(@PathVariable("programId") int programId, @RequestBody Question question) {
-		System.out.println(question);
 
 		// SecurityContext에서 인증된 사용자 정보 가져오기
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -146,7 +145,6 @@ public class QuestionController {
 		}
 
 		question.setQuestionId(questionId);
-		System.out.println(question);
 		questionService.updateQuestion(question);
 		return new ResponseEntity<String>("질문 수정 성공", HttpStatus.OK);
 	}

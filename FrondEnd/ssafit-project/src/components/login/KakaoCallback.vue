@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>로그인 처리중...</p>
+    <p></p>
   </div>
 </template>
 
@@ -24,7 +24,6 @@ onMounted(() => {
   }
 
   loginStore.kakaoLogin(code);
-
 });
 </script>
 

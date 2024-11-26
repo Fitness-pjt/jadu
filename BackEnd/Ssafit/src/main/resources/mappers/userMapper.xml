@@ -28,8 +28,7 @@
 		SET
 		user_nickname = #{userNickname}, user_name = #{userName},
 		user_status =
-		#{userStatus},
-		user_password = #{userPassword}
+		#{userStatus}
 		WHERE user_id = #{userId}
 	</update>
 

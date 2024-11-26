@@ -6,9 +6,9 @@
         현재 운동 정보가 등록되지 않았습니다. 운동 정보를 추가하여 맞춤
         프로그램을 추천받아 보세요.
       </p>
-      <RouterLink :to="{ name: 'createAIProgram' }">
-        <button class="btn-navy">운동 정보 등록하기</button>
-      </RouterLink>
+      <button class="btn-navy" @click="goToCreateNewProgram">
+        운동 정보 등록하기
+      </button>
     </div>
 
     <div v-else class="info-card">
@@ -127,7 +127,12 @@ const goToUpdateUserInfo = () => {
 };
 
 const goToCreateNewProgram = () => {
-  router.push({ name: "createAIProgram" });
+  const confirm = window.confirm(
+    "AI 맞춤 추천 프로그램 생성 페이지로 이동하시겠습니까?"
+  );
+  if (confirm) {
+    router.push({ name: "createAIProgram" });
+  }
 };
 </script>
 

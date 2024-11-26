@@ -81,13 +81,13 @@ export const useLoginStore = defineStore("login", () => {
 
         // 에러 상황에 따른 처리
         if (error.response?.status === 401) {
-          console.log("인증 실패");
+          // console.log("인증 실패");
           router.push("/login");
         } else if (error.response?.status === 400) {
-          console.log("잘못된 요청");
+          // console.log("잘못된 요청");
           router.push("/login");
         } else {
-          console.log("기타 에러");
+          // console.log("기타 에러");
           router.push("/login");
         }
       });

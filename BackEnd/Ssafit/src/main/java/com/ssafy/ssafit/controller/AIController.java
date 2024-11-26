@@ -21,6 +21,7 @@ import com.ssafy.ssafit.model.dto.UserInfo;
 import com.ssafy.ssafit.model.dto.YoutubeVideoDto;
 import com.ssafy.ssafit.prompt.PromptGenerator;
 import com.ssafy.ssafit.service.program.ProgramService;
+import com.ssafy.ssafit.service.user.UserService;
 import com.ssafy.ssafit.service.youtube.YoutubeService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +35,7 @@ public class AIController {
 	private YoutubeService youtubeService;
 	private ProgramService programService;
 
+
 	public AIController(OpenAiChatModel openAiChatModel, PromptGenerator promptGenerator, YoutubeService youtubeService,
 			ProgramService programService) {
 		this.openAiChatModel = openAiChatModel;
@@ -44,13 +46,13 @@ public class AIController {
 
 	@PostMapping("/chatGPT")
 	public ResponseEntity<?> chat(@RequestBody UserInfo userInfo) throws JsonMappingException, JsonProcessingException {
-		System.out.println(userInfo);
+//		System.out.println(userInfo);
 		User loginUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		int videoNum = userInfo.getDuration(); // 하나의 키워드로 받을 영상 수
 //		System.out.println(videoNum);
 		
 		String message = promptGenerator.generatePrompt(userInfo);
-		System.out.println(message);
+		// System.out.println(message);
 
 		String response = openAiChatModel.call(message);
 //		System.out.println("[AI 답변] : " + response);
@@ -58,14 +60,16 @@ public class AIController {
 		ObjectMapper mapper = new ObjectMapper();
 		AIResponse aiResponse = mapper.readValue(response, AIResponse.class);
 
-		System.out.println("[AI 답변 JSON] : " + aiResponse);
+//		System.out.println("[AI 답변 JSON] : " + aiResponse);
 
 		List<String> keywordsList = aiResponse.getKeywords();
 
 		List<YoutubeVideoDto> videoList = new ArrayList<>();
 		for (int i = 0; i < keywordsList.size(); i++) {
-			videoList.addAll(youtubeService.searchVideos(keywordsList.get(i), videoNum));
+			videoList.addAll(youtubeService.searchVideos(keywordsList.get(i) + "운동, workout", videoNum));
 		}
+		
+		System.out.println(videoList);
 
 		Program program = new Program();
 		List<String> videoIds = new ArrayList<>();
@@ -73,6 +77,7 @@ public class AIController {
 		for (YoutubeVideoDto video : videoList) {
 			videoIds.add(video.getVideoId());
 		}
+		
 		String userNickName = loginUser.getUserNickname();
 		program.setVideoIds(videoIds);
 		program.setUserId(userInfo.getUserId());

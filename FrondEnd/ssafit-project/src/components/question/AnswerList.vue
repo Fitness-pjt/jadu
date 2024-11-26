@@ -85,9 +85,7 @@ const editingStates = ref({}); // 현재 수정 상태인지 아닌지 확인
 
 watch(
   () => answerList.value,
-  (newList) => {
-    // console.log("Updated answer list:", newList);
-  },
+  (newList) => {},
   { deep: true }
 );
 

@@ -93,8 +93,6 @@ watch(() => singleQuestion.value, { deep: true });
 const baseURL = "https://attnnskybucket.s3.ap-northeast-2.amazonaws.com/";
 const questionImgUrl = baseURL + singleQuestion.value.questionFileName;
 
-console.log("questionImgUrl", questionImgUrl);
-
 onMounted(() => {
   questionStore.getQuestion(programId, questionId);
 });

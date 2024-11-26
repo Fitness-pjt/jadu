@@ -71,7 +71,6 @@ export const useAnswerStore = defineStore("answer", () => {
 
   // 답변 수정하기
   const updateAnswer = (programId, questionId, answerId, content) => {
-    console.log("content", content);
     const REST_API_URL = getRestApiUrl(programId, questionId) + `/${answerId}`;
     // const answerId = singleAnswer.value.id;
 
@@ -84,8 +83,6 @@ export const useAnswerStore = defineStore("answer", () => {
         withCredentials: true,
       })
       .then((res) => {
-        console.log("res.data", res.data);
-
         // 라우터 이동
         router
           .replace({

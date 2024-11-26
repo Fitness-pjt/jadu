@@ -16,13 +16,9 @@ export const useProgramStore = defineStore("program", () => {
   const isLiked = ref(false);
 
   async function createProgram(programData) {
-    // console.log('programData :>> ', programData);
-
     try {
       isLoading.value = true;
       error.value = null;
-
-      console.log("Sending program data:", programData); // 요청 데이터 로깅
 
       const response = await axios.post(`${BASE_URL}`, programData, {
         headers: {
@@ -34,7 +30,6 @@ export const useProgramStore = defineStore("program", () => {
         withCredentials: true,
       });
 
-      console.log("프로그램 생성 후 반환데이터:", response.data); // 응답 데이터 로깅
       return response.data;
     } catch (err) {
       handleError(err);
@@ -80,7 +75,6 @@ export const useProgramStore = defineStore("program", () => {
       });
 
       currentProgram.value = response.data;
-      // console.log("currentProgram.value :>> ", currentProgram.value);
       return response.data;
     } catch (err) {
       handleError(err);
@@ -120,8 +114,6 @@ export const useProgramStore = defineStore("program", () => {
       isLoading.value = true;
       error.value = null;
 
-      console.log("Updating program data:", programData); // 요청 데이터 로깅
-
       const response = await axios.put(
         `${BASE_URL}/${programId}`,
         programData,
@@ -134,8 +126,6 @@ export const useProgramStore = defineStore("program", () => {
           withCredentials: true,
         }
       );
-
-      console.log("Update Response:", response.data); // 응답 데이터 로깅
 
       // 현재 프로그램 데이터 업데이트
       currentProgram.value = response.data;
