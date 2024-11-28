@@ -22,36 +22,36 @@
 # 💻 TECH STACKS
 
 <h3>Environment</h3> 
-<div><img src="https://img.shields.io/badge/visual studio code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"></div>
+<div><img src="https://img.shields.io/badge/visual studio code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"><img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"></div>
 
-<h3>Framework</h3>
-<img src="https://img.shields.io/badge/spring Boot-6DB33F?style=for-the-badge&logo=spring Boot&logoColor=white">
-<img src="https://img.shields.io/badge/vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white">
-
-<h3>Language</h3> 
+<h3>BACKEND</h3> 
 <div>
-<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
-<img src="https://img.shields.io/badge/java-000000?style=for-the-badge&logo=java&logoColor=black">
+<img src="https://img.shields.io/badge/java-000000?style=for-the-badge&logo=java&logoColor=black"> <img src="https://img.shields.io/badge/spring Boot-6DB33F?style=for-the-badge&logo=spring Boot&logoColor=white">
+<img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=spring security&logoColor=white">
 </div>
 
-<h3>Database</h3> 
+<h3>FRONTEND</h3> 
+<div>
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> 
+<img src="https://img.shields.io/badge/vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white">
+</div>
+
+<h3>DATABASE</h3> 
 <div>
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
 </div>
 
 <h3>Deployment</h3> 
 <div>
- <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=AWS&logoColor=white">
+<img src="https://img.shields.io/badge/amazon-FF9900?style=for-the-badge&logo=amazon&logoColor=white">
+ <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
 </div>
 
-<h3>Library</h3> 
-<div> 
-<!-- <img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">  -->
 </div>
 
-<!-- <div>
-그 외 : Zustand, DOMPurify, typebot.i, Embla-carousel, React-Quill, Toastify, Medium-zoom, Date-fns, React-day-picker, DOMPurify
-</div> -->
+# 🖥️ 화면 구성 및 기능
+
+## 1.
 
 ## ERD Diagram
 
