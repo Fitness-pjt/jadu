@@ -28,45 +28,49 @@ INSERT INTO userInfo (user_id, gender, age, shape, goal, experience, location, f
 (10, 'FEMALE', '4050', 'SLIM', 'RECOVERY', 2, 'OUTSIDE', 4, 2);
 
 -- Program 더미데이터 (10개)
-INSERT INTO program (user_id, title, description, duration_weeks, level, video_cnt, program_img_path) VALUES
-(1, '초보자를 위한 전신운동', '처음 시작하는 분들을 위한 프로그램', 2, 'BEGINNER', 10,'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(2, '다이어트 특급 프로그램', '체지방 감소에 초점', 1, 'INTERMEDIATE', 7, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(3, '근력 강화 프로그램', '근육량 증가를 위한 운동', 2, 'ADVANCED', 14, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(4, '홈트레이닝 기초', '집에서 할 수 있는 운동', 1, 'BEGINNER', 5, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(5, '스트레칭 마스터', '유연성 향상 프로그램', 1, 'BEGINNER', 6, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(6, '체중감량 챌린지', '한달 완성 다이어트', 4, 'INTERMEDIATE', 28, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(7, '파워 리프팅', '기초 근력 향상 프로그램', 3, 'ADVANCED', 15, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(8, '시니어 건강운동', '노년층을 위한 운동', 2, 'BEGINNER', 8, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(9, '코어 강화 운동', '복근 및 코어 강화', 2, 'INTERMEDIATE', 12, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg'),
-(10, '요가 플로우', '요가 기초부터 고급까지', 4, 'INTERMEDIATE', 20, 'https://image.dongascience.com/Photo/2023/07/dc552633578cd8779eebb1672efc76e7.jpg');
+
 
 
 
 -- Video 더미데이터 (10개)
-INSERT INTO video (video_id) VALUES
-('abc123xyz1'),
-('def456uvw2'),
-('ghi789rst3'),
-('jkl012opq4'),
-('mno345lmn5'),
-('pqr678ijk6'),
-('stu901ghi7'),
-('vwx234def8'),
-('yza567abc9'),
-('bcd890xyz0');
+INSERT IGNORE INTO video (video_id) VALUES
+('xK68FIFWdnI'),
+('tZbTY9j_L9o'),
+('oye5d4e1N_U'),
+('Lts-ddUgSFQ'),
+('V9atzm_n12k'),
+('URVOrAxBDq0'),
+('U7IH4wyVMBU'),
+('Sa0sBKUiOvU'),
+('kO_b0D8P1Jg'),
+('OJevd3OyNNo'),
+('v6lc7IEXC8s'),
+('js8z5wIZ0wg'),
+('AQ7778lCNZY'),
+('zcQ16cfJN9Q'),
+('QSZ0mUGO_CA'),
+('73oaPgayP8Q'),
+('wsWcyetgIaE'),
+('pDFuLG0xrsU'),
+('KqhCpQtOqic'),
+('21iOcDfoOGg'),
+('sqQpL1wKW6M'),
+('2Uv1B3kjCOI'),
+('DWYDL-WxF1U'),
+('A5MzlPgNcJM'),
+('bce7hAfUmF8'),
+('saXF2xH3A2U'),
+('sDsuW9RaQK0'),
+('A2GRyhU0V5M'),
+('fFIL0rlRH78'),
+('zKotOqfIrs0'),
+('2DRvc74GgYM'),
+('bOWoNq2nUgg'),
+('DnPhKr_zaTA'),
+('D3yExRi7EME'),
+('AHasgA4OvXQ');
 
--- Program_Video 더미데이터 (10개)
-INSERT INTO program_video (program_id, video_id) VALUES
-(1, 'abc123xyz1'),
-(2, 'def456uvw2'),
-(3, 'ghi789rst3'),
-(4, 'jkl012opq4'),
-(5, 'mno345lmn5'),
-(6, 'pqr678ijk6'),
-(7, 'stu901ghi7'),
-(8, 'vwx234def8'),
-(9, 'yza567abc9'),
-(10, 'bcd890xyz0');
+
 
 -- Program Likes 더미데이터 (10개)
 INSERT INTO program_likes (program_id, user_id) VALUES
@@ -197,6 +201,114 @@ INSERT INTO userInfo_keyword (user_id, keyword_code) VALUES
 (8, 8),
 (9, 9),
 (10, 10);
+
+-- 유효 더미 데이터
+-- Program 테이블 INSERT
+INSERT INTO program (user_id, title, description, duration_weeks, level, video_cnt, program_img_path) VALUES
+-- 팔+어깨 조합
+(1, '탄탄한 상체 만들기 4주 프로젝트', '팔과 어깨를 중심으로 한 상체 운동으로, 탄탄한 근육을 만들어보세요', 4, 'BEGINNER', 4, 'https://img.youtube.com/vi/xK68FIFWdnI/mqdefault.jpg'),
+(3, '어깨라인 완성 프로그램', '넓은 어깨와 탄탄한 팔 만들기에 집중하는 3주 프로그램입니다', 3, 'INTERMEDIATE', 5, 'https://img.youtube.com/vi/V9atzm_n12k/mqdefault.jpg'),
+
+-- 상체+등 조합
+(2, '전문가의 상체 집중 프로그램', '등과 상체 전반적인 근육을 발달시키는 프로그램입니다', 4, 'ADVANCED', 4, 'https://img.youtube.com/vi/U7IH4wyVMBU/mqdefault.jpg'),
+(4, '자세교정을 위한 상체 운동', '등과 상체 스트레칭으로 바른 자세를 만드는 프로그램', 2, 'BEGINNER', 4, 'https://img.youtube.com/vi/v6lc7IEXC8s/mqdefault.jpg'),
+
+-- 하체+코어(배) 조합
+(5, '전신 다이어트 프로그램', '하체 운동과 코어 운동을 결합한 체지방 감소 프로그램', 4, 'INTERMEDIATE', 6, 'https://img.youtube.com/vi/js8z5wIZ0wg/mqdefault.jpg'),
+(7, '탄탄한 하체와 복근 만들기', '하체와 코어를 동시에 단련하는 3주 프로그램', 3, 'ADVANCED', 5, 'https://img.youtube.com/vi/pDFuLG0xrsU/mqdefault.jpg'),
+
+-- 상체+하체 조합
+(6, '전신 근력 향상 프로그램', '상하체 균형잡힌 운동으로 전신 근력을 향상시키는 프로그램', 2, 'INTERMEDIATE', 6, 'https://img.youtube.com/vi/21iOcDfoOGg/mqdefault.jpg'),
+(8, '초보자를 위한 전신 운동', '상하체 기초 운동으로 구성된 입문자 프로그램', 4, 'BEGINNER', 4, 'https://img.youtube.com/vi/A5MzlPgNcJM/mqdefault.jpg'),
+
+-- 하체+지구력 조합
+(9, '지구력 강화 하체 운동', '하체 운동과 유산소를 결합한 지구력 향상 프로그램', 3, 'INTERMEDIATE', 4, 'https://img.youtube.com/vi/js8z5wIZ0wg/mqdefault.jpg'),
+(10, '다이어트를 위한 하체 중심 운동', '지구력 향상과 하체 라인 완성을 위한 프로그램', 4, 'BEGINNER', 4, 'https://img.youtube.com/vi/A2GRyhU0V5M/mqdefault.jpg'),
+
+-- 등+자세교정 조합
+(1, '자세교정 집중 프로그램', '등 운동과 스트레칭으로 바른 자세를 만드는 프로그램', 1, 'BEGINNER', 4, 'https://img.youtube.com/vi/Sa0sBKUiOvU/mqdefault.jpg'),
+(3, '오피스워커 자세교정 운동', '등 운동과 스트레칭으로 거북목, 굽은 어깨를 교정하는 프로그램', 2, 'INTERMEDIATE', 5, 'https://img.youtube.com/vi/2DRvc74GgYM/mqdefault.jpg');
+
+INSERT INTO program_video (program_id, video_id) VALUES
+-- 팔+어깨 프로그램 1
+(1, 'xK68FIFWdnI'),
+(1, 'tZbTY9j_L9o'),
+(1, 'oye5d4e1N_U'),
+(1, 'Lts-ddUgSFQ'),
+
+-- 팔+어깨 프로그램 2
+(2, 'V9atzm_n12k'),
+(2, 'URVOrAxBDq0'),
+(2, 'xK68FIFWdnI'),
+(2, 'tZbTY9j_L9o'),
+(2, 'oye5d4e1N_U'),
+
+-- 상체+등 프로그램 1
+(3, 'U7IH4wyVMBU'),
+(3, 'Sa0sBKUiOvU'),
+(3, 'kO_b0D8P1Jg'),
+(3, 'OJevd3OyNNo'),
+
+-- 상체+등 프로그램 2
+(4, 'v6lc7IEXC8s'),
+(4, 'Sa0sBKUiOvU'),
+(4, 'kO_b0D8P1Jg'),
+(4, 'OJevd3OyNNo'),
+
+-- 하체+코어 프로그램 1
+(5, 'js8z5wIZ0wg'),
+(5, 'AQ7778lCNZY'),
+(5, 'zcQ16cfJN9Q'),
+(5, 'QSZ0mUGO_CA'),
+(5, '73oaPgayP8Q'),
+(5, 'wsWcyetgIaE'),
+
+-- 하체+코어 프로그램 2
+(6, 'pDFuLG0xrsU'),
+(6, 'KqhCpQtOqic'),
+(6, 'zcQ16cfJN9Q'),
+(6, '73oaPgayP8Q'),
+(6, 'wsWcyetgIaE'),
+
+-- 상체+하체 프로그램 1,2 생략...
+(7,'21iOcDfoOGg'),
+(7,'sqQpL1wKW6M'),
+(7,'73oaPgayP8Q'),
+(7,'2Uv1B3kjCOI'),
+(7,'pDFuLG0xrsU'),
+(7,'DWYDL-WxF1U'),
+
+(8,'A5MzlPgNcJM'),
+(8,'bce7hAfUmF8'),
+(8,'zcQ16cfJN9Q'),
+(8,'QSZ0mUGO_CA'),
+-- 하체+지구력 프로그램 1
+(9, 'js8z5wIZ0wg'),
+(9, 'AQ7778lCNZY'),
+(9, 'saXF2xH3A2U'),
+(9, 'sDsuW9RaQK0'),
+
+(10, 'A2GRyhU0V5M'),
+(10, 'AQ7778lCNZY'),
+(10, 'saXF2xH3A2U'),
+(10, 'sDsuW9RaQK0'),
+
+-- 등+자세교정 프로그램 1
+(11, 'Sa0sBKUiOvU'),
+(11, 'kO_b0D8P1Jg'),
+(11, 'fFIL0rlRH78'),
+(11, 'zKotOqfIrs0'),
+
+
+(12 ,'2DRvc74GgYM'),
+(12 ,'bOWoNq2nUgg'),
+(12, 'DnPhKr_zaTA'),
+(12, 'D3yExRi7EME'),
+(12, 'AHasgA4OvXQ');
+
+
+
+
 
 -- 모든 테이블에 대한 SELECT 문
 SELECT * FROM users;
