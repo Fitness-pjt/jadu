@@ -104,6 +104,8 @@
 
 > AI PROMPT 작성을 통해, 생성형 AI로부터 맞춤형 프로그램 정보 응답 받기
 >
+> [PROMPT 코드 바로가기](https://github.com/Fitness-pjt/jadu/blob/e72cde2a663eff0cb948590292fb7d0f76909ce5/BackEnd/Ssafit/src/main/java/com/ssafy/ssafit/prompt/PromptGenerator.java)
+> 
 > ![AI 응답.PNG](./image/AI%20응답.png)
 
 <br>
